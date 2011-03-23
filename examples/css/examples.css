@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+body {
+	font: small Arial, Helvetica, sans-serif;
+	color: #454545;
+	background: #F8F8F8;
+	margin: 0px;
+	padding: 2em;
+}
+
+h1 {
+	font-weight: normal;
+	font-size: x-large;
+}
+
+a:link, a:visited {
+	color: #3333FF;
+	text-decoration: none;
+	border-bottom: 1px dotted #3333FF;
+}
+
+a:hover, a:visited:hover {
+	color: #FF3366;
+	text-decoration: none;
+	border-bottom: 1px solid #FF3366;
+}

@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>PDFObject example with search terms</title>
+    <script type="text/javascript" src="../code/pdfobject.js"></script>
+    <script type="text/javascript">
+
+      window.onload = function (){
+	  
+        var myPDF = new PDFObject({ 
+		
+			url: "pdf/sample.pdf",
+			pdfOpenParams: {
+				navpanes: 1,
+				view: "FitV",
+				pagemode: "thumbs", 
+				search: "lorem ipsum amet"
+			}
+		
+		}).embed();
+		
+      };
+
+    </script>
+  </head>
+ 
+  <body>
+    <p>It appears you don't have Adobe Reader or PDF support in this web browser. <a href="pdf/sample.pdf">Click here to download the PDF</a></p>
+  </body>
+</html>

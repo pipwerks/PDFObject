@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Embedding a PDF using PDFObject: Simple example with basic CSS</title>
+
+<!-- This example created for PDFObject.com by Philip Hutchison (www.pipwerks.com) -->
+
+<!-- CSS for basic page styling, not related to example -->
+<link href="css/examples.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+<!--
+
+#pdf {
+	width: 500px;
+	height: 300px;
+	margin: 2em auto;
+	border: 10px solid #6699FF;
+}
+
+#pdf p {
+   padding: 1em;
+}
+
+#pdf object {
+   display: block;
+   border: solid 1px #666;
+}
+
+-->
+</style>
+
+<script type="text/javascript" src="../code/pdfobject.js"></script>
+
+<script type="text/javascript">
+
+	window.onload = function (){
+	
+		var myPDF = new PDFObject({ 
+		
+			url: "pdf/sample.pdf",
+			pdfOpenParams: {
+				navpanes: 1,
+				view: "FitV",
+				pagemode: "thumbs"
+			}
+		
+		}).embed("pdf");
+	
+	};
+	
+</script>
+</head>
+
+<body>
+<h1>Embedding a PDF using PDFObject:<br />
+Simple example with PDF Open parameters and basic CSS</h1>
+<p>This example uses a few lines of JavaScript wrapped in a <em>window.onload</em> statement, with a little CSS added to control the styling of the embedded element.</p>
+
+<div id="pdf">It appears you don't have Adobe Reader or PDF support in this web browser. <a href="pdf/sample.pdf">Click here to download the PDF</a></div>
+
+<p><a href="/index.php">&laquo; Return to PDFObject home</a></p>
+
+</body>
+</html>
