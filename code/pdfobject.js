@@ -1,7 +1,7 @@
 /* 
 	PDFObject, copyright (C) 2008 Philip Hutchison (pipwerks.com)
 	Documentation and examples are at www.pdfobject.com 
-	Version 1.1, March 2011
+	Version 1.2, April 2011
 	MIT style license
 */
 
@@ -12,9 +12,7 @@ var PDFObject = function (obj){
 	
 	if(!obj || !obj.url){ return false; }
 
-	var pdfobjectversion = "1.1",
-		//Because we love IE
-		isIE = /*@cc_on!@*/false,
+	var pdfobjectversion = "1.2",
 		//Set reasonable defaults
 		id = obj.id || false,
 		width = obj.width || "100%",
@@ -61,10 +59,11 @@ var PDFObject = function (obj){
 	
 		var i,
 			n = navigator.plugins,
-			count = n.length;
+			count = n.length,
+			regx = /Adobe Reader|Adobe PDF|Acrobat/gi;
 		
-		for(i=0; i < count; i++){
-			if((/Adobe Reader|Adobe PDF|Acrobat/gi).test(n[i].name)){
+		for(i=0; i<count; i++){
+			if(regx.test(n[i].name)){
 				return true;
 			}
 		}
@@ -185,8 +184,7 @@ var PDFObject = function (obj){
 
 		if(!pluginTypeFound){ return false; }
 
-		var targetNode = null,
-			objEl;
+		var targetNode = null;
 
 		if(targetID){
 
@@ -205,39 +203,9 @@ var PDFObject = function (obj){
 
 		}
 
-		if(isIE){
+		targetNode.innerHTML = '<object	data="' +url +'" type="application/pdf" width="' +width +'" height="' +height +'"></object>';
 
-			//Special handling for our special friend Internet Explorer
-			objEl = document.createElement("<object classid='CLSID:CA8A9780-280D-11CF-A24D-444553540000'>");	
-
-		} else {
-
-			objEl = document.createElement("object");
-
-		}
-
-		objEl.setAttribute("type", "application/pdf");
-		objEl.setAttribute("data", url);
-		objEl.setAttribute("width", width);
-		objEl.setAttribute("height", height);
-		
-		if(id){ objEl.setAttribute("id", id); }
-
-
-		//Remove child nodes if necessary
-		if(targetNode.hasChildNodes){
-
-			while(targetNode.childNodes.length > 0){
-
-				targetNode.removeChild(targetNode.firstChild);
-
-			}
-
-		}
-
-		targetNode.appendChild(objEl);
-
-		return objEl;
+		return targetNode.getElementsByTagName("object")[0];
 
 	};
 
