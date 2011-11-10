@@ -32,12 +32,21 @@ var PDFObject = function (obj){
 		var axObj = null;
 		
 		if (window.ActiveXObject) {
-			
-			axObj = new ActiveXObject("AcroPDF.PDF");
+			try {
+				axObj = new ActiveXObject("AcroPDF.PDF");
+			}
+			catch(e) {
+				
+			}
 				
 			//If "AcroPDF.PDF" didn't work, try "PDF.PdfCtrl"
 			if(!axObj){
-				axObj = new ActiveXObject("PDF.PdfCtrl");
+				try {
+					axObj = new ActiveXObject("PDF.PdfCtrl");
+				}
+				catch(e) {
+					
+				}
 			}
 			
 			//If either "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
