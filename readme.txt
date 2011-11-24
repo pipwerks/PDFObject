@@ -1,6 +1,7 @@
-PDFObject is a lightweight JavaScript library for dynamically embedding PDFs in HTML documents. Modeled after SWFObject. 
+PDFObject is a lightweight JavaScript library for dynamically embedding PDFs in HTML documents.
+Modeled after SWFObject.
 
-PDFObject, copyright (C) 2008 Philip Hutchison (pipwerks.com)
-Documentation and examples are at www.pdfobject.com 
-Version 1.2, April 2011
-MIT style license
+PDFObject v1.2.20111123
+https://github.com/pipwerks/PDFObject
+Copyright (c) Philip Hutchison
+MIT-style license: http://pipwerks.mit-license.org/
