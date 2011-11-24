@@ -1,15 +1,15 @@
-/* 
+/*
     PDFObject v1.2.20111123
     https://github.com/pipwerks/PDFObject
     Copyright (c) Philip Hutchison
     MIT-style license: http://pipwerks.mit-license.org/
 */
 
+/*jslint browser: true, sloppy: true, white: true, plusplus: true */
 /*global ActiveXObject, window */
 
-
 var PDFObject = function (obj){
-    
+
     if(!obj || !obj.url){ return false; }
 
     var pdfobjectversion = "1.2",
@@ -19,144 +19,165 @@ var PDFObject = function (obj){
         height = obj.height || "100%",
         pdfOpenParams = obj.pdfOpenParams,
         url,
-        pluginTypeFound;
-    
+        pluginTypeFound,
+
+        //declare functions
+        createAXO,
+        hasReaderActiveX,
+        hasReader,
+        hasGeneric,
+        pluginFound,
+        setCssForFullWindowPdf,
+        buildQueryString,
+        get,
+        embed;
+
 
     /* ----------------------------------------------------
        Supporting functions
        ---------------------------------------------------- */
 
+    createAXO = function (type){
+        var ax;
+        try {
+            ax = new ActiveXObject(type);
+        } catch (e) {
+            //ensure ax remains null
+            ax = null;
+        }
+        return ax;
+    };
+
     //Tests specifically for Adobe Reader (aka Acrobat) in Internet Explorer
-    var hasReaderActiveX = function (){
+    hasReaderActiveX = function (){
 
         var axObj = null;
-        
+
         if (window.ActiveXObject) {
-            
-            axObj = new ActiveXObject("AcroPDF.PDF");
-                
+
+            axObj = createAXO("AcroPDF.PDF");
+
             //If "AcroPDF.PDF" didn't work, try "PDF.PdfCtrl"
-            if(!axObj){
-                axObj = new ActiveXObject("PDF.PdfCtrl");
-            }
-            
+            if(!axObj){ axObj = createAXO("PDF.PdfCtrl"); }
+
             //If either "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
-            if (axObj !== null) {
-                return true;
-            }
-    
+            if (axObj !== null) { return true; }
+
         }
-        
+
         //If you got to this point, there's no ActiveXObject for PDFs
         return false;
-        
+
     };
 
 
 
     //Tests specifically for Adobe Reader (aka Adobe Acrobat) in non-IE browsers
-    var hasReader = function (){
-    
+    hasReader = function (){
+
         var i,
             n = navigator.plugins,
             count = n.length,
             regx = /Adobe Reader|Adobe PDF|Acrobat/gi;
-        
+
         for(i=0; i<count; i++){
             if(regx.test(n[i].name)){
                 return true;
             }
         }
-        
+
         return false;
-    
+
     };
 
 
     //Detects unbranded PDF support
-    var hasGeneric = function (){
+    hasGeneric = function (){
         var plugin = navigator.mimeTypes["application/pdf"];
         return (plugin && plugin.enabledPlugin);
     };
-    
+
 
     //Determines what kind of PDF support is available: Adobe or generic
-    var pluginFound = function (){
-    
+    pluginFound = function (){
+
         var type = null;
-        
+
         if(hasReader() || hasReaderActiveX()){
-            
+
             type = "Adobe";
-        
+
         } else if(hasGeneric()) {
-        
+
             type = "generic";
-        
+
         }
-        
+
         return type;
-    
+
     };
 
 
     //If setting PDF to fill page, need to handle some CSS first
-    var setCssForFullWindowPdf = function (){
-        
-        var html = document.getElementsByTagName("html");
+    setCssForFullWindowPdf = function (){
+
+        var html = document.getElementsByTagName("html"),
+            html_style,
+            body_style;
+
         if(!html){ return false; }
-        
-        var html_style = html[0].style,
-            body_style = document.body.style;
-        
+
+        html_style = html[0].style;
+        body_style = document.body.style;
+
         html_style.height = "100%";
-        html_style.overflow = "hidden";    
+        html_style.overflow = "hidden";
         body_style.margin = "0";
         body_style.padding = "0";
         body_style.height = "100%";
         body_style.overflow = "hidden";
-        
+
     };
 
 
     //Creating a querystring for using PDF Open parameters when embedding PDF
-    var buildQueryString = function(pdfParams){
-        
+    buildQueryString = function(pdfParams){
+
         var string = "",
             prop;
-        
+
         if(!pdfParams){ return string; }
-        
+
         for (prop in pdfParams) {
-            
+
             if (pdfParams.hasOwnProperty(prop)) {
-                
+
                 string += prop + "=";
-                
+
                 if(prop === "search") {
-                    
+
                     string += encodeURI(pdfParams[prop]);
-                
+
                 } else {
-                    
+
                     string += pdfParams[prop];
-                    
-                }    
-                
+
+                }
+
                 string += "&";
-                
+
             }
-            
+
         }
-        
+
         //Remove last ampersand
         return string.slice(0, string.length - 1);
-    
+
     };
 
 
     //Simple function for returning values from PDFObject
-    var get = function(prop){
+    get = function(prop){
 
         var value = null;
 
@@ -179,8 +200,8 @@ var PDFObject = function (obj){
        PDF Embedding functions
        ---------------------------------------------------- */
 
-    
-    var embed = function(targetID){
+
+    embed = function(targetID){
 
         if(!pluginTypeFound){ return false; }
 
@@ -190,13 +211,13 @@ var PDFObject = function (obj){
 
             //Allow users to pass an element OR an element's ID
             targetNode = (targetID.nodeType && targetID.nodeType === 1) ? targetID : document.getElementById(targetID);
-            
+
             //Ensure target element is found in document before continuing
             if(!targetNode){ return false; }
 
         } else {
 
-            targetNode = document.body; 
+            targetNode = document.body;
             setCssForFullWindowPdf();
             width = "100%";
             height = "100%";
@@ -213,10 +234,11 @@ var PDFObject = function (obj){
     //Append optional Adobe params for opening document
     url = encodeURI(obj.url) + "#" + buildQueryString(pdfOpenParams);
     pluginTypeFound = pluginFound();
-    
+
     this.get = function(prop){ return get(prop); };
     this.embed = function(id){ return embed(id); };
-    
+    this.pdfobjectversion = pdfobjectversion;
+
     return this;
 
 };
