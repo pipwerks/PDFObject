@@ -117,7 +117,7 @@ var PDFObject = function (obj){
 
     };
 
-	// tell if the browser is the fucking ie9
+	
 	isIE9 = function(){
 		return (navigator.userAgent.indexOf("Trident/5") > -1);
 	}
@@ -228,7 +228,6 @@ var PDFObject = function (obj){
 
         }
 		
-		// if the browser is an ie9, I use a iframe, because object actually dont work as expected.
 		if(isIE9()){
 			targetNode.innerHTML = '<iframe    src="' +url +'" width="' +width +'" height="' +height +'"></iframe>';
 		} else {
