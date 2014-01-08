@@ -52,8 +52,14 @@ var PDFObject = function (obj){
     hasReaderActiveX = function (){
 
         var axObj = null;
+        
+         try {
+            axObj = new ActiveXObject("AcroPDF.PDF");
+        } catch (e) {
+            // Adobe installed
+        }
 
-        if (window.ActiveXObject) {
+        if (axObj != null || window.ActiveXObject) {
 
             axObj = createAXO("AcroPDF.PDF");
 
