@@ -53,7 +53,7 @@ var PDFObject = function (obj){
 
         var axObj = null;
 
-        if (window.ActiveXObject) {
+        if (window.ActiveXObject !== undefined) {
 
             axObj = createAXO("AcroPDF.PDF");
 
