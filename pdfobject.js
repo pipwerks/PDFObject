@@ -26,6 +26,7 @@ var PDFObject = function (obj){
         hasReaderActiveX,
         hasReader,
         hasGeneric,
+        hasPDFJSinChromium,
         pluginFound,
         setCssForFullWindowPdf,
         buildQueryString,
@@ -97,8 +98,36 @@ var PDFObject = function (obj){
         return (plugin && plugin.enabledPlugin);
     };
 
+    hasPDFJSinChromium = function() {
+        var pluginIds = [
+        'oemmndcbldboiebfnladdacbdfmadadm',
+        'encfpfilknmenlmjemepncnlbbjlabkc',
+        'oemmndcbldboiebfnladdacbdfmadadm'
+        ];
+        if (!window.chrome) {
+            return false;
+        }
+     
+        var support = false;
+     
+        for(var i = 0; i < pluginIds.length; i++) {
+            try {
+                support = _isPDFJSExtensionInstalled(pluginIds[i]);
+                if(support) return support;
+            } catch(e) {}
+        }
+     
+        return false;
+     
+        function _isPDFJSExtensionInstalled(id) {
+            var x = new XMLHttpRequest();
+            x.open('GET', 'chrome-extension://' + id + '/content/web/viewer.html', false);
+            x.send(null);
+            return x.status === 200;
+        }
+    };
 
-    //Determines what kind of PDF support is available: Adobe or generic
+    //Determines what kind of PDF support is available: Adobe, generic or pdfjs in chromish
     pluginFound = function (){
 
         var type = null;
@@ -111,6 +140,8 @@ var PDFObject = function (obj){
 
             type = "generic";
 
+        } else if(hasPDFJSinChromium()) {
+            type = "PDFjs";
         }
 
         return type;
