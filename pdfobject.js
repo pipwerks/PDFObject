@@ -26,7 +26,7 @@ var PDFObject = function (obj){
         hasReaderActiveX,
         hasReader,
         hasGeneric,
-        hasPDFJSinChromium,
+        hasPDFJS,
         pluginFound,
         setCssForFullWindowPdf,
         buildQueryString,
@@ -98,32 +98,36 @@ var PDFObject = function (obj){
         return (plugin && plugin.enabledPlugin);
     };
 
-    hasPDFJSinChromium = function() {
-        var pluginIds = [
-        'oemmndcbldboiebfnladdacbdfmadadm',
-        'encfpfilknmenlmjemepncnlbbjlabkc',
-        'oemmndcbldboiebfnladdacbdfmadadm'
-        ];
+    hasPDFJS = function() {
         if (!window.chrome) {
+            // If firefox is >= 19, we assume pdf.js is installed (no way to check it)
+            var hits = navigator.userAgent.match(/Firefox\/([0-9]+).[0-9]+/);
+            if(hits && hits.length >= 2 && parseInt(hits[1]) >= 19) return true;
             return false;
         }
-     
-        var support = false;
-     
-        for(var i = 0; i < pluginIds.length; i++) {
-            try {
-                support = _isPDFJSExtensionInstalled(pluginIds[i]);
-                if(support) return support;
-            } catch(e) {}
+
+        if(!chrome.webstore) {
+            // pdf.js from Opera's addon gallery
+            if(_isPDFJSExtensionInstalled('encfpfilknmenlmjemepncnlbbjlabkc')) return true;
         }
-     
+
+        // pdf.js from Chrome Web Store
+        if(__isPDFJSExtensionInstalled('oemmndcbldboiebfnladdacbdfmadadm')) {
+            return true;
+        }
+
         return false;
      
         function _isPDFJSExtensionInstalled(id) {
-            var x = new XMLHttpRequest();
-            x.open('GET', 'chrome-extension://' + id + '/content/web/viewer.html', false);
-            x.send(null);
-            return x.status === 200;
+            try {
+                var x = new XMLHttpRequest();
+                x.open('GET', 'chrome-extension://' + id + '/content/web/viewer.html', false);
+                x.send(null);
+                return x.status === 200;
+            } catch (e) {
+                return false;
+            }
+            return false;
         }
     };
 
@@ -140,7 +144,7 @@ var PDFObject = function (obj){
 
             type = "generic";
 
-        } else if(hasPDFJSinChromium()) {
+        } else if(hasPDFJS()) {
             type = "PDFjs";
         }
 
