@@ -131,7 +131,7 @@ var PDFObject = function (obj){
         }
     };
 
-    //Determines what kind of PDF support is available: Adobe, generic or pdfjs in chromish
+    //Determines what kind of PDF support is available: Adobe, generic or pdfjs
     pluginFound = function (){
 
         var type = null;
