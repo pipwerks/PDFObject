@@ -15,8 +15,8 @@ var PDFObject = function (obj){
     var pdfobjectversion = "1.2",
         //Set reasonable defaults
         id = obj.id || false,
-        width = obj.width || "100%",
-        height = obj.height || "100%",
+        width = obj.width,
+        height = obj.height,
         pdfOpenParams = obj.pdfOpenParams,
         url,
         pluginTypeFound,
@@ -131,12 +131,16 @@ var PDFObject = function (obj){
         }
     };
 
-    //Determines what kind of PDF support is available: Adobe, generic or pdfjs
+    //Determines what kind of PDF support is available: iPad, Adobe, generic or pdfjs
     pluginFound = function (){
 
         var type = null;
 
-        if(hasReader() || hasReaderActiveX()){
+        if(navigator.userAgent.match(/iPad/i) != null) {
+
+            type = "iPad";
+
+        } else if(hasReader() || hasReaderActiveX()){
 
             type = "Adobe";
 
@@ -254,8 +258,19 @@ var PDFObject = function (obj){
 
             targetNode = document.body;
             setCssForFullWindowPdf();
-            width = "100%";
-            height = "100%";
+            if(pluginTypeFound === 'iPad') {
+
+                // Ideally we want the width and height to be the same as the rendered pdf document.
+                // Use large values as default to make sure most pdfs is visible
+                width = width || '1000';
+                height = height || '4000';
+
+            } else {
+
+                width = "100%";
+                height = "100%";
+
+            }
 
         }
 
