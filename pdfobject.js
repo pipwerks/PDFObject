@@ -223,9 +223,8 @@ var PDFObject = function (obj){
             height = "100%";
 
         }
-
-        targetNode.innerHTML = '<object    data="' +url +'" type="application/pdf" width="' +width +'" height="' +height +'"></object>';
-
+        targetNode.innerHTML = !window.chrome ? '<object data="' + url +'" type="application/pdf" width="' + width + '" height="' + height + '"></object>'
+            : '<iframe src="' + url + '" width="' + width + '" height="' + height + '"></iframe>';
         return targetNode.getElementsByTagName("object")[0];
 
     };
