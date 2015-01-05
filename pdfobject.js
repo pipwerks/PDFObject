@@ -15,8 +15,8 @@ var PDFObject = function (obj){
     var pdfobjectversion = "1.2",
         //Set reasonable defaults
         id = obj.id || false,
-        width = obj.width || "100%",
-        height = obj.height || "100%",
+        width = obj.width,
+        height = obj.height,
         pdfOpenParams = obj.pdfOpenParams,
         url,
         pluginTypeFound,
@@ -26,6 +26,7 @@ var PDFObject = function (obj){
         hasReaderActiveX,
         hasReader,
         hasGeneric,
+        hasPDFJS,
         pluginFound,
         setCssForFullWindowPdf,
         buildQueryString,
@@ -97,13 +98,49 @@ var PDFObject = function (obj){
         return (plugin && plugin.enabledPlugin);
     };
 
+    hasPDFJS = function() {
+        if (!window.chrome) {
+            // If firefox is >= 19, we assume pdf.js is installed (no way to check it)
+            var hits = navigator.userAgent.match(/Firefox\/([0-9]+).[0-9]+/);
+            if(hits && hits.length >= 2 && parseInt(hits[1]) >= 19) return true;
+            return false;
+        }
 
-    //Determines what kind of PDF support is available: Adobe or generic
+        if(!chrome.webstore) {
+            // pdf.js from Opera's addon gallery
+            if(_isPDFJSExtensionInstalled('encfpfilknmenlmjemepncnlbbjlabkc')) return true;
+        }
+
+        // pdf.js from Chrome Web Store
+        if(__isPDFJSExtensionInstalled('oemmndcbldboiebfnladdacbdfmadadm')) {
+            return true;
+        }
+
+        return false;
+     
+        function _isPDFJSExtensionInstalled(id) {
+            try {
+                var x = new XMLHttpRequest();
+                x.open('GET', 'chrome-extension://' + id + '/content/web/viewer.html', false);
+                x.send(null);
+                return x.status === 200;
+            } catch (e) {
+                return false;
+            }
+            return false;
+        }
+    };
+
+    //Determines what kind of PDF support is available: iPad, Adobe, generic or pdfjs
     pluginFound = function (){
 
         var type = null;
 
-        if(hasReader() || hasReaderActiveX()){
+        if(navigator.userAgent.match(/iPad/i) != null) {
+
+            type = "iPad";
+
+        } else if(hasReader() || hasReaderActiveX()){
 
             type = "Adobe";
 
@@ -111,6 +148,8 @@ var PDFObject = function (obj){
 
             type = "generic";
 
+        } else if(hasPDFJS()) {
+            type = "PDFjs";
         }
 
         return type;
@@ -219,8 +258,19 @@ var PDFObject = function (obj){
 
             targetNode = document.body;
             setCssForFullWindowPdf();
-            width = "100%";
-            height = "100%";
+            if(pluginTypeFound === 'iPad') {
+
+                // Ideally we want the width and height to be the same as the rendered pdf document.
+                // Use large values as default to make sure most pdfs is visible
+                width = width || '1000';
+                height = height || '4000';
+
+            } else {
+
+                width = "100%";
+                height = "100%";
+
+            }
 
         }
 
