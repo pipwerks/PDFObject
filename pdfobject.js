@@ -20,6 +20,7 @@ var PDFObject = function (obj){
         pdfOpenParams = obj.pdfOpenParams,
         url,
         pluginTypeFound,
+        pluginType = obj.pluginType || '',
 
         //declare functions
         createAXO,
@@ -112,7 +113,6 @@ var PDFObject = function (obj){
             type = "generic";
 
         }
-
         return type;
 
     };
@@ -188,6 +188,7 @@ var PDFObject = function (obj){
             case "height" : value = height; break;
             case "pdfOpenParams" : value = pdfOpenParams; break;
             case "pluginTypeFound" : value = pluginTypeFound; break;
+            case "pluginType" : value = pluginType; break;
             case "pdfobjectversion" : value = pdfobjectversion; break;
         }
 
@@ -224,7 +225,13 @@ var PDFObject = function (obj){
 
         }
 
-        targetNode.innerHTML = '<object    data="' +url +'" type="application/pdf" width="' +width +'" height="' +height +'"></object>';
+        var mimeType = 'application/pdf';
+        if (pluginType == 'Adobe' && pluginTypeFound == 'Adobe') {
+            // trick browser into using Adobe plugin
+            mimeType = 'application/vnd.adobe.pdfxml';
+        }
+
+        targetNode.innerHTML = '<object    data="' + url + '" type="' + mimeType + '" width="' + width + '" height="' + height + '"></object>';
 
         return targetNode.getElementsByTagName("object")[0];
 
