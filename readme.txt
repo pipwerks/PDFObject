@@ -1,3 +1,11 @@
+Project update: March 2016
+Hello. I've finally written a 2.0 update, which I hope to release by the end of the month. (I do this in my spare time, which is in short supply these days.) 
+
+The new 2.0 version supports IE, supports PDF.js in Firefox, and (IMHO) includes some much-needed modernization. The changes are _breaking_ changes -- new, cleaner syntax -- but are worth it. I hope you agree.
+
+I need to do more testing and write some documentation before I post it. Stay tuned. Thanks for following this project.
+
+
 Project note: Oct 2014
 Hi there. Sorry, I know this project has been stagnating for a while. Between my kids and day job, I have simply not had enough spare time to devote to this project, esp. keeping up with all of the browser testing -- the original PDFObject was released in 2008 when WinXP was still dominant, Google Chrome was a precocious upstart, MySpace was relevant, and HTML5 was still duking it out with XHTML 2.0.
 
