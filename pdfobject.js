@@ -1,36 +1,34 @@
 /*
-    PDFObject v1.2.20111123
+    PDFObject v2.0.20160411
     https://github.com/pipwerks/PDFObject
-    Copyright (c) Philip Hutchison
+    Copyright (c) 2008-2016 Philip Hutchison
     MIT-style license: http://pipwerks.mit-license.org/
 */
 
-/*jslint browser: true, sloppy: true, white: true, plusplus: true */
-/*global ActiveXObject, window */
+/*global ActiveXObject, window, console, jQuery */
+//jshint unused:false, strict: true
+var PDFObject = (function (){
 
-var PDFObject = function (obj){
+    "use strict";
+    //jshint unused:true
 
-    if(!obj || !obj.url){ return false; }
-
-    var pdfobjectversion = "1.2",
-        //Set reasonable defaults
-        id = obj.id || false,
-        width = obj.width || "100%",
-        height = obj.height || "100%",
-        pdfOpenParams = obj.pdfOpenParams,
-        url,
-        pluginTypeFound,
+    var pdfobjectversion = "2.0.20160402",
+        supportsPDFs,
 
         //declare functions
         createAXO,
-        hasReaderActiveX,
-        hasReader,
-        hasGeneric,
-        pluginFound,
-        setCssForFullWindowPdf,
+        isIE,
+        supportsPdfMimeType,
+        supportsPdfActiveX,
+        isPdfSupported,
         buildQueryString,
-        get,
-        embed;
+        log,
+        embedError,
+        embed,
+        getTargetElement,
+        generatePDFJSiframe,
+        isIOS = (function (){ return (/iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase())); })(),
+        generateEmbedElement;
 
 
     /* ----------------------------------------------------
@@ -42,103 +40,27 @@ var PDFObject = function (obj){
         try {
             ax = new ActiveXObject(type);
         } catch (e) {
-            //ensure ax remains null
-            ax = null;
+            ax = null; //ensure ax remains null
         }
         return ax;
     };
 
-    //Tests specifically for Adobe Reader (aka Acrobat) in Internet Explorer
-    hasReaderActiveX = function (){
+    //IE11 still uses ActiveX for Adobe Reader, but IE 11 doesn't expose
+    //window.ActiveXObject the same way previous versions of IE did
+    //window.ActiveXObject will evaluate to false in IE 11, but "ActiveXObject" in window evaluates to true
+    //so check the first one for older IE, and the second for IE11
+    //FWIW, MS Edge (replacing IE11) does not support ActiveX at all, both will evaluate false
+    isIE = function (){ return !!(window.ActiveXObject) || !!("ActiveXObject" in window); };
 
-        var axObj = null;
+    //Invoke immediately, this value will be required below.
+    //If kept as function call, it would be re-evaluated over and over.
+    supportsPdfMimeType = function () { return (typeof navigator.mimeTypes['application/pdf'] !== "undefined"); };
 
-        if (window.ActiveXObject) {
+    //If either ActiveX support for "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
+    supportsPdfActiveX = function (){ return !!(createAXO("AcroPDF.PDF") || createAXO("PDF.PdfCtrl")); };
 
-            axObj = createAXO("AcroPDF.PDF");
-
-            //If "AcroPDF.PDF" didn't work, try "PDF.PdfCtrl"
-            if(!axObj){ axObj = createAXO("PDF.PdfCtrl"); }
-
-            //If either "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
-            if (axObj !== null) { return true; }
-
-        }
-
-        //If you got to this point, there's no ActiveXObject for PDFs
-        return false;
-
-    };
-
-
-
-    //Tests specifically for Adobe Reader (aka Adobe Acrobat) in non-IE browsers
-    hasReader = function (){
-
-        var i,
-            n = navigator.plugins,
-            count = n.length,
-            regx = /Adobe Reader|Adobe PDF|Acrobat/gi;
-
-        for(i=0; i<count; i++){
-            if(regx.test(n[i].name)){
-                return true;
-            }
-        }
-
-        return false;
-
-    };
-
-
-    //Detects unbranded PDF support
-    hasGeneric = function (){
-        var plugin = navigator.mimeTypes["application/pdf"];
-        return (plugin && plugin.enabledPlugin);
-    };
-
-
-    //Determines what kind of PDF support is available: Adobe or generic
-    pluginFound = function (){
-
-        var type = null;
-
-        if(hasReader() || hasReaderActiveX()){
-
-            type = "Adobe";
-
-        } else if(hasGeneric()) {
-
-            type = "generic";
-
-        }
-
-        return type;
-
-    };
-
-
-    //If setting PDF to fill page, need to handle some CSS first
-    setCssForFullWindowPdf = function (){
-
-        var html = document.getElementsByTagName("html"),
-            html_style,
-            body_style;
-
-        if(!html){ return false; }
-
-        html_style = html[0].style;
-        body_style = document.body.style;
-
-        html_style.height = "100%";
-        html_style.overflow = "hidden";
-        body_style.margin = "0";
-        body_style.padding = "0";
-        body_style.height = "100%";
-        body_style.overflow = "hidden";
-
-    };
-
+    //Determines whether PDF support is available
+    isPdfSupported = function (){ return supportsPdfMimeType() || (isIE() && supportsPdfActiveX()); };
 
     //Creating a querystring for using PDF Open parameters when embedding PDF
     buildQueryString = function(pdfParams){
@@ -146,99 +68,172 @@ var PDFObject = function (obj){
         var string = "",
             prop;
 
-        if(!pdfParams){ return string; }
+        if(pdfParams){
 
-        for (prop in pdfParams) {
-
-            if (pdfParams.hasOwnProperty(prop)) {
-
-                string += prop + "=";
-
-                if(prop === "search") {
-
-                    string += encodeURI(pdfParams[prop]);
-
-                } else {
-
-                    string += pdfParams[prop];
-
+            for (prop in pdfParams) {
+                if (pdfParams.hasOwnProperty(prop)) {
+                    string += prop + "=";
+                    string += (prop === "search") ? encodeURI(pdfParams[prop]) : pdfParams[prop];
+                    string += "&";
                 }
+            }
 
-                string += "&";
+            //The string will be empty if no PDF Params found
+            if(string){
+
+                string = "#" + string;
+
+                //Remove last ampersand
+                string = string.slice(0, string.length - 1);
 
             }
 
         }
 
-        //Remove last ampersand
-        return string.slice(0, string.length - 1);
+        return string;
 
     };
 
+    log = function (msg){
+        if(typeof console !== "undefined" && console.log){
+            console.log("[PDFObject] " + msg);
+        }
+    };
 
-    //Simple function for returning values from PDFObject
-    get = function(prop){
+    embedError = function (msg){
+        log(msg);
+        return false;
+    };
 
-        var value = null;
+    getTargetElement = function (targetSelector){
 
-        switch(prop){
-            case "url" : value = url; break;
-            case "id" : value = id; break;
-            case "width" : value = width; break;
-            case "height" : value = height; break;
-            case "pdfOpenParams" : value = pdfOpenParams; break;
-            case "pluginTypeFound" : value = pluginTypeFound; break;
-            case "pdfobjectversion" : value = pdfobjectversion; break;
+        //Default to body for full-browser PDF
+        var targetNode = document.body;
+
+        //If a targetSelector is specified, check to see whether
+        //it's passing a selector, jQuery object, or an HTML element
+
+        if(typeof targetSelector === "string"){
+
+            //Is CSS selector
+            targetNode = document.querySelector(targetSelector);
+
+        } else if (typeof jQuery !== "undefined" && targetSelector instanceof jQuery && targetSelector.length) {
+
+            //Is jQuery element. Extract HTML node
+            targetNode = targetSelector.get(0);
+
+        } else if (typeof targetSelector.nodeType !== "undefined" && targetSelector.nodeType === 1){
+
+            //Is HTML element
+            targetNode = targetSelector;
+
         }
 
-        return value;
+        return targetNode;
 
     };
 
+    generatePDFJSiframe = function (targetNode, url, PDFJS_URL, id){
 
-    /* ----------------------------------------------------
-       PDF Embedding functions
-       ---------------------------------------------------- */
+        var querystring = PDFJS_URL + "?file=" + url;
+        var scrollfix = (isIOS) ? "-webkit-overflow-scrolling: touch; overflow-y: scroll; " : "overflow: hidden; ";
+        var iframe = "<div style='" + scrollfix + "position: absolute; top: 0; right: 0; bottom: 0; left: 0;'><iframe  " + id + " src='" + querystring + "' style='border: none; width: 100%; height: 100%;' frameborder='0'></iframe></div>";
+        targetNode.className += " pdfobject-container";
+        targetNode.style.position = "relative";
+        targetNode.style.overflow = "auto";
+        targetNode.innerHTML = iframe;
+        return targetNode.getElementsByTagName("iframe")[0];
+
+    };
+
+    generateEmbedElement = function (targetNode, targetSelector, url, width, height, id){
+
+        var style = "";
+
+        if(targetSelector && targetSelector !== document.body){
+            style = "width: " + width + "; height: " + height + ";";
+        } else {
+            style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
+        }
+
+        targetNode.className += " pdfobject-container";
+        targetNode.innerHTML = "<embed " + id + " class='pdfobject' src='" + url + "' type='application/pdf' style='overflow: auto; " + style + "'/>";
+
+        return targetNode.getElementsByTagName("embed")[0];
+
+    };
+
+    embed = function(url, targetSelector, options){
+
+        //Ensure URL is available. If not, exit now.
+        if(typeof url !== "string"){ return embedError("URL is not valid"); }
+
+        //If targetSelector is not defined, convert to boolean
+        targetSelector = (typeof targetSelector !== "undefined") ? targetSelector : false;
+
+        //Ensure options object is not undefined -- enables easier error checking below
+        options = (typeof options !== "undefined") ? options : {};
+
+        //Get passed options, or set reasonable defaults
+        var id = (options.id && typeof options.id === "string") ? "id='" + options.id + "'" : "",
+            page = (options.page) ? options.page : false,
+            pdfOpenParams = (options.pdfOpenParams) ? options.pdfOpenParams : {},
+            fallbackLink = (typeof options.fallbackLink !== "undefined") ? options.fallbackLink : true,
+            width = (options.width) ? options.width : "100%",
+            height = (options.height) ? options.height : "100%",
+            forcePDFJS = (typeof options.forcePDFJS === "boolean") ? options.forcePDFJS : false,
+            PDFJS_URL = (options.PDFJS_URL) ? options.PDFJS_URL : false,
+            targetNode = getTargetElement(targetSelector),
+            fallbackHTML = "",
+            fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href='[url]'>Download PDF</a></p>";
+
+        //If target element is specified but is not valid, exit without doing anything
+        if(!targetNode){ return embedError("Target element cannot be determined"); }
 
 
-    embed = function(targetID){
+        //page option overrides pdfOpenParams, if found
+        if(page){
+            pdfOpenParams.page = page;
+        }
 
-        if(!pluginTypeFound){ return false; }
+        //Append optional Adobe params for opening document
+        url = encodeURI(url) + buildQueryString(pdfOpenParams);
 
-        var targetNode = null;
+        //Do the dance
+        if(forcePDFJS && PDFJS_URL){
 
-        if(targetID){
+            return generatePDFJSiframe(targetNode, url, PDFJS_URL, id);
 
-            //Allow users to pass an element OR an element's ID
-            targetNode = (targetID.nodeType && targetID.nodeType === 1) ? targetID : document.getElementById(targetID);
+        } else if(supportsPDFs){
 
-            //Ensure target element is found in document before continuing
-            if(!targetNode){ return false; }
+            return generateEmbedElement(targetNode, targetSelector, url, width, height, id);
 
         } else {
 
-            targetNode = document.body;
-            setCssForFullWindowPdf();
-            width = "100%";
-            height = "100%";
+            if(PDFJS_URL){
+
+                return generatePDFJSiframe(targetNode, url, PDFJS_URL, id);
+
+            } else if(fallbackLink){
+
+                fallbackHTML = (typeof fallbackLink === "string") ? fallbackLink : fallbackHTML_default;
+                targetNode.innerHTML = fallbackHTML.replace(/\[url\]/g, url);
+
+            }
+
+            return embedError("This browser does not support embedded PDFs");
 
         }
 
-        targetNode.innerHTML = '<object    data="' +url +'" type="application/pdf" width="' +width +'" height="' +height +'"></object>';
-
-        return targetNode.getElementsByTagName("object")[0];
-
     };
 
-    //The hash (#) prevents odd behavior in Windows
-    //Append optional Adobe params for opening document
-    url = encodeURI(obj.url) + "#" + buildQueryString(pdfOpenParams);
-    pluginTypeFound = pluginFound();
+    supportsPDFs = isPdfSupported();
 
-    this.get = function(prop){ return get(prop); };
-    this.embed = function(id){ return embed(id); };
-    this.pdfobjectversion = pdfobjectversion;
+    return {
+        embed: function (a,b,c){ return embed(a,b,c); },
+        pdfobjectversion: (function () { return pdfobjectversion; })(),
+        supportsPDFs: (function (){ return supportsPDFs; })()
+    };
 
-    return this;
-
-};
+})();

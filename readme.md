@@ -1,5 +1,18 @@
+Project Update: April 2016
+I'm pleased to announce PDFObject 2.0 has arrived! 
+
+Completely rewritten for the HTML5 era, PDFObject 2.0 has BREAKING CHANGES and is not backwards-compatible.
+
+For examples, instructions, and a general good time, check out the recently updated http://pdfobject.com
+
+I have completed initial testing in IE9-11, MS Edge, Safari, Firefox, Chrome, and iOS Safari. PDF embedding is not supported by Safari in iOS -- it is not a PDFObject shortcoming!
+
+If you find any issues, please report them here.
+
+
+
 Project update: March 2016
-Hello. I've finally written a 2.0 update, which I hope to release by the end of the month. (I do this in my spare time, which is in short supply these days.) 
+Hello. I've finally written a 2.0 update, which I hope to release by the end of the month. (I do this in my spare time, which is in short supply these days.)
 
 The new 2.0 version supports IE, supports PDF.js in Firefox, and (IMHO) includes some much-needed modernization. The changes are _breaking_ changes -- new, cleaner syntax -- but are worth it. I hope you agree.
 
