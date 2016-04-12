@@ -1,5 +1,5 @@
 /*
-    PDFObject v2.0.20160411
+    PDFObject v2.0.20160411.1
     https://github.com/pipwerks/PDFObject
     Copyright (c) 2008-2016 Philip Hutchison
     MIT-style license: http://pipwerks.mit-license.org/
@@ -18,9 +18,8 @@ var PDFObject = (function (){
         //declare functions
         createAXO,
         isIE,
-        supportsPdfMimeType,
+        supportsPdfMimeType = (typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
         supportsPdfActiveX,
-        isPdfSupported,
         buildQueryString,
         log,
         embedError,
@@ -50,17 +49,15 @@ var PDFObject = (function (){
     //window.ActiveXObject will evaluate to false in IE 11, but "ActiveXObject" in window evaluates to true
     //so check the first one for older IE, and the second for IE11
     //FWIW, MS Edge (replacing IE11) does not support ActiveX at all, both will evaluate false
-    isIE = function (){ return !!(window.ActiveXObject) || !!("ActiveXObject" in window); };
-
-    //Invoke immediately, this value will be required below.
-    //If kept as function call, it would be re-evaluated over and over.
-    supportsPdfMimeType = function () { return (typeof navigator.mimeTypes['application/pdf'] !== "undefined"); };
+    //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
+    isIE = function (){ return !!(window.ActiveXObject || "ActiveXObject" in window); };
 
     //If either ActiveX support for "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
+    //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
     supportsPdfActiveX = function (){ return !!(createAXO("AcroPDF.PDF") || createAXO("PDF.PdfCtrl")); };
 
     //Determines whether PDF support is available
-    isPdfSupported = function (){ return supportsPdfMimeType() || (isIE() && supportsPdfActiveX()); };
+    supportsPDFs = (supportsPdfMimeType || (isIE() && supportsPdfActiveX()));
 
     //Creating a querystring for using PDF Open parameters when embedding PDF
     buildQueryString = function(pdfParams){
@@ -227,8 +224,6 @@ var PDFObject = (function (){
         }
 
     };
-
-    supportsPDFs = isPdfSupported();
 
     return {
         embed: function (a,b,c){ return embed(a,b,c); },
