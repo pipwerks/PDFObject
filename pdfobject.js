@@ -12,7 +12,7 @@ var PDFObject = (function (){
     "use strict";
     //jshint unused:true
 
-    var pdfobjectversion = "2.0.20160402",
+    var pdfobjectversion = "2.0.20160411.1",
         supportsPDFs,
 
         //declare functions
@@ -69,9 +69,7 @@ var PDFObject = (function (){
 
             for (prop in pdfParams) {
                 if (pdfParams.hasOwnProperty(prop)) {
-                    string += prop + "=";
-                    string += (prop === "search") ? encodeURI(pdfParams[prop]) : pdfParams[prop];
-                    string += "&";
+                    string += encodeURIComponent(prop) + "=" + encodeURIComponent(pdfParams[prop]) + "&";
                 }
             }
 
