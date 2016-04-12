@@ -1,0 +1,22 @@
+{
+  "name": "pdfobject",
+  "version": "2.0.20160412",
+  "description": "An open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents",
+  "main": "pdfobject.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://pipwerks@github.com/pipwerks/PDFObject.git"
+  },
+  "keywords": [
+    "pdf"
+  ],
+  "author": "Philip Hutchison <philip@pipwerks.com> (http://pipwerks.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pipwerks/PDFObject/issues"
+  },
+  "homepage": "https://github.com/pipwerks/PDFObject#readme"
+}

@@ -1,5 +1,5 @@
 /*
-    PDFObject v2.0.20160411.1
+    PDFObject v2.0.20160412
     https://github.com/pipwerks/PDFObject
     Copyright (c) 2008-2016 Philip Hutchison
     MIT-style license: http://pipwerks.mit-license.org/
@@ -12,7 +12,7 @@ var PDFObject = (function (){
     "use strict";
     //jshint unused:true
 
-    var pdfobjectversion = "2.0.20160411.1",
+    var pdfobjectversion = "2.0.20160412",
         supportsPDFs,
 
         //declare functions
