@@ -2,7 +2,7 @@
 //jshint unused:false, strict: false
 
 /*
-    PDFObject v2.0.20160414
+    PDFObject v2.0.20160417
     https://github.com/pipwerks/PDFObject
     Copyright (c) 2008-2016 Philip Hutchison
     MIT-style license: http://pipwerks.mit-license.org/
@@ -29,7 +29,7 @@
         "use strict";
         //jshint unused:true
 
-        var pdfobjectversion = "2.0.20160414",
+        var pdfobjectversion = "2.0.20160417",
             supportsPDFs,
 
             //declare functions
@@ -37,7 +37,7 @@
             isIE,
             supportsPdfMimeType = (typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
             supportsPdfActiveX,
-            buildQueryString,
+            buildFragmentString,
             log,
             embedError,
             embed,
@@ -76,8 +76,8 @@
         //Determines whether PDF support is available
         supportsPDFs = (supportsPdfMimeType || (isIE() && supportsPdfActiveX()));
 
-        //Creating a querystring for using PDF Open parameters when embedding PDF
-        buildQueryString = function(pdfParams){
+        //Create a fragment identifier for using PDF Open parameters when embedding PDF
+        buildFragmentString = function(pdfParams){
 
             var string = "",
                 prop;
@@ -146,11 +146,11 @@
 
         };
 
-        generatePDFJSiframe = function (targetNode, url, PDFJS_URL, id){
+        generatePDFJSiframe = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id){
 
-            var querystring = PDFJS_URL + "?file=" + url;
+            var fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
             var scrollfix = (isIOS) ? "-webkit-overflow-scrolling: touch; overflow-y: scroll; " : "overflow: hidden; ";
-            var iframe = "<div style='" + scrollfix + "position: absolute; top: 0; right: 0; bottom: 0; left: 0;'><iframe  " + id + " src='" + querystring + "' style='border: none; width: 100%; height: 100%;' frameborder='0'></iframe></div>";
+            var iframe = "<div style='" + scrollfix + "position: absolute; top: 0; right: 0; bottom: 0; left: 0;'><iframe  " + id + " src='" + fullURL + "' style='border: none; width: 100%; height: 100%;' frameborder='0'></iframe></div>";
             targetNode.className += " pdfobject-container";
             targetNode.style.position = "relative";
             targetNode.style.overflow = "auto";
@@ -159,7 +159,7 @@
 
         };
 
-        generateEmbedElement = function (targetNode, targetSelector, url, width, height, id){
+        generateEmbedElement = function (targetNode, targetSelector, url, pdfOpenFragment, width, height, id){
 
             var style = "";
 
@@ -170,7 +170,7 @@
             }
 
             targetNode.className += " pdfobject-container";
-            targetNode.innerHTML = "<embed " + id + " class='pdfobject' src='" + url + "' type='application/pdf' style='overflow: auto; " + style + "'/>";
+            targetNode.innerHTML = "<embed " + id + " class='pdfobject' src='" + url + pdfOpenFragment + "' type='application/pdf' style='overflow: auto; " + style + "'/>";
 
             return targetNode.getElementsByTagName("embed")[0];
 
@@ -198,6 +198,7 @@
                 PDFJS_URL = (options.PDFJS_URL) ? options.PDFJS_URL : false,
                 targetNode = getTargetElement(targetSelector),
                 fallbackHTML = "",
+                pdfOpenFragment = "",
                 fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href='[url]'>Download PDF</a></p>";
 
             //If target element is specified but is not valid, exit without doing anything
@@ -209,23 +210,23 @@
                 pdfOpenParams.page = page;
             }
 
-            //Append optional Adobe params for opening document
-            url = encodeURI(url) + buildQueryString(pdfOpenParams);
+            //Stringify optional Adobe params for opening document (as fragment identifier)
+            pdfOpenFragment = buildFragmentString(pdfOpenParams);
 
             //Do the dance
             if(forcePDFJS && PDFJS_URL){
 
-                return generatePDFJSiframe(targetNode, url, PDFJS_URL, id);
+                return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
 
             } else if(supportsPDFs){
 
-                return generateEmbedElement(targetNode, targetSelector, url, width, height, id);
+                return generateEmbedElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
 
             } else {
 
                 if(PDFJS_URL){
 
-                    return generatePDFJSiframe(targetNode, url, PDFJS_URL, id);
+                    return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
 
                 } else if(fallbackLink){
 
