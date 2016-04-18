@@ -1,6 +1,6 @@
 {
   "name": "pdfobject",
-  "version": "2.0.20160417",
+  "version": "2.0.201604171",
   "description": "An open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents",
   "main": "pdfobject.js",
   "scripts": {
