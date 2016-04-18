@@ -2,7 +2,7 @@
 //jshint unused:false, strict: false
 
 /*
-    PDFObject v2.0.201604171
+    PDFObject v2.0.201604172
     https://github.com/pipwerks/PDFObject
     Copyright (c) 2008-2016 Philip Hutchison
     MIT-style license: http://pipwerks.mit-license.org/
@@ -31,9 +31,9 @@
     //Will choke on undefined navigator and window vars when run on server
     //Return boolean false and exit function when running server-side
 
-    if(!window || !navigator){ return false; }
+    if(typeof window === "undefined" || typeof navigator === "undefined"){ return false; }
 
-    var pdfobjectversion = "2.0.201604171",
+    var pdfobjectversion = "2.0.201604172",
         supportsPDFs,
 
         //declare functions
