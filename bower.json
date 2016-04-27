@@ -18,7 +18,7 @@
   "homepage": "http://pdfobject.com",
   "repository": {
     "type": "git",
-    "url": "git+https://pipwerks@github.com/pipwerks/PDFObject.git"
+    "url": "git://github.com/pipwerks/PDFObject.git"
   },
   "ignore": [
     "node_modules"
