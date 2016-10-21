@@ -7,6 +7,8 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 ## April 2016
 
+[![CDNJS](https://img.shields.io/cdnjs/v/pdfobject.svg)](https://cdnjs.com/libraries/pdfobject/)
+
 I'm pleased to announce PDFObject 2.0 has arrived! Completely rewritten for the HTML5 era, PDFObject 2.0 has **BREAKING CHANGES** and is not backwards-compatible.
 
 For examples, instructions, and a general good time, check out the recently updated http://pdfobject.com
