@@ -31,7 +31,12 @@
     //Will choke on undefined navigator and window vars when run on server
     //Return boolean false and exit function when running server-side
 
-    if(typeof window === "undefined" || typeof navigator === "undefined"){ return false; }
+    if(
+        typeof window === "undefined" ||
+        typeof navigator === "undefined" ||
+        typeof navigator.mimeTypes === "undefined" ||
+        typeof navigator.userAgent === "undefined"
+    ){ return false; }
 
     var pdfobjectversion = "2.0.201604172",
         supportsPDFs,
