@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PDFObject: Examples for Embedding PDFs without JavaScript</title>
+<!-- site analytics, unrelated to any example code presented on this page -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-1394306-6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-1394306-6');
+</script>
+<!-- /site analytics -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Peralta" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,700" />
+<link rel="stylesheet" href="css/site.min.css" />
+
+<style>
+.pdf-example-wrapper { background: rgba(0,0,0,.05); margin: 2rem auto; padding: 2rem; border: 1px solid rgba(0,0,0,.1); overflow: auto; }
+.pdf { height: 400px; }
+.pdf embed, .pdf object, .pdf iframe { background: #fff; }
+.markup { height: 300px; overflow: hidden; padding: 1rem; }
+textarea { width: 100%; background: #fff; height: 100%; font-size: 1rem; font-family: monospace, sans-serif; margin: 0; padding: 0; overflow: auto; }
+iframe { -webkit-overflow-scrolling: touch; overflow-y: scroll; }
+</style>
+
+
+</head>
+
+<body>
+
+<header>
+    <h1>PDFObject</h1>
+    <p class="tagline">An open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents.</p>
+    <nav>
+        <ul>
+            <li><a href="/">&lt; Back to main page</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+<h2>Embedding PDFs without JavaScript</h2>
+<p>PDFs can be embedded into HTML pages without JavaScript. Below are four examples of the most common techniques.</p>
+<p>Note: these examples work in all modern desktop browsers, but results will vary in older desktop browsers and mobile browsers. <b>As of iOS 9, none of these examples work properly in Safari for iOS</b>.</p>
+
+<div class="adspace">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-9087092298794970"
+         data-ad-slot="3771249590"
+         data-ad-format="auto"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+<section class="pdf-example-wrapper">
+<h3><code>&lt;object&gt;</code></h3>
+<p>Using an <code>&lt;object></code> enables you to leave fallback content if the browser doesn't support PDF embedding.</p>
+<div class="container">
+  <div class="column-left pdf"><object data="pdf/sample-3pp.pdf#page=2" type="application/pdf" width="100%" height="100%">
+   <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it: <a href="pdf/sample-3pp.pdf">Download PDF</a>.</p>
+</object>
+</div>
+</div><!-- /container -->
+</section>
+
+<section class="pdf-example-wrapper">
+<h3><code>&lt;embed&gt;</code></h3>
+<p>The <code>&lt;embed></code> approach is widely supported, but not everywhere. Unfortunately, <code>&lt;embed></code> doesn't provide a mechanism for fallback content. If the browser doesn't support PDF embedding, the end-user sees nothing.</p>
+<div class="container">
+<div class="column-left pdf">
+<embed src="pdf/sample-3pp.pdf#page=2" type="application/pdf" width="100%" height="100%" />
+</div>
+</div><!-- /container -->
+</section>
+
+<section class="pdf-example-wrapper">
+<h3><code>&lt;iframe&gt;</code></h3>
+<p>The <code>&lt;iframe></code> approach is widely supported.</p>
+<div class="container">
+<div class="column-left pdf">
+<iframe src="pdf/sample-3pp.pdf#page=2" width="100%" height="100%">
+This browser does not support PDFs. Please download the PDF to view it: <a href="pdf/sample-3pp.pdf">Download PDF</a>
+</iframe>
+</div>
+</div><!-- /container -->
+</section>
+
+<section class="pdf-example-wrapper">
+<h3><code>&lt;object&gt;&lt;iframe&gt;&lt;/object&gt;</code></h3>
+<p>Using an <code>&lt;object></code> with an <code>&lt;iframe></code> fallback will reach the most users.</p>
+<div class="container">
+<div class="column-left pdf">
+<object data="pdf/sample-3pp.pdf#page=2" type="application/pdf" width="100%" height="100%">
+<iframe src="pdf/sample-3pp.pdf#page=2" width="100%" height="100%" style="border: none;">
+This browser does not support PDFs. Please download the PDF to view it: <a href="pdf/sample-3pp.pdf">Download PDF</a>
+</iframe>
+</object>
+</div>
+</div><!-- /container -->
+</section>
+
+<p>Now that you've seen how it works with plain HTML markup, <a href="/">check out what's possible with JavaScript and the PDFObject utility</a>.</p>
+
+<div class="adspace">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-9087092298794970"
+         data-ad-slot="3771249590"
+         data-ad-format="auto"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+</main>
+
+<footer>
+<p>The PDFObject utility is &copy; 2008-2018 <a href="http://pipwerks.com">Philip Hutchison</a>. <a href="http://pipwerks.mit-license.org/">Released with an MIT license</a>.</p>
+</footer>
+
+<script>
+
+/*global ActiveXObject */
+
+(function (){
+
+  "use strict";
+
+  var examples = document.querySelectorAll(".pdf-example-wrapper");
+
+  for(var i=0; i < examples.length; i++){
+
+    var markup = document.createElement("div");
+    markup.className = "column-right markup";
+    var html = examples[i].querySelector(".pdf").innerHTML;
+    html = html.replace(/</g, "&lt;");
+    markup.innerHTML = "<textarea>" + html + "</textarea>";
+    examples[i].querySelector(".container").appendChild(markup);
+
+  }
+
+})();
+</script>
+
+
+</body>
+</html>

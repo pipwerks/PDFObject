@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PDFObject Example: Embed two PDFs on one HTML page</title>
+<!-- site analytics, unrelated to any example code presented on this page -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-1394306-6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-1394306-6');
+</script>
+<!-- /site analytics -->
+
+<!--
+	This example created for PDFObject.com by Philip Hutchison (www.pipwerks.com)
+	Copyright 2016-2018, MIT-style license http://pipwerks.mit-license.org/
+	Documentation available at http://pdfobject.com
+	Source code available at https://github.com/pipwerks/PDFObject
+-->
+
+<!-- CSS for basic page styling, not related to example -->
+<link href="../css/examples.css" rel="stylesheet" />
+
+<style>
+
+/*
+PDFObject appends the classname "pdfobject-container" to the target element.
+This enables you to style the element differently depending on whether the embed was successful.
+*/
+.pdfobject-container {
+	width: 100%;
+	max-width: 600px;
+	height: 600px;
+	margin: 2em 0;
+}
+
+/* PDFObject automatically assigns the class name "pdfobject" to the <embed> element */
+.pdfobject { border: solid 1px #666; }
+
+</style>
+
+</head>
+
+<body>
+<h1>PDFObject Example: Embed two PDFs on one HTML page</h1>
+<p>Multiple PDFs can be embedded inside a single HTML document.</p>
+
+<div id="pdf1"></div>
+
+<div id="pdf2"></div>
+
+<div class="pdfobject-com"><a href="http://pdfobject.com">PDFObject.com</a></div>
+
+<script src="../js/pdfobject.js"></script>
+<script>
+
+var options = {
+	page: 2,
+	pdfOpenParams: {
+		navpanes: 1,
+		view: "FitH",
+		pagemode: "thumbs"
+	}
+};
+
+PDFObject.embed("../pdf/sample-3pp.pdf", "#pdf1", options);
+PDFObject.embed("../pdf/sample-3pp.pdf", "#pdf2");
+</script>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PDFObject Example: Invoking conditional JavaScript upon successful embed (onclick)</title>
+<!-- site analytics, unrelated to any example code presented on this page -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-1394306-6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-1394306-6');
+</script>
+<!-- /site analytics -->
+
+<!--
+	This example created for PDFObject.com by Philip Hutchison (www.pipwerks.com)
+	Copyright 2016-2018, MIT-style license http://pipwerks.mit-license.org/
+	Documentation available at http://pdfobject.com
+	Source code available at https://github.com/pipwerks/PDFObject
+-->
+
+<!-- CSS for basic page styling, not related to example -->
+<link href="../css/examples.css" rel="stylesheet" />
+
+<style>
+/*
+PDFObject appends the classname "pdfobject-container" to the target element.
+This enables you to style the element differently depending on whether the embed was successful.
+In this example, a successful embed will result in a large box.
+A failed embed will not have dimensions specified, so you don't see an oddly large empty box.
+*/
+
+.pdfobject-container {
+	width: 100%;
+	max-width: 600px;
+	height: 600px;
+	margin: 2em 0;
+}
+
+.pdfobject { border: solid 1px #666; }
+#results { padding: 1rem; }
+.hidden { display: none; }
+.success { color: #4F8A10; background-color: #DFF2BF; }
+.fail { color: #D8000C; background-color: #FFBABA; }
+</style>
+
+</head>
+
+<body>
+<h1>PDFObject Example: Invoking conditional JavaScript upon successful embed (onclick)</h1>
+
+<p><a href="#" class="embed-link">Click this link to embed the PDF.</a></p>
+<div id="results" class="hidden"></div>
+<div id="pdf"></div>
+
+<div class="pdfobject-com"><a href="http://pdfobject.com">PDFObject.com</a></div>
+
+<script src="../js/pdfobject.js"></script>
+<script>
+
+document.querySelector(".embed-link").addEventListener("click", function (e){
+
+	e.preventDefault();
+
+	this.setAttribute("class", "hidden");
+
+	var options = {
+		pdfOpenParams: {
+			pagemode: "thumbs",
+			navpanes: 0,
+			toolbar: 0,
+			statusbar: 0,
+			view: "FitV"
+		}
+	};
+
+	var myPDF = PDFObject.embed("../pdf/sample-3pp.pdf", "#pdf", options);
+
+	var el = document.querySelector("#results");
+	el.setAttribute("class", (myPDF) ? "success" : "fail");
+	el.innerHTML = (myPDF) ? "PDFObject successfully added an &lt;embed> element to the page!" : "Uh-oh, the embed didn't work.";
+
+});
+</script>
+
+</body>
+</html>
