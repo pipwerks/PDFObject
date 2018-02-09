@@ -60,6 +60,8 @@ li { margin: 1rem 0; }
 
 header, nav, main, section, footer { display: block; }
 
+img { max-width: 100%; }
+
 header { 
     padding: 4rem 2rem; 
     text-align: center; 

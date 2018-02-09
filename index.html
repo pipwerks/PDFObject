@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Peralta" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,700" />
 <link rel="stylesheet" href="css/prism.css" />
-<link rel="stylesheet" href="css/site.min.css" />
+<link rel="stylesheet" href="css/site.css" />
 
 <!-- begin favicon madness -->
 <link rel="apple-touch-icon" sizes="57x57" href="favicons/apple-touch-icon-57x57.png">
@@ -86,7 +86,7 @@
 <pre><code class='language-html'>&lt;script src="/js/pdfobject.js">&lt;/script>
 &lt;script>PDFObject.embed("/pdf/sample-3pp.pdf", "#example1");&lt;/script></code></pre>
 
-<p><b>3. You can optionally use CSS to change the appearance of the conatining element, such as height, width, border, margins, etc.</b></p>
+<p><b>3. You can optionally use CSS to change the appearance of the containing element, such as height, width, border, margins, etc.</b></p>
 <pre><code class='language-html'>&lt;style>
 .pdfobject-container { height: 500px;}
 .pdfobject { border: 1px solid #666; }
@@ -96,13 +96,21 @@
         </div><!-- /example-wrapper -->
     </section>
 
-    <section id="the-what">
+    <section id="changelog">
+        <h2>Changelog</h2>
+        <ul>
+            <li><b>January 2017</b>: Modified to support Mozilla's removal of <code>navigator.mimeTypes</code> inspection. Added <code>assumptionMode</code> for manual override of PDFObject's default <code>navigator.mimeTypes</code> sniffing.</li>
+            <li><b>April 2016</b>: Initial release of PDFObject 2.0. Contains breaking changes, and is not compatible with PDFObject 1.x.</li>
+        </ul>
+    </section>
 
-        <p><b>Browser support:</b> PDFObject 2.0 is designed for modern browsers, and has been successfully tested in Chrome, Firefox, Safari (macOS and iOS), IE 9-11, and MS Edge. If you find issues or would like to share your own testing results, please <a href="https://github.com/pipwerks/PDFObject">post an issue in GitHub</a>.</p>
+    <section id="broswer-support">
+        <h2>Browser Support</h2>
+        <p>PDFObject 2.0 is designed for modern browsers, and has been successfully tested in Chrome, Firefox, Safari (macOS and iOS), IE 9-11, and MS Edge. If you find issues or would like to share your own testing results, please <a href="https://github.com/pipwerks/PDFObject">post an issue in GitHub</a>.</p>
         <p><b>IMPORTANT:</b> Browser support for PDFObject does not mean the browser supports PDF embedding! PDFObject only embeds PDFs in browsers that support PDF embedding. Some browsers do not natively support PDF embedding, including Safari for iOS and Internet Explorer [<a href="https://en.wikipedia.org/wiki/Comparison_of_web_browsers#Image_format_support">chart</a>]. For browsers that do not support PDF embedding, PDFObject provides a way for you to display alternate content. See below for details.</p>
+    </section>
 
-        <p><em><b>Note to PDFObject 1.x users:</b> PDFObject 2.0 introduces breaking changes and is NOT backwards-compatible with PDFObject 1.x.</em></p>
-
+    <section id="the-what">
         <p class="question"><b>Question:</b> Is JavaScript required for embedding PDFs in your HTML page?</p>
         <p class="answer"><b>Answer:</b> No.</p>
         <p class="markup-tutorial-link">In fact, here are some examples for <a href="static.html">embedding PDFs in your web page using pure HTML markup without JavaScript</a>, if you'd rather go that route.</p>
@@ -256,6 +264,13 @@ PDFObject.embed("myfile.pdf", "#my-container", options);
                 <li>
                     <h5><b>forcePDFJS</b> [boolean]. Default: <code>false</code></h5>
                     <p>If this boolean is set to <code>true</code> and the <code>PDFJS_URL</code> string is not null, PDFObject will attempt to use PDF.js to embed the PDF in the browser, regardless of the browser's default PDF viewer.</p>
+                </li>
+                <li>
+                    <h5><b>assumptionMode</b> [boolean]. Default: <code>false</code></h5>
+                    <p>Older browsers require third-party plugins such as Adobe Reader for displaying PDFs. Most newer 'modern' browsers provide PDF support natively, and no longer require plugins. When PDFObject's <code>assumptionMode</code> is set to <code>true</code>, PDFObject will check to see if the browser is considered modern. If yes, PDFObject will assume PDF support is available, will bypass its normal PDF support detection, and will write the PDF embed code to the page. Browsers that are not considered modern will fall back to the default PDFObject behavior &mdash; a check will be performed to see if PDF embedding is supported before attempting to insert the PDF embed code. If PDF support is detected, the embed will proceed. If not, the normal fallback behavior will apply.</p>
+                    <p><img src="img/assumption-mode-logic.png" alt="Flowchart of logic for assumptionMode" /></p>
+                    <p><code>assumptionMode</code> is a direct response to Mozilla's decision to remove <code>navigator.mimeTypes</code> support in Firefox. Mozilla is attempting to make Firefox more secure by reducing opportunities for browser fingerprinting. Plugin inspection is a core component of many browser fingerprinting techniques. However, many well-intentioned scripts such as PDFObject query <code>navigator.mimeTypes</code> to determine whether specific media, such as PDFs (<code>navigator.mimeTypes['application/pdf']</code>), Flash SWFs, and specific audio or video codecs are supported.</p>
+                    <p>Rest assured, PDFObject has been modified to support Firefox <em>without</em> requiring the use of <code>assumptionMode</code>. You can continue to use PDFObject as-is. But should other browser vendors decide to follow Mozilla's suit and remove support for <code>navigator.mimeTypes</code> inspection, you can quickly enable <code>assumptionMode</code> to bypass PDFObject's traditional <code>navigator.mimeTypes</code> inspection and assume the browser (if considered modern) supports PDF embedding.</p>
                 </li>
             </ul>
 
