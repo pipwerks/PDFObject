@@ -2,7 +2,7 @@
 //jshint unused:false, strict: false
 
 /*
-    PDFObject v2.0.201604172
+    PDFObject v2.0.201604173
     https://github.com/pipwerks/PDFObject
     Copyright (c) 2008-2016 Philip Hutchison
     MIT-style license: http://pipwerks.mit-license.org/
@@ -33,13 +33,17 @@
 
     if(typeof window === "undefined" || typeof navigator === "undefined"){ return false; }
 
-    var pdfobjectversion = "2.0.201604172",
+    // Certain testing libraries try to emulate a virtual dom and may miss certain features. To get around this provide sensible defaults
+    var mimeTypes = navigator.mimeTypes || {};
+    var userAgent = navigator.userAgent || "";
+
+    var pdfobjectversion = "2.0.201604173",
         supportsPDFs,
 
         //declare functions
         createAXO,
         isIE,
-        supportsPdfMimeType = (typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
+        supportsPdfMimeType = (typeof mimeTypes['application/pdf'] !== "undefined"),
         supportsPdfActiveX,
         buildFragmentString,
         log,
@@ -47,7 +51,7 @@
         embed,
         getTargetElement,
         generatePDFJSiframe,
-        isIOS = (function (){ return (/iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase())); })(),
+        isIOS = (function (){ return (/iphone|ipad|ipod/i.test(userAgent.toLowerCase())); })(),
         generateEmbedElement;
 
 
