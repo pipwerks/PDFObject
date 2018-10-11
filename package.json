@@ -19,13 +19,4 @@
     "url": "https://github.com/pipwerks/PDFObject/issues"
   },
   "homepage": "https://github.com/pipwerks/PDFObject#readme",
-  "npmName": "pdfobject",
-  "npmFileMap": [
-    {
-      "basePath": "",
-      "files": [
-        "**/*"
-      ]
-    }
-  ]
 }
