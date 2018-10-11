@@ -33,7 +33,7 @@
 
     if(typeof window === "undefined" || typeof navigator === "undefined"){ return false; }
 
-    var pdfobjectversion = "2.0.20171219",
+    var pdfobjectversion = "2.0.20181007",
         ua = window.navigator.userAgent,
 
         //declare booleans
