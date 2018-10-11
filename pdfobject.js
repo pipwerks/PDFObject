@@ -2,7 +2,7 @@
 //jshint unused:false, strict: false
 
 /*
-    PDFObject v2.0.20181007
+    PDFObject v2.0.20181011
     https://github.com/pipwerks/PDFObject
     Copyright (c) 2008-2018 Philip Hutchison
     MIT-style license: http://pipwerks.mit-license.org/
@@ -33,7 +33,7 @@
 
     if(typeof window === "undefined" || typeof navigator === "undefined"){ return false; }
 
-    var pdfobjectversion = "2.0.20181007",
+    var pdfobjectversion = "2.0.20181011",
         ua = window.navigator.userAgent,
 
         //declare booleans
