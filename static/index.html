@@ -92,7 +92,7 @@ iframe { -webkit-overflow-scrolling: touch; overflow-y: scroll; }
         <h3><code>&lt;embed&gt;</code></h3>
         <p>The <code>&lt;embed></code> element became an official part of the HTML specification with HTML5. All HTML5-compliant browsers&mdash;all 'modern' browsers&mdash;officially support the <code>&lt;embed></code> element. Older browsers also offer surprisingly robust (though sometimes unofficial) support for <code>&lt;embed></code>. Because of its wide support, PDFObject uses JavaScript to insert <code>&lt;embed></code> elements on the page. Unfortunately, when used in static markup, the <code>&lt;embed></code> element doesn't provide a mechanism for fallback content. If the browser doesn't support PDF embedding, which still happens frequently with browsers on mobile devices, the end-user will see nothing.</p>
         <div class="container">
-            <div class="pdf"><embed src="pdf/sample-3pp.pdf#page=2" type="application/pdf" width="100%" height="100%" /></div>
+            <div class="pdf"><embed src="../pdf/sample-3pp.pdf#page=2" type="application/pdf" width="100%" height="100%" /></div>
         </div><!-- /container -->
     </section>
 
@@ -102,9 +102,9 @@ iframe { -webkit-overflow-scrolling: touch; overflow-y: scroll; }
         <h3><code>&lt;iframe&gt;</code></h3>
         <p>The <code>&lt;iframe></code> approach is very widely supported and one of the easiest ways to embed a PDF. However, an <code>&lt;iframe></code> may not provide adequate fallback content in the unlikely event that PDF rendering is not supported by the browser.</p>
         <div class="container">
-            <div class="pdf"><iframe src="pdf/sample-3pp.pdf#page=2" width="100%" height="100%">
+            <div class="pdf"><iframe src="../pdf/sample-3pp.pdf#page=2" width="100%" height="100%">
 This browser does not support PDFs. Please download the PDF to view it: 
-<a href="pdf/sample-3pp.pdf">Download PDF</a></iframe></div>
+<a href="../pdf/sample-3pp.pdf">Download PDF</a></iframe></div>
         </div><!-- /container -->
     </section>
 
@@ -114,9 +114,9 @@ This browser does not support PDFs. Please download the PDF to view it:
         <h3><code>&lt;object&gt;</code></h3>
         <p>Unlike <code>&lt;embed&gt;</code>, the <code>&lt;object></code> element enables you to leave fallback content if the browser doesn't support PDF embedding. All browsers support the <code>&lt;object></code> element, however, there are often discrepancies in how it has been implemented in each browser. Be sure to throughly test your page(s) across browsers and operating systems if you use the <code>&lt;object></code> element.</p>
         <div class="container">
-          <div class="pdf"><object data="pdf/sample-3pp.pdf#page=2" type="application/pdf" width="100%" height="100%">
+          <div class="pdf"><object data="../pdf/sample-3pp.pdf#page=2" type="application/pdf" width="100%" height="100%">
 <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it: 
-<a href="pdf/sample-3pp.pdf">Download PDF</a>.</p>
+<a href="../pdf/sample-3pp.pdf">Download PDF</a>.</p>
 </object></div>
         </div><!-- /container -->
     </section>
@@ -127,10 +127,10 @@ This browser does not support PDFs. Please download the PDF to view it:
         <h3><code>&lt;object&gt;&lt;iframe&gt;&lt;/object&gt;</code></h3>
         <p>Using an <code>&lt;object></code> with an <code>&lt;iframe></code> provides extra insurance if <code>&lt;object></code> is not supported.</p>
         <div class="container">
-            <div class="pdf"><object data="pdf/sample-3pp.pdf#page=2" type="application/pdf" width="100%" height="100%">
-<iframe src="pdf/sample-3pp.pdf#page=2" width="100%" height="100%" style="border: none;">
+            <div class="pdf"><object data="../pdf/sample-3pp.pdf#page=2" type="application/pdf" width="100%" height="100%">
+<iframe src="../pdf/sample-3pp.pdf#page=2" width="100%" height="100%" style="border: none;">
 This browser does not support PDFs. Please download the PDF to view it: 
-<a href="pdf/sample-3pp.pdf">Download PDF</a>
+<a href="../pdf/sample-3pp.pdf">Download PDF</a>
 </iframe>
 </object></div>
         </div><!-- /container -->
