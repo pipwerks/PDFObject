@@ -15,9 +15,9 @@
 <!-- /site analytics -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Peralta" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,700" />
-<link rel="stylesheet" href="../css/prism.css" />
-<link rel="stylesheet" href="../css/site.min.css" />
-<link rel="stylesheet" href="../css/generator.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism.min.css" />
+<link rel="stylesheet" href="../css/site.css" />
+<link rel="stylesheet" href="../css/generator.css" />
 
 <!-- begin favicon madness -->
 <link rel="apple-touch-icon" sizes="57x57" href="../favicons/apple-touch-icon-57x57.png">
@@ -40,18 +40,39 @@
 <meta name="theme-color" content="#ffffff">
 <!-- end favicon madness -->
 
+<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+
 </head>
 
 <body>
 
+<div id="flex-wrapper">
 <header>
-    <h1>PDFObject</h1>
+
+    <h1><a href="/">PDFObject</a></h1>
     <p class="tagline">An open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents.</p>
     <nav>
         <ul>
-            <li><a href="/">&lt; Back to main page</a></li>
+            <li><a data-scroll href="../#the-why">Why Use PDFObject?</a></li>
+            <li><a data-scroll href="../#browser-support">Browser Support</a></li>
+            <li><a data-scroll href="../#changelog">Changelog</a></li>
+            <li><a data-scroll href="../#api">API</a></li>
+            <li><a data-scroll href="../#use-cases">Common Use Cases</a></li>
+            <li><a data-scroll href="../#examples">Examples</a></li>
+            <li><hr/></li>
+            <li><a class="active" href="../generator/"><i class="fas fa-cogs"></i> Code Generator</a></li>
+            <li><a href="../static/"><i class="fas fa-file-code"></i> Embedding PDFs without JavaScript</a></li>
+            <li><a href="https://github.com/pipwerks/PDFObject/"><i class="fab fa-github-alt"></i> GitHub</a></li>
+            <li><a href="https://www.npmjs.com/package/pdfobject/"><i class="fab fa-npm"></i> NPM</a></li>
+            <li><a href="https://cdnjs.com/libraries/pdfobject/"><i class="fas fa-cloud"></i> CDNJS</a></li>
+            <li><hr/></li>
         </ul>
     </nav>
+
+    <p>The PDFObject utility is &copy; 2008-2018 <a href="http://pipwerks.com">Philip Hutchison</a>. <a href="http://pipwerks.mit-license.org/">Released with an MIT license</a>.</p>
+
+    <p><strong>If you find PDFObject useful, please consider donating via <a href="https://paypal.me/pipwerks">paypal.me/pipwerks</a></strong></p>
+
 </header>
 
 <main>
@@ -284,18 +305,18 @@
 
 </form>
 
+
 </main>
 
-<footer>
-<p>The PDFObject utility is &copy; 2008-2018 <a href="http://pipwerks.com">Philip Hutchison</a>. <a href="http://pipwerks.mit-license.org/">Released with an MIT license</a>.</p>
-<p>Handcrafted with care in San Francisco, CA USA</p>
-<p><strong>If you find PDFObject useful, please consider donating via <a href="https://paypal.me/pipwerks">paypal.me/pipwerks</a></strong></p>
-</footer>
+</div><!-- /flex-wrapper -->
 
-<script src="../js/prism.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.0/pdfobject.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js"></script>
 <script src="../js/generator.min.js"></script>
+<script>
 
+</script>
 
 </body>
 </html>

@@ -15,7 +15,7 @@
 <!-- /site analytics -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Peralta" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,700" />
-<link rel="stylesheet" href="css/prism.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism.min.css" />
 <link rel="stylesheet" href="css/site.css" />
 
 <!-- begin favicon madness -->
@@ -39,46 +39,55 @@
 <meta name="theme-color" content="#ffffff">
 <!-- end favicon madness -->
 
+<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+
 </head>
 
 <body>
 
-<header id="top">
-    <h1>PDFObject</h1>
+<div id="flex-wrapper">
+<header>
+
+    <h1><a href="/">PDFObject</a></h1>
     <p class="tagline">An open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents.</p>
     <nav>
         <ul>
-            <li><a href="#the-why">Why Use PDFObject?</a></li>
-            <li><a href="#api">API</a></li>
-            <li><a href="#getting-started">Getting Started</a></li>
-            <li><a href="#examples">Examples</a></li>
-            <li><a href="generator/">Code Generator</a></li>
-        </ul>
-        <ul>
-            <li><a href="https://github.com/pipwerks/PDFObject">Source code on GitHub</a></li>
-            <li><a href="https://cdnjs.com/libraries/pdfobject">CDN link via CDNJS</a></li>
-            <li><a href="https://www.npmjs.com/package/pdfobject">NPM package</a></li>
+            <li><a data-scroll href="#the-why">Why Use PDFObject?</a></li>
+            <li><a data-scroll href="#browser-support">Browser Support</a></li>
+            <li><a data-scroll href="#changelog">Changelog</a></li>
+            <li><a data-scroll href="#api">API</a></li>
+            <li><a data-scroll href="#use-cases">Common Use Cases</a></li>
+            <li><a data-scroll href="#examples">Examples</a></li>
+            <li><hr/></li>
+            <li><a href="generator/"><i class="fas fa-cogs"></i> Code Generator</a></li>
+            <li><a href="static/"><i class="fas fa-file-code"></i> Embedding PDFs without JavaScript</a></li>
+            <li><a href="https://github.com/pipwerks/PDFObject/"><i class="fab fa-github-alt"></i> GitHub</a></li>
+            <li><a href="https://www.npmjs.com/package/pdfobject/"><i class="fab fa-npm"></i> NPM</a></li>
+            <li><a href="https://cdnjs.com/libraries/pdfobject/"><i class="fas fa-cloud"></i> CDNJS</a></li>
+            <li><hr/></li>
         </ul>
     </nav>
-</header>
 
-<!-- Shoutout to http://tholman.com/github-corners/ -->
-<a href="https://github.com/pipwerks/PDFObject" class="github-corner"><span class="visually-hidden">Visit this project on Github</span><svg width="80" height="80" viewBox="0 0 250 250" fill="rgba(255,255,255,.85)" style="color:rgb(105,210,231); position: absolute; top: 0; border: 0; right: 0;"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+    <p>The PDFObject utility is &copy; 2008-2018 <a href="http://pipwerks.com">Philip Hutchison</a>. <a href="http://pipwerks.mit-license.org/">Released with an MIT license</a>.</p>
+
+    <p><strong>If you find PDFObject useful, please consider donating via <a href="https://paypal.me/pipwerks">paypal.me/pipwerks</a></strong></p>
+
+</header>
 
 <main>
 
-    <p><em>PDFObject is open-source and has been used by thousands of websites across the world. If you find PDFObject useful, please consider showing your support by donating at <b><a href="https://paypal.me/pipwerks">paypal.me/pipwerks</a></b></em>.</p>
+    <div id="top"></div>
 
     <section class="hero-pdf">
         <div class="example-wrapper">
             <div class="container">
-                <div class="column-left">
+                <div class="example-code">
                     <style>
-                    #example1.pdfobject-container { height: 500px; }
+                    #example1.pdfobject-container { height: 30rem; border: 1rem solid rgba(0,0,0,.1); }
                     </style>
                     <div id="example1"></div>
                 </div>
-                <div class="column-right">
+                <div class="example-comments">
 <p><b>1. Create a container to hold your PDF</b></p>
 <pre><code class='language-html'>&lt;div id="example1">&lt;/div></code></pre>
 
@@ -88,53 +97,91 @@
 
 <p><b>3. You can optionally use CSS to change the appearance of the containing element, such as height, width, border, margins, etc.</b></p>
 <pre><code class='language-html'>&lt;style>
-.pdfobject-container { height: 500px;}
-.pdfobject { border: 1px solid #666; }
+.pdfobject-container { height: 30rem; border: 1rem solid rgba(0,0,0,.1); }
 &lt;/style></code></pre>
                 </div>
             </div>
         </div><!-- /example-wrapper -->
     </section>
 
-    <section id="changelog">
-        <h2>Changelog</h2>
-        <ul>
-            <li><b>January 2017</b>: Modified to support Mozilla's removal of <code>navigator.mimeTypes</code> inspection. Added <code>assumptionMode</code> for manual override of PDFObject's default <code>navigator.mimeTypes</code> sniffing.</li>
-            <li><b>April 2016</b>: Initial release of PDFObject 2.0. Contains breaking changes, and is not compatible with PDFObject 1.x.</li>
-        </ul>
-    </section>
-
-    <section id="broswer-support">
-        <h2>Browser Support</h2>
-        <p>PDFObject 2.0 is designed for modern browsers, and has been successfully tested in Chrome, Firefox, Safari (macOS and iOS), IE 9-11, and MS Edge. If you find issues or would like to share your own testing results, please <a href="https://github.com/pipwerks/PDFObject">post an issue in GitHub</a>.</p>
-        <p><b>IMPORTANT:</b> Browser support for PDFObject does not mean the browser supports PDF embedding! PDFObject only embeds PDFs in browsers that support PDF embedding. Some browsers do not natively support PDF embedding, including Safari for iOS and Internet Explorer [<a href="https://en.wikipedia.org/wiki/Comparison_of_web_browsers#Image_format_support">chart</a>]. For browsers that do not support PDF embedding, PDFObject provides a way for you to display alternate content. See below for details.</p>
-    </section>
-
     <section id="the-what">
         <p class="question"><b>Question:</b> Is JavaScript required for embedding PDFs in your HTML page?</p>
         <p class="answer"><b>Answer:</b> No.</p>
-        <p class="markup-tutorial-link">In fact, here are some examples for <a href="static.html">embedding PDFs in your web page using pure HTML markup without JavaScript</a>, if you'd rather go that route.</p>
+        <p class="markup-tutorial-link">In fact, here are some examples for <a href="static/">embedding PDFs in your web page using pure HTML markup without JavaScript</a>, if you'd rather go that route.</p>
     </section>
 
     <section id="the-why">
 
         <h2>Why use PDFObject?</h2>
-        <p><b>PDFObject 2.0 detects browser support for inline/embedded PDFs.</b> <span class="highlight">(In case you were wondering, your browser <span class="pdf-support"></span> embedded PDFs. <span class="qualitative-statement"></span>)</span></p>
-        <p>If you're working with dynamic HTML, such as a single-page web app, you may need to insert PDFs on-the-fly. However, PDF embedding is not supported by certain browsers. If you insert markup without first checking for PDF support, you could wind up with missing content or a broken UI.</p>
-        <p>The PDFObject utility helps you avoid these situations by detecting support for PDF embedding in the browser; if embedding is supported, the PDF is embedded. <b>If embedding is NOT supported by the browser, the PDF will NOT be embedded.</b></p>
-        <p><b>By default, PDFObject 2.0 inserts a fallback link to the PDF when the browser does not support inline PDFs.</b> This ensures your users always have access to your PDF, and is designed to help you write less code. The fallback link can be customized, or the option can be disabled if you prefer.</p>
-        <p><b>PDFObject 2.0 is npm-ready.</b> Modern web apps use npm to manage packages and dependencies. PDFObject 2.0 is registered with Node Package Manager (npm) and can be loaded dynamically.</p>
-        <p>PDFObject also makes it easy to specify Adobe's <a href="http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/pdf_open_parameters.pdf">proprietary "PDF Open Parameters"</a>. (Be warned these parameters are only supported by Adobe Reader, most PDF readers will ignore the parameters, including the built-in PDF readers in Chrome, Internet Explorer, and Safari. Read more below.)</p>
+        
+        <ul>
+
+            <li>
+                <p><b>PDFObject detects browser support for inline/embedded PDFs.</b> <span class="highlight">(In case you were wondering, your browser <span class="pdf-support"></span> embedded PDFs. <span class="qualitative-statement"></span>)</span></p>
+
+                <p>If you're working with dynamic HTML, such as a single-page web app, you may need to insert PDFs on-the-fly. However, PDF embedding is not supported by certain browsers. If you insert markup without first checking for PDF support, you could wind up with missing content or a broken UI.</p>
+
+                <p>The PDFObject utility helps you avoid these situations by detecting support for PDF embedding in the browser; if embedding is supported, the PDF is embedded. <b>If embedding is NOT supported by the browser, the PDF will NOT be embedded.</b></p>
+            </li>
+
+            <li>
+                <p><b>By default, PDFObject inserts a fallback link to the PDF when the browser does not support inline PDFs.</b> This ensures your users always have access to your PDF, and is designed to help you write less code. The fallback link can be customized, or the option can be disabled if you prefer.</p>
+            </li>
+
+            <li>
+                <p><b>PDFObject is npm-ready.</b> Modern web apps use npm to manage packages and dependencies. <a href="https://www.npmjs.com/package/pdfobject">PDFObject 2.x is registered with Node Package Manager (npm)</a> and can be loaded dynamically.</p>
+            </li>
+
+            <li>
+                <p><b>PDFObject also makes it easy to specify Adobe's <a href="http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/pdf_open_parameters.pdf">proprietary "PDF Open Parameters"</a></b>. Be warned these parameters are only supported by Adobe Reader, most PDF readers will ignore the parameters, including the built-in PDF readers in Chrome, Edge, Internet Explorer, and Safari. Read more below.</p>
+            </li>
+
+        </ul>
 
         <h2>What PDFObject <i>doesn't</i> do</h2>
-        <p><b>PDFObject is not a rendering engine.</b> PDFObject just writes an <code>&lt;embed></code> element to the page, and relies on the browser or browser plugins to render the PDF. <b>If the browser does not support embedded PDFs, PDFObject is not capable of forcing the browser to render the PDF.</b></p>
-        <p>If you need to force browsers to display a PDF, we suggest using Mozilla's <a href="https://mozilla.github.io/pdf.js/">PDF.js</a>. Note that PDF.js is subject to its own limitations, such as cross-domain security restrictions. PDFObject and PDF.js play well together, there are links to some great PDF.js examples in the <a href="#examples">Examples</a> section below.</p>
-        <p><b>PDFObject does not provide the ability to customize the look and feel of the PDF toolbar.</b> The toolbar is controlled by the browser, and will vary widely from browser to browser (Chrome versus Safari versus Firefox, etc.). Some of these browsers provide the ability to show or hide the toolbar, or a feature such as the search field, via PDF Open Parmeters. However, in general the browsers do NOT provide any mechanism for customizing the toolbar. If you really need to customize the toolbar, try forking Mozilla's <a href="https://mozilla.github.io/pdf.js/">PDF.js</a> and customizing it to suit your needs.</p>
-        <p><b>PDFObject does not validate the existence of the PDF, or that the PDF is actually rendered</b>. The assumption is that you are specifying a valid URL and the network is functioning normally. PDFObject does not check for 404 errors, and JavaScript cannot detect whether the PDF actually renders, unless you are using PDF.js, which is outside the scope of PDFObject.</p>
-        <p><b>PDFObject does not magically implement PDF Open Parameters.</b> As mentioned above, these parameters are not widely supported. The PDF rendering engine either supports them or doesn't &mdash; PDFObject cannot force the rendering engine to implement these features.</p>
+        
+        <ul>
+            <li>
+                <p><b>PDFObject is not a rendering engine.</b> PDFObject just writes an <code>&lt;embed></code> element to the page, and relies on the browser or browser plugins to render the PDF. <b>If the browser does not support embedded PDFs, PDFObject is not capable of forcing the browser to render the PDF.</b></p>
+        
+                <p>If you need to force browsers to display a PDF, we suggest using Mozilla's <a href="https://mozilla.github.io/pdf.js/">PDF.js</a>. Note that PDF.js is subject to its own limitations, such as cross-domain security restrictions. PDFObject and PDF.js play well together, there are links to some great PDF.js examples in the <a data-scroll href="#examples">Examples</a> section below.</p>
+            </li>
+        
+            <li>
+                <p><b>PDFObject does not provide the ability to customize the look and feel of the PDF toolbar.</b> The toolbar is controlled by the browser, and will vary widely from browser to browser (Chrome versus Safari versus Firefox, etc.). Some of these browsers provide the ability to show or hide the toolbar, or a feature such as the search field, via PDF Open Parmeters. However, in general the browsers do NOT provide any mechanism for customizing the toolbar. If you really need to customize the toolbar, try forking Mozilla's <a href="https://mozilla.github.io/pdf.js/">PDF.js</a> and customizing it to suit your needs.</p>
+            </li>
+
+            <li>
+                <p><b>PDFObject does not validate the existence of the PDF, or that the PDF is actually rendered</b>. The assumption is that you are specifying a valid URL and the network is functioning normally. PDFObject does not check for 404 errors, and JavaScript cannot detect whether the PDF actually renders, unless you are using PDF.js, which is outside the scope of PDFObject.</p>
+            </li>
+
+            <li>
+                <p><b>PDFObject does not magically implement PDF Open Parameters.</b> As mentioned above, these parameters are not widely supported. The PDF rendering engine either supports them or doesn't &mdash; PDFObject cannot force the rendering engine to implement these features.</p>
+            </li>
+        </ul>
+
     </section>
 
-    <p class="back-to-top"><a href="#top">^ Back to top</a></p>
+    <p class="back-to-top"><a data-scroll href="#top"><i class="fas fa-arrow-alt-circle-up"></i> Back to top</a></p>
+
+    <section id="browser-support">
+        <h2>Browser Support</h2>
+        <p>PDFObject 2.x is designed for modern browsers, and has been successfully tested in Chrome, Firefox, Safari (macOS and iOS), IE 9-11, and MS Edge. If you find issues or would like to share your own testing results, please <a href="https://github.com/pipwerks/PDFObject">post an issue in GitHub</a>.</p>
+        <p><b>IMPORTANT:</b> Browser support for PDFObject does not mean the browser supports PDF embedding! PDFObject only embeds PDFs in browsers that support PDF embedding. Some browsers do not natively support PDF embedding, including Safari for iOS and Internet Explorer [<a href="https://en.wikipedia.org/wiki/Comparison_of_web_browsers#Image_format_support">chart</a>]. For browsers that do not support PDF embedding, PDFObject provides a way for you to display alternate content. See below for details.</p>
+    </section>
+
+    <p class="back-to-top"><a data-scroll href="#top"><i class="fas fa-arrow-alt-circle-up"></i> Back to top</a></p>
+
+    <section id="changelog">
+        <h2>Changelog</h2>
+        <ul>
+            <li><b>2.1, October 2018</b>: Changed <code>assumptionMode</code> default from <code>false</code> to <code>true</code>. This will ensure PDFObject 2.x will work for Firefox users without requiring them to change their codebase to enable <code>assumptionMode</code>. All they need to do is load the latest version of PDFObject, the PDFObject utility will take care of the rest.</li> 
+            <li><b>2.1 (dev branch), January 2017</b>: Modified to support Mozilla's removal of <code>navigator.mimeTypes</code> inspection. Added <code>assumptionMode</code> for manual override of PDFObject's default <code>navigator.mimeTypes</code> sniffing.</li>
+            <li><b>2.0, April 2016</b>: Initial release of PDFObject 2.0. Contains breaking changes, and is not compatible with PDFObject 1.x.</li>
+        </ul>
+    </section>
+
+    <p class="back-to-top"><a data-scroll href="#top"><i class="fas fa-arrow-alt-circle-up"></i> Back to top</a></p>
 
     <section id="api">
 
@@ -168,7 +215,7 @@
         <div class="method-item">
             <h3><code>PDFObject.embed(<i>url [string]</i>, <i>target [mixed]</i>, <i>options [object]</i>)</code> <span>[method]</span></h3>
             <p>Returns the embedded element (<code>&lt;embed></code> for most situations, and <code>&lt;iframe></code> when integrated with PDF.js), or false if unable to embed.</p>
-            <p>The heart of PDFObject, the <code>embed</code> method provides a ton of functionality and flexibility. See <a href="#examples">Examples</a> for specific code examples and functioning demos.</p>
+            <p>The heart of PDFObject, the <code>embed</code> method provides a ton of functionality and flexibility. See <a data-scroll href="#examples">Examples</a> for specific code examples and functioning demos.</p>
             <div class="api-example">
 <pre><code class='language-javascript'>//embeds a PDF and makes it fill the browser window
 PDFObject.embed("myfile.pdf");</code></pre>
@@ -259,18 +306,17 @@ PDFObject.embed("myfile.pdf", "#my-container", options);
                 </li>
                 <li>
                     <h5><b>PDFJS_URL</b> [string]. Default: <code>null</code></h5>
-                    <p>If you would like to use PDF.js with PDFObject, you will need to specify the URL of the <a href="https://github.com/mozilla/pdf.js/wiki/Setup-PDF.js-in-a-website">PDF.js viewer HTML file</a>. PDFObject will automatically append the required querystring to the PDF.js viewer HTML file URL. See the <a href="#examples">Examples</a> section below for a functioning demo.</p>
+                    <p>If you would like to use PDF.js with PDFObject, you will need to specify the URL of the <a href="https://github.com/mozilla/pdf.js/wiki/Setup-PDF.js-in-a-website">PDF.js viewer HTML file</a>. PDFObject will automatically append the required querystring to the PDF.js viewer HTML file URL. See the <a data-scroll href="#examples">Examples</a> section below for a functioning demo.</p>
                 </li>
                 <li>
                     <h5><b>forcePDFJS</b> [boolean]. Default: <code>false</code></h5>
                     <p>If this boolean is set to <code>true</code> and the <code>PDFJS_URL</code> string is not null, PDFObject will attempt to use PDF.js to embed the PDF in the browser, regardless of the browser's default PDF viewer.</p>
                 </li>
                 <li>
-                    <h5><b>assumptionMode</b> [boolean]. Default: <code>false</code></h5>
+                    <h5><b>assumptionMode</b> [boolean]. Default: <code>true</code></h5>
                     <p>Older browsers require third-party plugins such as Adobe Reader for displaying PDFs. Most newer 'modern' browsers provide PDF support natively, and no longer require plugins. When PDFObject's <code>assumptionMode</code> is set to <code>true</code>, PDFObject will check to see if the browser is considered modern. If yes, PDFObject will assume PDF support is available, will bypass its normal PDF support detection, and will write the PDF embed code to the page. Browsers that are not considered modern will fall back to the default PDFObject behavior &mdash; a check will be performed to see if PDF embedding is supported before attempting to insert the PDF embed code. If PDF support is detected, the embed will proceed. If not, the normal fallback behavior will apply.</p>
                     <p><img src="img/assumption-mode-logic.png" alt="Flowchart of logic for assumptionMode" /></p>
                     <p><code>assumptionMode</code> is a direct response to Mozilla's decision to remove <code>navigator.mimeTypes</code> support in Firefox. Mozilla is attempting to make Firefox more secure by reducing opportunities for browser fingerprinting. Plugin inspection is a core component of many browser fingerprinting techniques. However, many well-intentioned scripts such as PDFObject query <code>navigator.mimeTypes</code> to determine whether specific media, such as PDFs (<code>navigator.mimeTypes['application/pdf']</code>), Flash SWFs, and specific audio or video codecs are supported.</p>
-                    <p>Rest assured, PDFObject has been modified to support Firefox <em>without</em> requiring the use of <code>assumptionMode</code>. You can continue to use PDFObject as-is. But should other browser vendors decide to follow Mozilla's suit and remove support for <code>navigator.mimeTypes</code> inspection, you can quickly enable <code>assumptionMode</code> to bypass PDFObject's traditional <code>navigator.mimeTypes</code> inspection and assume the browser (if considered modern) supports PDF embedding.</p>
                 </li>
             </ul>
 
@@ -279,26 +325,26 @@ PDFObject.embed("myfile.pdf", "#my-container", options);
 
     </section>
 
-    <p class="back-to-top"><a href="#top">^ Back to top</a></p>
+    <p class="back-to-top"><a data-scroll href="#top"><i class="fas fa-arrow-alt-circle-up"></i> Back to top</a></p>
 
-    <section id="getting-started">
+    <section id="use-cases">
 
-        <h2>Getting Started</h2>
+        <h2>Common Use Cases</h2>
 
-        <p>Here are some of the most common use cases for PDFObject. See the <a href="#examples">Examples</a> section below for more examples.</p>
+        <p>Here are some of the most common use cases for PDFObject. See the <a data-scroll href="#examples">Examples</a> section below for more examples.</p>
 
         <section class="pdf-test">
             <h3>Default behavior: the full-browser embed</h3>
             <div class="example-wrapper">
-                <div class="container">
-                    <div class="column-left">
-                        <pre><code class='language-javascript'>PDFObject.embed("/pdf/sample-3pp.pdf");</code></pre>
-                        <pre><code class='language-javascript'>PDFObject.embed("/pdf/sample-3pp.pdf", document.body);</code></pre>
-                    </div>
-                    <div class="column-right">
+                    <div class="example-comments">
                         <p>If you don't specify a target element, PDFObject will default to <code>document.body</code>, which will cause the PDF to fill the entire browser window.</p>
-                        <p>The two examples here have identical functionality.</p>
+                        <p>The following two examples have identical functionality.</p>
+                    </div>
+                <div class="container">
+                    <div class="example-code">
+                        <pre><code class='language-javascript'>PDFObject.embed("/pdf/sample-3pp.pdf");</code></pre>
                         <p><a href="examples/full-browser-default.html">Demo: Full-browser embed (no selector specified)</a></p>
+                        <pre><code class='language-javascript'>PDFObject.embed("/pdf/sample-3pp.pdf", document.body);</code></pre>
                         <p><a href="examples/full-browser-explicit.html">Demo: Full-browser embed (explicit selector)</a></p>
                     </div>
                 </div>
@@ -307,17 +353,17 @@ PDFObject.embed("myfile.pdf", "#my-container", options);
 
 
         <section class="pdf-test">
-            <h3>Specifying Dimensions</h3>
+            <h3>Embedding in a sized container</h3>
 
             <div class="example-wrapper">
 
                 <div class="container">
-                    <div class="column-left">
+                    <div class="example-comments">
+                        <p>By default, PDFObject generates an <code>&lt;embed></code> element with a width and height of 100%. It will automatically fill the target container.</p>
+                    </div>
+                    <div class="example-code">
 <pre><code class='language-javascript'>PDFObject.embed("myfile.pdf", "#my-container");
 //outputs &lt;embed src="myfile.pdf" style="width:100%;height:100%"></code></pre>
-                    </div>
-                    <div class="column-right">
-                        <p>By default, PDFObject generates an <code>&lt;embed></code> element with a width and height of 100%. It will automatically fill the target container.</p>
                     </div>
                 </div>
             </div><!-- /example-wrapper -->
@@ -325,7 +371,10 @@ PDFObject.embed("myfile.pdf", "#my-container", options);
             <div class="example-wrapper">
 
                 <div class="container">
-                    <div class="column-left">
+                    <div class="example-comments">
+                        <p>PDFObject allows you to specify dimensions via the <code>options</code> parameter. These dimensions will be appended directly to the <code>&lt;embed></code> element, as shown here.</p>
+                    </div>
+                    <div class="example-code">
 <pre><code class='language-javascript'>var options = {
    width: "20rem",
    height: "20rem"
@@ -333,16 +382,18 @@ PDFObject.embed("myfile.pdf", "#my-container", options);
 PDFObject.embed("myfile.pdf", "#my-container", options);
 //outputs &lt;embed src="myfile.pdf" style="width:20rem;height:20rem"></code></pre>
                     </div>
-                    <div class="column-right">
-                        <p>PDFObject allows you to specify dimensions via the <code>options</code> parameter. These dimensions will be appended directly to the <code>&lt;embed></code> element, as shown here.</p>
-                    </div>
                 </div>
             </div><!-- /example-wrapper -->
 
             <div class="example-wrapper">
 
                 <div class="container">
-                    <div class="column-left">
+                    <div class="example-comments">
+                        <p>If you specify dimensions on the <code>&lt;embed></code> element directly, you will lose the ability to resize the element via CSS, because the inline styles will always take precedence over the other styles in your file. Therefore it is recommended that you specify dimensions using external CSS rules, as shown here.</p>
+                        <p>Note: PDFObject automatically appends the class <code>pdfobject</code> to the <code>&lt;embed></code> element, and <code>pdfobject-container</code> to the target element. This helps you target your element in CSS.</p>
+                        <p>In this example, the dimensions of the target element are only specified if the PDF has been embedded (via the <code>pdfobject-container</code> class).</p>
+                    </div>
+                    <div class="example-code">
 <pre><code class='language-html'>&lt;style>
 /* Only resize the element if PDF is embedded */
 .pdfobject-container {
@@ -356,11 +407,6 @@ PDFObject.embed("myfile.pdf", "#my-container", options);
 &lt;script>
 PDFObject.embed("myfile.pdf", "#my-container");
 &lt;/script></code></pre>
-                    </div>
-                    <div class="column-right">
-                        <p>If you specify dimensions on the <code>&lt;embed></code> element directly, you will lose the ability to resize the element via CSS, because the inline styles will always take precedence over the other styles in your file. Therefore it is recommended that you specify dimensions using external CSS rules, as shown here.</p>
-                        <p>Note: PDFObject automatically appends the class <code>pdfobject</code> to the <code>&lt;embed></code> element, and <code>pdfobject-container</code> to the target element. This helps you target your element in CSS.</p>
-                        <p>In this example, the dimensions of the target element are only specified if the PDF has been embedded (via the <code>pdfobject-container</code> class).</p>
                         <p><a href="examples/passing-selector-styled.html">Demo: Embed a PDF and specify dimensions using CSS</a></p>
                     </div>
                 </div>
@@ -371,16 +417,16 @@ PDFObject.embed("myfile.pdf", "#my-container");
         <section class="pdf-test">
             <h3>Page number specified</h3>
             <div class="example-wrapper">
+                    <div class="example-comments">
+                        <p>As previously mentioned, most PDF Open Parameters are not widely supported. However, there is one parameter that enjoys wide support: the <code>page</code> parameter.</p>
+                        <p>If you specify a page number using the <code>page</code> parameter, as shown in this example, the PDF will auto-scroll to the specified page number.</p>
+                    </div>
                 <div class="container">
-                    <div class="column-left">
+                    <div class="example-code">
 <pre><code class='language-javascript'>var options = {
     page: "2"
 };
 PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
-                    </div>
-                    <div class="column-right">
-                        <p>As previously mentioned, most PDF Open Parameters are not widely supported. However, there is one parameter that enjoys wide support: the <code>page</code> parameter.</p>
-                        <p>If you specify a page number using the <code>page</code> parameter, as shown in this example, the PDF will auto-scroll to the specified page number.</p>
                     </div>
                 </div>
             </div><!-- /example-wrapper -->
@@ -390,7 +436,11 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
             <h3>Additional PDF Open Parameters specified</h3>
             <div class="example-wrapper">
                 <div class="container">
-                    <div class="column-left">
+                    <div class="example-code">
+                    <div class="example-comments">
+                        <p>As previously mentioned, most PDF Open Parameters are not widely supported. However, there is one parameter that enjoys wide support: the <code>page</code> parameter.</p>
+                        <p>If you specify a page number using the <code>page</code> parameter, as shown in this example, the PDF will auto-scroll to the specified page number.</p>
+                    </div>
 <pre><code class='language-javascript'>var options = {
     height: "400px",
     page: '2',
@@ -403,17 +453,14 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
 
 PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
                     </div>
-                    <div class="column-right">
-                        <p>As previously mentioned, most PDF Open Parameters are not widely supported. However, there is one parameter that enjoys wide support: the <code>page</code> parameter.</p>
-                        <p>If you specify a page number using the <code>page</code> parameter, as shown in this example, the PDF will auto-scroll to the specified page number.</p>
-                    </div>
+            <p><a href="examples/querystring-URL-with-params.html">Demo: Specifying PDF URL containing querystring, with PDF Open Parameters</a></p>
                 </div>
             </div><!-- /example-wrapper -->
         </section>
 
-    </section><!-- /getting-started -->
+    </section><!-- /use-cases -->
 
-    <p class="back-to-top"><a href="#top">^ Back to top</a></p>
+    <p class="back-to-top"><a data-scroll href="#top"><i class="fas fa-arrow-alt-circle-up"></i> Back to top</a></p>
 
     <section id="examples">
 
@@ -447,29 +494,18 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
 
 </main>
 
-<footer>
-<p>The PDFObject utility is &copy; 2008-2018 <a href="http://pipwerks.com">Philip Hutchison</a>. <a href="http://pipwerks.mit-license.org/">Released with an MIT license</a>.</p>
-<p>Handcrafted with care in San Francisco, CA USA</p>
-<p><strong>If you find PDFObject useful, please consider donating via <a href="https://paypal.me/pipwerks">paypal.me/pipwerks</a></strong></p>
-</footer>
+</div><!-- /flex-wrapper -->
 
-<script src="js/pdfobject.js"></script>
-<script src="js/prism.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.0/pdfobject.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js"></script>
+<script src="js/in-view.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/cferdinandi/smooth-scroll@14.2.1/dist/smooth-scroll.polyfills.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/cferdinandi/smooth-scroll@14.2.1/dist/smooth-scroll.min.js"></script>
 <script>
-
-
-//Grab a copy of each example;s markup before the PDFs are embedded.
-var markup = document.querySelectorAll(".example-wrapper .column-left div");
-var markup_preembed = [];
-for (var i=0; i < markup.length; i++){
-    markup_preembed[i] = markup[i].outerHTML.replace(/\</g, "&lt;").replace(/\t/g,"");
-}
-
-document.querySelector(".pdf-support").innerHTML = (PDFObject.supportsPDFs) ? "supports" : "does not support";
-document.querySelector(".qualitative-statement").innerHTML = (PDFObject.supportsPDFs) ? "You lucky dog, you!" : "Sad pandas.";
-
+//Embed the sample PDF
 PDFObject.embed("pdf/sample-3pp.pdf", "#example1");
 </script>
+<script src="js/site.js"></script>
 
 </body>
 </html>
