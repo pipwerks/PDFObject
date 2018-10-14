@@ -66,8 +66,6 @@ h1 a:visited {
 
 h1 a:active,
 h1 a:focus {
-    /*border-bottom: none;*/
-    /*border-left: 1px solid #0E97EE;*/
     background: rgba(61, 159, 236, .1);
 }
 
@@ -84,16 +82,17 @@ h3 {
     font-size: 1.4rem;
     color: rgb(85, 98, 112);
     font-weight: bold;
+    margin-top: 3rem;
 }
 
 h4 {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
 }
 
 h5 {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: normal;
-    border-bottom: 1px solid rgba(0, 0, 0, .25);
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
 }
 
 p {}
@@ -101,11 +100,14 @@ p {}
 p code,
 h5 code,
 li code {
-    background: #efefef;
+    background: #f5f2f0; /* same color as Prism.js background */
 }
 
 pre {
     font-size: .85rem;
+    overflow: auto!important;
+    word-wrap: normal!important;
+    white-space: pre!important;
 }
 
 ul {
@@ -120,8 +122,7 @@ li {
 
 header,
 nav,
-section,
-footer {
+section {
     display: block;
 }
 
@@ -138,13 +139,9 @@ header {
     text-align: left;
     background: rgba(0, 0, 0, .025);
     margin: 0;
-    overflow: auto;
-}
-
-header {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
 }
 
 nav { margin-bottom: 2rem; }
@@ -205,50 +202,16 @@ nav a.active:visited {
     margin: 2rem 0;
 }
 
-
 main {
     margin: 0;
     padding: 0 2rem 2rem 2rem;
-    max-width: 70rem;
     background: #fff;
     flex-grow: 1;
+    max-width: 60rem;
 }
 
 section {
     padding: 1rem 0 0;
-}
-
-.visually-hidden {
-    position: absolute;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    width: 1px;
-    margin: -1px;
-    padding: 0;
-    border: 0;
-}
-
-.tagline {
-    color: rgb(85, 98, 112);
-}
-
-.notes {
-    background: rgba(105, 210, 231, .2);
-    padding: 1rem 2rem;
-    border-radius: .25rem;
-    border: 1px solid rgba(105, 210, 231, .8);
-}
-
-.pdf-test h3 {
-    font-weight: normal;
-    font-size: 1.5rem;
-    color: #fff;
-    background: rgb(221, 74, 104);
-    margin: 0;
-    padding: .5rem 1rem;
-    border-top-left-radius: .25rem;
-    border-top-right-radius: .25rem;
 }
 
 #api ul {
@@ -281,91 +244,44 @@ section {
     padding: 0;
 }
 
-.example-wrapper {
-}
-
-.container {
-    overflow: auto;
-}
-
 .hero-pdf .example-wrapper .example-comments {
     margin-top: 2rem;
 }
 
-.pdfobject {
-    border: 1px solid #666;
-}
-
-
-.question {
+.question, .answer {
     font-size: 2rem;
     line-height: 2rem;
     color: rgb(85, 98, 112);
 }
 
-.question b {
+.question b, .answer b {
     display: block;
 }
 
-.answer {
-    font-size: 2rem;
-    line-height: 2rem;
-    color: rgb(85, 98, 112);
-}
-
-.answer b {
-    display: block;
-}
-
-.markup-tutorial-link {
-    font-size: 1.2rem;
-    color: rgb(85, 98, 112);
-}
-
-.method-item {
-    margin: 2rem 0;
-    padding: 1rem 0;
-}
-
-.method-item h3 {
-    margin: 0;
-    padding: 0;
-    font-size: 1.2rem;
-}
-
-.method-item h3 span {
-    float: right;
-    font-weight: normal;
-    font-size: 1rem;
+.small {
+    font-size: .8rem;
+    line-height: 1rem;
 }
 
 
-/* phones */
+/* mobile */
 
-/*@media only screen and (max-width: 40em) {
-    h1 {
-        font-size: 2.7rem;
+@media only screen and (max-width: 50rem) {
+    #flex-wrapper {
+        display: block;
     }
-    .example-code,
-    .example-comments,
-    .hero-pdf .example-code,
-    .hero-pdf .example-comments {
+    header {
+        max-width: 100%;
+        min-width: 100%;
+        position: relative;
     }
-    .tagline {}
+    main {
+        flex-grow: unset;
+    }
     section {
         padding: 0 1rem;
     }
     .pdf-test {
         margin: .5rem auto;
     }
-    .example-wrapper {
-        padding: .5rem;
-    }
-    .example-code,
-    .example-comments {
-        padding: .5rem;
-    }
-    .example-code {
-        padding: .5rem .5rem .5rem 0;
-    }
-}*/
+}

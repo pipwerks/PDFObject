@@ -6,13 +6,7 @@
 <title>PDFObject: Embedding PDFs without using PDFObject</title>
 <!-- site analytics, unrelated to any example code presented on this page -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1394306-6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'UA-1394306-6');
-</script>
-<!-- /site analytics -->
+<script src="../js/analytics.js"></script><!-- /site analytics -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Peralta" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,700" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism.min.css" />
@@ -51,11 +45,13 @@ iframe { -webkit-overflow-scrolling: touch; overflow-y: scroll; }
 
 <body>
 
+<div id="top"></div>
+
 <div id="flex-wrapper">
 <header>
 
     <h1><a href="/">PDFObject</a></h1>
-    <p class="tagline">An open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents.</p>
+    <p>An open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents.</p>
     <nav>
         <ul>
             <li><a data-scroll href="../#the-why">Why Use PDFObject?</a></li>
@@ -74,15 +70,11 @@ iframe { -webkit-overflow-scrolling: touch; overflow-y: scroll; }
         </ul>
     </nav>
 
-    <p>The PDFObject utility is &copy; 2008-2018 <a href="http://pipwerks.com">Philip Hutchison</a>. <a href="http://pipwerks.mit-license.org/">Released with an MIT license</a>.</p>
-
-    <p><strong>If you find PDFObject useful, please consider donating via <a href="https://paypal.me/pipwerks">paypal.me/pipwerks</a></strong></p>
+    <p class="small">The PDFObject utility is &copy; 2008-2018 <a href="http://pipwerks.com">Philip Hutchison</a>. <a href="http://pipwerks.mit-license.org/">Released with an MIT license</a>. <strong>If you find PDFObject useful, please consider donating via <a href="https://paypal.me/pipwerks"><i class="fab fa-paypal"></i> paypal.me/pipwerks</a></strong></p>
 
 </header>
 
 <main>
-
-    <div id="top"></div>
 
     <h2>Embedding PDFs without using JavaScript</h2>
     <p>PDFs can be embedded into HTML pages without using JavaScript. Below are four examples of the most common techniques.</p>
