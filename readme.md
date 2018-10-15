@@ -5,18 +5,14 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 -----
 
-## October 2018
-
-Introduced `assumptionMode` in an effort to work around Firefox's removal of `navigator.mimeTypes`. See [pdfobject.com](https://pdfobject.com) for more details.
-
-## April 2016
-
 [![CDNJS](https://img.shields.io/cdnjs/v/pdfobject.svg)](https://cdnjs.com/libraries/pdfobject/)
 
-I'm pleased to announce PDFObject 2.0 has arrived! Completely rewritten for the HTML5 era, PDFObject 2.0 has **BREAKING CHANGES** and is not backwards-compatible.
+## Changelog
 
-For examples, instructions, and a general good time, check out the recently updated http://pdfobject.com
+2.1.1, October 2018: Improved handling of iOS to properly indicate iOS does not support embedded PDFs.
 
-I have completed initial testing in IE9-11, MS Edge, Safari, Firefox, Chrome, and iOS Safari. PDF embedding is not supported by Safari in iOS -- it is not a PDFObject shortcoming!
+2.1, October 2018: Changed `assumptionMode` default from false to true. This will ensure PDFObject 2.x will work for Firefox users without requiring them to change their codebase to enable assumptionMode. All they need to do is load the latest version of PDFObject, the PDFObject utility will take care of the rest.
 
-If you find any issues, please report them at https://github.com/pipwerks/PDFObject/issues.
+2.1 (dev branch), January 2017: Modified to support Mozilla's removal of `navigator.mimeTypes` inspection. Added `assumptionMode` for manual override of PDFObject's default `navigator.mimeTypes` sniffing.
+
+2.0, April 2016: Initial release of PDFObject 2.0. Contains breaking changes, and is not compatible with PDFObject 1.x.

@@ -2,7 +2,7 @@
 //jshint unused:false, strict: false
 
 /*
-    PDFObject v2.1.0
+    PDFObject v2.1.1
     https://github.com/pipwerks/PDFObject
     Copyright (c) 2008-2018 Philip Hutchison
     MIT-style license: http://pipwerks.mit-license.org/
@@ -33,7 +33,7 @@
 
     if(typeof window === "undefined" || typeof navigator === "undefined"){ return false; }
 
-    var pdfobjectversion = "2.1.0",
+    var pdfobjectversion = "2.1.1",
         ua = window.navigator.userAgent,
 
         //declare booleans
@@ -91,7 +91,20 @@
     supportsPdfActiveX = function (){ return !!(createAXO("AcroPDF.PDF") || createAXO("PDF.PdfCtrl")); };
 
     //Determines whether PDF support is available
-    supportsPDFs = (isFirefoxWithPDFJS || supportsPdfMimeType || (isIE() && supportsPdfActiveX()));
+    supportsPDFs = (
+        //as of iOS 12, inline PDF rendering is still not supported in Safari or native webview
+        //3rd-party browsers (eg Chrome, Firefox) use Apple's webview for rendering, and thus the same result as Safari
+        //Therefore if iOS, we shall assume that PDF support is not available
+        !isIOS && (
+            //Modern versions of Firefox come bundled with PDFJS
+            isFirefoxWithPDFJS || 
+            //Browsers that still support the original MIME type check
+            supportsPdfMimeType || (
+                //Pity the poor souls still using IE
+                isIE() && supportsPdfActiveX()
+            )
+        )
+    );
 
     //Create a fragment identifier for using PDF Open parameters when embedding PDF
     buildFragmentString = function(pdfParams){
@@ -232,21 +245,26 @@
         pdfOpenFragment = buildFragmentString(pdfOpenParams);
 
         //Do the dance
+
+        //If the forcePDFJS option is invoked, skip everything else and embed as directed
         if(forcePDFJS && PDFJS_URL){
 
             return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
 
-        } else if((assumptionMode && isModernBrowser) || supportsPDFs){
+        //If traditional support is provided, or if this is a modern browser and not iOS (see comment for supportsPDFs declaration)
+        } else if(supportsPDFs || (assumptionMode && isModernBrowser && !isIOS)){
 
             return generateEmbedElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
 
+        //If everything else has failed and a PDFJS fallback is provided, try to use it
+        } else if(PDFJS_URL){
+
+            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
+
         } else {
 
-            if(PDFJS_URL){
-
-                return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
-
-            } else if(fallbackLink){
+            //Display the fallback link if available
+            if(fallbackLink){
 
                 fallbackHTML = (typeof fallbackLink === "string") ? fallbackLink : fallbackHTML_default;
                 targetNode.innerHTML = fallbackHTML.replace(/\[url\]/g, url);
