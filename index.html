@@ -158,7 +158,7 @@
     <section id="browser-support">
         <h2>Browser Support</h2>
         <p>PDFObject 2.x is designed for modern browsers, and has been successfully tested in Chrome, Firefox, Safari (macOS and iOS), IE 9-11, and MS Edge. If you find issues or would like to share your own testing results, please <a href="https://github.com/pipwerks/PDFObject">post an issue in GitHub</a>.</p>
-        <p><b>IMPORTANT:</b> Browser support for PDFObject does not mean the browser supports PDF embedding! PDFObject only embeds PDFs in browsers that support PDF embedding. Some browsers do not natively support PDF embedding, including Safari for iOS and Internet Explorer [<a href="https://en.wikipedia.org/wiki/Comparison_of_web_browsers#Image_format_support">chart</a>]. For browsers that do not support PDF embedding, PDFObject provides a way for you to display alternate content. See below for details.</p>
+        <p><b>IMPORTANT:</b> Browser support for PDFObject does not mean the browser supports PDF embedding! <b>PDFObject only embeds PDFs in browsers that support PDF embedding. Some browsers do not natively support PDF embedding, including Safari for iOS and Internet Explorer [<a href="https://en.wikipedia.org/wiki/Comparison_of_web_browsers#Image_format_support">chart</a>]</b>. For browsers that do not support PDF embedding, PDFObject provides a way for you to display alternate content. See below for details.</p>
     </section>
 
     <p class="back-to-top"><a data-scroll href="#top"><i class="fas fa-arrow-alt-circle-up"></i> Back to top</a></p>
@@ -166,6 +166,7 @@
     <section id="changelog">
         <h2>Changelog</h2>
         <ul>
+            <li><b>2.1.1, October 2018</b>: Changed handling of iOS to reflect Safari's lack of support for embedding inline PDFs. (In iOS, Safari will only display an image preview of the first page of a PDF, and will not render other pages of the PDF.) Other iOS web browsers use Apple's native WebView to render pages, which leads to the same limitations as Safari. Therefore, PDFObject now assumes any iOS-based web browsers will not support PDF embedding.</li> 
             <li><b>2.1, October 2018</b>: Changed <code>assumptionMode</code> default from <code>false</code> to <code>true</code>. This will ensure PDFObject 2.x will work for Firefox users without requiring them to change their codebase to enable <code>assumptionMode</code>. All they need to do is load the latest version of PDFObject, the PDFObject utility will take care of the rest.</li> 
             <li><b>2.1 (dev branch), January 2017</b>: Modified to support Mozilla's removal of <code>navigator.mimeTypes</code> inspection. Added <code>assumptionMode</code> for manual override of PDFObject's default <code>navigator.mimeTypes</code> sniffing.</li>
             <li><b>2.0, April 2016</b>: Initial release of PDFObject 2.0. Contains breaking changes, and is not compatible with PDFObject 1.x.</li>
