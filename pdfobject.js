@@ -40,6 +40,7 @@
         //declare booleans
         supportsPDFs,
         isIE,
+        isSafariOsx,
         supportsPdfMimeType = (typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
         supportsPdfActiveX,
         isModernBrowser = (function (){ return (typeof window.Promise !== "undefined"); })(),
@@ -62,7 +63,8 @@
         embed,
         getTargetElement,
         generatePDFJSiframe,
-        generateEmbedElement;
+        generateEmbedElement,
+        generateIframeElement;
 
 
     /* ----------------------------------------------------
@@ -86,6 +88,11 @@
     //FWIW, MS Edge (replacing IE11) does not support ActiveX at all, both will evaluate false
     //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
     isIE = function (){ return !!(window.ActiveXObject || "ActiveXObject" in window); };
+
+    // Detect desktop Safari
+    // Relying on the Apple pushNotifications api, implemented in 10.9
+    // See https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/NotificationProgrammingGuideForWebsites/PushNotifications/PushNotifications.html
+    isSafariOsx = 'safari' in window;
 
     //If either ActiveX support for "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
     //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
@@ -207,6 +214,23 @@
 
     };
 
+    generateIframeElement = function (targetNode, targetSelector, url, pdfOpenFragment, width, height, id){
+
+        var style = "";
+
+        if(targetSelector && targetSelector !== document.body){
+            style = "width: " + width + "; height: " + height + ";";
+        } else {
+            style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
+        }
+
+        targetNode.className += " pdfobject-container";
+        targetNode.innerHTML = "<iframe sandbox='' " + id + " class='pdfobject' src='" + url + pdfOpenFragment + "' type='application/pdf' style='border: none; " + style + "'/>";
+
+        return targetNode.getElementsByTagName("iframe")[0];
+
+    };
+
     embed = function(url, targetSelector, options){
 
         //Ensure URL is available. If not, exit now.
@@ -227,6 +251,7 @@
             height = (options.height) ? options.height : "100%",
             assumptionMode = (typeof options.assumptionMode === "boolean") ? options.assumptionMode : true,
             forcePDFJS = (typeof options.forcePDFJS === "boolean") ? options.forcePDFJS : false,
+            supportRedirect = (typeof options.supportRedirect === "boolean") ? options.supportRedirect : false,
             PDFJS_URL = (options.PDFJS_URL) ? options.PDFJS_URL : false,
             targetNode = getTargetElement(targetSelector),
             fallbackHTML = "",
@@ -254,6 +279,11 @@
 
         //If traditional support is provided, or if this is a modern browser and not iOS (see comment for supportsPDFs declaration)
         } else if(supportsPDFs || (assumptionMode && isModernBrowser && !isIOS)){
+
+            // Safari will not honour redirect responses on embed src.
+            if (supportRedirect && isSafariOsx) {
+                return generateIframeElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
+            }
 
             return generateEmbedElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
 
