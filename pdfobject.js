@@ -223,7 +223,7 @@
         }
 
         targetNode.className += " pdfobject-container";
-        targetNode.innerHTML = "<iframe sandbox='' " + id + " class='pdfobject' src='" + url + pdfOpenFragment + "' type='application/pdf' style='border: none; " + style + "'/>";
+        targetNode.innerHTML = "<iframe " + id + " class='pdfobject' src='" + url + pdfOpenFragment + "' type='application/pdf' style='border: none; " + style + "'/>";
 
         return targetNode.getElementsByTagName("iframe")[0];
 
