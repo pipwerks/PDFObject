@@ -41,7 +41,7 @@
         supportsPDFs,
         isIE,
         isSafariOsx,
-        supportsPdfMimeType = (typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
+        supportsPdfMimeType,
         supportsPdfActiveX,
         isModernBrowser = (function (){ return (typeof window.Promise !== "undefined"); })(),
         isFirefox = (function (){ return (ua.indexOf("irefox") !== -1); } )(),
@@ -93,6 +93,13 @@
     // Relying on the Apple pushNotifications api, implemented in 10.9
     // See https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/NotificationProgrammingGuideForWebsites/PushNotifications/PushNotifications.html
     isSafariOsx = 'safari' in window;
+
+    // Testing environments might not support all window properties so be defensive
+    supportsPdfMimeType = (
+        navigator &&
+        typeof navigator.mimeTypes !== "undefined" &&
+        typeof navigator.mimeTypes['application/pdf'] !== "undefined"
+    );
 
     //If either ActiveX support for "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
     //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
