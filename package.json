@@ -1,22 +1,23 @@
 {
-  "name": "pdfobject",
-  "version": "2.1.1",
-  "description": "An open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents",
+  "name": "jest-pdfobject",
+  "version": "0.0.1",
+  "description": "A temporary fork of the original pipworks/PDFObject repo that makes it compatible with Jest tests, for use until the issue is fixed in the main project:",
   "main": "pdfobject.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://pipwerks@github.com/pipwerks/PDFObject.git"
+    "url": "git+https://github.com/jmstrick93/jestable-pdfobject.git"
   },
   "keywords": [
-    "pdf", "pdfobject"
+    "pdf",
+    "pdfobject, jest, unit tests"
   ],
-  "author": "Philip Hutchison <philip@pipwerks.com> (http://pipwerks.com)",
+  "author": "James Stricker",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pipwerks/PDFObject/issues"
+    "url": "https://github.com/jmstrick93/jestable-pdfobject/issues"
   },
-  "homepage": "https://github.com/pipwerks/PDFObject#readme"
+  "homepage": "https://github.com/jmstrick93/jestable-pdfobject#readme"
 }

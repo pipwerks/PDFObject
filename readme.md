@@ -1,4 +1,4 @@
-PDFObject is a lightweight JavaScript utility for dynamically embedding PDFs in HTML documents.
+PDFObject is a lightweight JavaScript utility for dynamically embedding PDFs in HTML documents.  This modified version fixes a compatibility issue with Jest tests.  *All other information below applies to the original PDFObject package*
 
 Copyright (c) 2008-2018 Philip Hutchison
 MIT-style license: http://pipwerks.mit-license.org/

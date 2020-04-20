@@ -1,7 +1,7 @@
 {
-  "name": "pdfobject",
-  "description": "An open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents",
-  "version": "2.1.1",
+  "name": "jest-pdfobject",
+  "description": "A jest-friendly fork of the open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents.",
+  "version": "0.0.1",
   "main": "pdfobject.js",
   "moduleType": [
 	  "globals",
@@ -14,12 +14,12 @@
     "pdfobject"
   ],
   "authors": [
-  	"Philip Hutchison <philip@pipwerks.com> (http://pipwerks.com)"
+  	"James Stricker"
   ],
   "homepage": "http://pdfobject.com",
   "repository": {
     "type": "git",
-    "url": "git://github.com/pipwerks/PDFObject.git"
+    "url": "git://github.com/pipwerks/react-pdfobject.git"
   },
   "ignore": [
     "node_modules"
