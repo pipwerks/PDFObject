@@ -88,9 +88,11 @@
     isIE = function (){ return !!(window.ActiveXObject || "ActiveXObject" in window); };
 
     // Detect desktop Safari
-    // Relying on the Apple pushNotifications api, implemented in 10.9
-    // See https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/NotificationProgrammingGuideForWebsites/PushNotifications/PushNotifications.html
-    isSafariOsx = 'safari' in window;
+    isSafariOsx = (
+        !isIOS &&
+        navigator.vendor && navigator.vendor.indexOf('Apple') !== -1 &&
+        navigator.userAgent && navigator.userAgent.indexOf('Safari') !== -1
+    );
 
     //If either ActiveX support for "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
     //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
