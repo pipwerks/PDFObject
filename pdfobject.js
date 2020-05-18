@@ -1,13 +1,14 @@
 /*global ActiveXObject, window, console, define, module, jQuery */
 //jshint unused:false, strict: false
 
-/*
-    PDFObject v2.1.1
-    https://github.com/pipwerks/PDFObject
-    Copyright (c) 2008-2018 Philip Hutchison
-    MIT-style license: http://pipwerks.mit-license.org/
-    UMD module pattern from https://github.com/umdjs/umd/blob/master/templates/returnExports.js
-*/
+/**
+ *  PDFObject v2.1.1
+ *  https://github.com/pipwerks/PDFObject
+ *  @license
+ *  Copyright (c) 2008-2018 Philip Hutchison
+ *  MIT-style license: http://pipwerks.mit-license.org/
+ *  UMD module pattern from https://github.com/umdjs/umd/blob/master/templates/returnExports.js
+ */
 
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
@@ -39,7 +40,7 @@
         //declare booleans
         supportsPDFs,
         isIE,
-        supportsPdfMimeType = (typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
+        supportsPdfMimeType = (typeof navigator.mimeTypes !== "undefined" && typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
         supportsPdfActiveX,
         isModernBrowser = (function (){ return (typeof window.Promise !== "undefined"); })(),
         isFirefox = (function (){ return (ua.indexOf("irefox") !== -1); } )(),
@@ -60,8 +61,10 @@
         embedError,
         embed,
         getTargetElement,
+        appendTargetClassName,
         generatePDFJSiframe,
-        generateEmbedElement;
+        generateEmbedElement,
+        generateIframeElement;
 
 
     /* ----------------------------------------------------
@@ -86,6 +89,13 @@
     //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
     isIE = function (){ return !!(window.ActiveXObject || "ActiveXObject" in window); };
 
+    // Detect desktop Safari
+    isSafariOsx = (
+        !isIOS &&
+        navigator.vendor && navigator.vendor.indexOf('Apple') !== -1 &&
+        navigator.userAgent && navigator.userAgent.indexOf('Safari') !== -1
+    );
+
     //If either ActiveX support for "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
     //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
     supportsPdfActiveX = function (){ return !!(createAXO("AcroPDF.PDF") || createAXO("PDF.PdfCtrl")); };
@@ -97,7 +107,7 @@
         //Therefore if iOS, we shall assume that PDF support is not available
         !isIOS && (
             //Modern versions of Firefox come bundled with PDFJS
-            isFirefoxWithPDFJS || 
+            isFirefoxWithPDFJS ||
             //Browsers that still support the original MIME type check
             supportsPdfMimeType || (
                 //Pity the poor souls still using IE
@@ -176,12 +186,22 @@
 
     };
 
+    appendTargetClassName = function (targetNode) {
+        // Use classList if we don't need IE9 support
+        var classToAppend = "pdfobject-container";
+        var classes = targetNode.className.split(/\s+/);
+        if (classes.indexOf(classToAppend) === -1) {
+            classes.push(classToAppend);
+            targetNode.className = classes.join(' ');
+        }
+    }
+
     generatePDFJSiframe = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id){
 
         var fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
         var scrollfix = (isIOS) ? "-webkit-overflow-scrolling: touch; overflow-y: scroll; " : "overflow: hidden; ";
         var iframe = "<div style='" + scrollfix + "position: absolute; top: 0; right: 0; bottom: 0; left: 0;'><iframe  " + id + " src='" + fullURL + "' style='border: none; width: 100%; height: 100%;' frameborder='0'></iframe></div>";
-        targetNode.className += " pdfobject-container";
+        appendTargetClassName(targetNode);
         targetNode.style.position = "relative";
         targetNode.style.overflow = "auto";
         targetNode.innerHTML = iframe;
@@ -199,10 +219,27 @@
             style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
         }
 
-        targetNode.className += " pdfobject-container";
+        appendTargetClassName(targetNode);
         targetNode.innerHTML = "<embed " + id + " class='pdfobject' src='" + url + pdfOpenFragment + "' type='application/pdf' style='overflow: auto; " + style + "'/>";
 
         return targetNode.getElementsByTagName("embed")[0];
+
+    };
+
+    generateIframeElement = function (targetNode, targetSelector, url, pdfOpenFragment, width, height, id){
+
+        var style = "";
+
+        if(targetSelector && targetSelector !== document.body){
+            style = "width: " + width + "; height: " + height + ";";
+        } else {
+            style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
+        }
+
+        targetNode.className += " pdfobject-container";
+        targetNode.innerHTML = "<iframe " + id + " class='pdfobject' src='" + url + pdfOpenFragment + "' type='application/pdf' style='border: none; " + style + "'/>";
+
+        return targetNode.getElementsByTagName("iframe")[0];
 
     };
 
@@ -226,6 +263,7 @@
             height = (options.height) ? options.height : "100%",
             assumptionMode = (typeof options.assumptionMode === "boolean") ? options.assumptionMode : true,
             forcePDFJS = (typeof options.forcePDFJS === "boolean") ? options.forcePDFJS : false,
+            supportRedirect = (typeof options.supportRedirect === "boolean") ? options.supportRedirect : false,
             PDFJS_URL = (options.PDFJS_URL) ? options.PDFJS_URL : false,
             targetNode = getTargetElement(targetSelector),
             fallbackHTML = "",
@@ -253,6 +291,11 @@
 
         //If traditional support is provided, or if this is a modern browser and not iOS (see comment for supportsPDFs declaration)
         } else if(supportsPDFs || (assumptionMode && isModernBrowser && !isIOS)){
+
+            // Safari will not honour redirect responses on embed src.
+            if (supportRedirect && isSafariOsx) {
+                return generateIframeElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
+            }
 
             return generateEmbedElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
 
