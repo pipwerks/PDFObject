@@ -90,7 +90,7 @@
     isIE = function (){ return !!(window.ActiveXObject || "ActiveXObject" in window); };
 
     // Detect desktop Safari
-    isSafariOsx = (
+    let isSafariOsx = (
         !isIOS &&
         navigator.vendor && navigator.vendor.indexOf('Apple') !== -1 &&
         navigator.userAgent && navigator.userAgent.indexOf('Safari') !== -1
