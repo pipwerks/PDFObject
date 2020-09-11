@@ -121,7 +121,7 @@
 
     if (pdfParams) {
       for (prop in pdfParams) {
-        if (Object.prototype.isPrototypeOf.call(pdfParams, prop)) {
+        if (Object.prototype.hasOwnProperty.call(pdfParams, prop)) {
           string += encodeURIComponent(prop) + '=' + encodeURIComponent(pdfParams[prop]) + '&'
         }
       }
