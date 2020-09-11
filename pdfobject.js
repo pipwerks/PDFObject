@@ -265,7 +265,7 @@
       return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id)
 
       // If traditional support is provided, or if this is a modern browser and not iOS (see comment for supportsPDFs declaration)
-    } else if (supportsPDFs || (assumptionMode && isModernBrowser && !isIOS)) {
+    } else if (supportsPDFs || (assumptionMode && (isModernBrowser && supportsPDFs) && !isIOS)) {
       // Safari will not honour redirect responses on embed src.
       if (supportRedirect && isSafariOsx) {
         return generateIframeElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id)
