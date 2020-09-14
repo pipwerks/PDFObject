@@ -4,7 +4,7 @@
   "description": "An open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents",
   "main": "pdfobject.js",
   "scripts": {
-    "build": "uglifyjs pdfobject.js -o pdfobject.min.js -c --comments --source-map",
+    "build": "terser pdfobject.js --comments --mangle --source-map --output pdfobject.min.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,7 +21,7 @@
     "url": "https://github.com/pipwerks/PDFObject/issues"
   },
   "homepage": "https://github.com/pipwerks/PDFObject#readme",
-  "devDependencies": {
-    "uglify-js": "^3.6.9"
+  "dependencies": {
+    "terser": "^5.3.1"
   }
 }
