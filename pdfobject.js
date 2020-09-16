@@ -40,6 +40,7 @@
         //declare booleans
         supportsPDFs,
         isIE,
+        isSafariOsx,
         supportsPdfMimeType = (typeof navigator.mimeTypes !== "undefined" && typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
         supportsPdfActiveX,
         isModernBrowser = (function (){ return (typeof window.Promise !== "undefined"); })(),
