@@ -21,7 +21,7 @@
     "url": "https://github.com/pipwerks/PDFObject/issues"
   },
   "homepage": "https://github.com/pipwerks/PDFObject#readme",
-  "dependencies": {
-    "terser": "^5.3.1"
+  "devDependencies": {
+    "terser": "^5.3.2"
   }
 }
