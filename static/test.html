@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PDFObject: Static Embed Test Page</title>
+<!--
+	This example created for PDFObject.com by Philip Hutchison (www.pipwerks.com)
+	Copyright 2020, MIT-style license http://pipwerks.mit-license.org/
+	Documentation available at http://pdfobject.com
+	Source code available at https://github.com/pipwerks/PDFObject
+-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Peralta" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,700" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism.min.css" />
+<link rel="stylesheet" href="../css/site.css" />
+
+<style>
+h3 { margin-top: 3rem; }
+main { max-width: 100%; padding: 4rem;}
+.pdf { height: 30rem; border: 1rem solid rgba(0,0,0,.1); }
+
+.pdf embed,
+.pdf object,
+.pdf iframe  {
+    display: block;
+    height: 100%;
+    background: #fff;
+}
+
+iframe { -webkit-overflow-scrolling: touch; overflow-y: scroll; }
+</style>
+</head>
+
+<body>
+<main>
+<h1>Static Embed Test Page</h1>
+<p>PDFs can be embedded into HTML pages without using JavaScript. Below are four examples of the most common techniques.</p>
+<p>This page can be used to test whether a particular browser renders PDFs correctly. As of Fall 2020, these examples work in all modern desktop browsers, but fail in all mobile browsers.</p>
+
+<section>
+    <h3>Your system</h3>
+    <p><b>navigator.platform:</b> <code class="platform"></code></p>
+    <p><b>navigator.userAgent:</b> <code class="user-agent"></code></p>
+    <p><b>Is mobile device?</b> <code class="is-mobile"></code></p>
+</section>
+
+<section class="static-pdf-example">
+    <h3><code>&lt;embed&gt;</code></h3>
+    <p>The <code>&lt;embed></code> element became an official part of the HTML specification with HTML5. All HTML5-compliant browsers&mdash;all 'modern' browsers&mdash;officially support the <code>&lt;embed></code> element. Older browsers also offer surprisingly robust (though sometimes unofficial) support for <code>&lt;embed></code>. Because of its wide support, PDFObject uses JavaScript to insert <code>&lt;embed></code> elements on the page. Unfortunately, when used in static markup, the <code>&lt;embed></code> element doesn't provide a mechanism for fallback content. If the browser doesn't support PDF embedding, which still happens frequently with browsers on mobile devices, the end-user will see nothing.</p>
+    <div class="container">
+        <div class="pdf"><embed src="../pdf/sample-3pp.pdf" type="application/pdf" width="100%" height="100%" /></div>
+    </div><!-- /container -->
+</section>
+
+<section class="static-pdf-example">
+    <h3><code>&lt;iframe&gt;</code></h3>
+    <p>The <code>&lt;iframe></code> approach is very widely supported and one of the easiest ways to embed a PDF. However, an <code>&lt;iframe></code> may not provide adequate fallback content in the unlikely event that PDF rendering is not supported by the browser.</p>
+    <div class="container">
+        <div class="pdf"><iframe src="../pdf/sample-3pp.pdf" width="100%" height="100%">
+This browser does not support PDFs. Please download the PDF to view it: 
+<a href="../pdf/sample-3pp.pdf">Download PDF</a></iframe></div>
+    </div><!-- /container -->
+</section>
+
+<section class="static-pdf-example">
+    <h3><code>&lt;object&gt;</code></h3>
+    <p>Unlike <code>&lt;embed&gt;</code>, the <code>&lt;object></code> element enables you to leave fallback content if the browser doesn't support PDF embedding. All browsers support the <code>&lt;object></code> element, however, there are often discrepancies in how it has been implemented in each browser. Be sure to throughly test your page(s) across browsers and operating systems if you use the <code>&lt;object></code> element.</p>
+    <div class="container">
+        <div class="pdf"><object data="../pdf/sample-3pp.pdf" type="application/pdf" width="100%" height="100%">
+<p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it: 
+<a href="../pdf/sample-3pp.pdf">Download PDF</a>.</p>
+</object></div>
+    </div><!-- /container -->
+</section>
+
+<section class="static-pdf-example">
+    <h3><code>&lt;object&gt;&lt;iframe&gt;&lt;/object&gt;</code></h3>
+    <p>Using an <code>&lt;object></code> with an <code>&lt;iframe></code> provides extra insurance if <code>&lt;object></code> is not supported.</p>
+    <div class="container">
+        <div class="pdf"><object data="../pdf/sample-3pp.pdf" type="application/pdf" width="100%" height="100%">
+    <iframe src="../pdf/sample-3pp.pdf" width="100%" height="100%" style="border: none;">
+    This browser does not support PDFs. Please download the PDF to view it: <a href="../pdf/sample-3pp.pdf">Download PDF</a>
+    </iframe>
+</object></div>
+    </div><!-- /container -->
+</section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js"></script>
+<script>
+
+(function (){
+
+    "use strict";
+
+    //Copy each example's actual markup and display on-page with syntax highlighting
+    var examples = document.querySelectorAll(".static-pdf-example");
+
+    //Grab markup
+    examples.forEach(function (el){
+
+        var markup = document.createElement("div");
+        markup.className = "markup";
+        var html = el.querySelector(".pdf").innerHTML;
+        html = html.replace(/</g, "&lt;");
+        markup.innerHTML = "<pre><code class='language-html'>" + html + "</code></pre>";
+        el.querySelector(".container").appendChild(markup);
+
+    });
+
+    document.querySelector(".platform").innerHTML = navigator.platform;
+    document.querySelector(".user-agent").innerHTML = navigator.userAgent;
+    document.querySelector(".is-mobile").innerHTML = /Mobi|Tablet|Android|iPad|iPhone/.test(navigator.userAgent) + "";
+
+    //Apply syntax highlighting
+    if(typeof prism !== "undefined"){
+        prism.highlightAll();
+    }
+
+})();
+
+</script>
+</body>
+</html>
