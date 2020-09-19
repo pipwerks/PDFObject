@@ -11,10 +11,10 @@
  */
 
 (function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
+    if (typeof define === "function" && define.amd) {
         // AMD. Register as an anonymous module.
         define([], factory);
-    } else if (typeof module === 'object' && module.exports) {
+    } else if (typeof module === "object" && module.exports) {
         // Node. Does not work with strict CommonJS, but
         // only CommonJS-like environments that support module.exports,
         // like Node.
@@ -57,11 +57,11 @@
         isModernBrowser = (typeof window.Promise !== "undefined"),
 
         //Older browsers still expose the mimeType
-        supportsPdfMimeType = (typeof nav.mimeTypes['application/pdf'] !== "undefined"),
+        supportsPdfMimeType = (typeof nav.mimeTypes["application/pdf"] !== "undefined"),
 
         //Safari on iPadOS doesn't report as 'mobile' when requesting desktop site, yet still fails to embed PDFs
         isSafariIOS = ( typeof nav.platform !== "undefined" && 
-                        nav.platform === 'MacIntel' && 
+                        nav.platform === "MacIntel" && 
                         typeof nav.maxTouchPoints !== "undefined" && 
                         nav.maxTouchPoints > 1 ),
 
@@ -193,7 +193,7 @@
 
         var fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
 
-        var iframe = document.createElement('iframe');
+        var iframe = document.createElement("iframe");
         iframe.src = fullURL;
         iframe.id = id;
         iframe.className = "pdfobject";
@@ -201,7 +201,7 @@
         iframe.style = "border: none; width: 100%; height: 100%;";
         iframe.frameborder = "0";
 
-        var div = document.createElement('div');
+        var div = document.createElement("div");
         div.style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0;";
         div.appendChild(iframe);
 
