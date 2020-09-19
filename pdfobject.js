@@ -43,6 +43,8 @@
         isSafariOsx,
         supportsPdfMimeType = (typeof navigator.mimeTypes !== "undefined" && typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
         supportsPdfActiveX,
+        
+        isMobileDevice = /Mobi|Tablet|Android|iPad|iPhone/.test(navigator.userAgent),
         isModernBrowser = (function (){ return (typeof window.Promise !== "undefined"); })(),
         isFirefox = (function (){ return (ua.indexOf("irefox") !== -1); } )(),
         isFirefoxWithPDFJS = (function (){
@@ -53,7 +55,7 @@
             //ex: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0
             return (parseInt(ua.split("rv:")[1].split(".")[0], 10) > 18);
         })(),
-        isIOS = (function (){ return (/iphone|ipad|ipod/i.test(ua.toLowerCase())); })(),
+
 
         //declare functions
         createAXO,
@@ -92,7 +94,7 @@
 
     // Detect desktop Safari
     isSafariOsx = (
-        !isIOS &&
+        !isMobileDevice &&
         navigator.vendor && navigator.vendor.indexOf('Apple') !== -1 &&
         navigator.userAgent && navigator.userAgent.indexOf('Safari') !== -1
     );
@@ -103,10 +105,8 @@
 
     //Determines whether PDF support is available
     supportsPDFs = (
-        //as of iOS 12, inline PDF rendering is still not supported in Safari or native webview
-        //3rd-party browsers (eg Chrome, Firefox) use Apple's webview for rendering, and thus the same result as Safari
-        //Therefore if iOS, we shall assume that PDF support is not available
-        !isIOS && (
+        //As of Sept 2020 no mobile browsers properly support PDF embeds
+        !isMobileDevice && (
             //Modern versions of Firefox come bundled with PDFJS
             isFirefoxWithPDFJS ||
             //Browsers that still support the original MIME type check
@@ -200,8 +200,7 @@
     generatePDFJSiframe = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id){
 
         var fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
-        var scrollfix = (isIOS) ? "-webkit-overflow-scrolling: touch; overflow-y: scroll; " : "overflow: hidden; ";
-        var iframe = "<div style='" + scrollfix + "position: absolute; top: 0; right: 0; bottom: 0; left: 0;'><iframe  " + id + " src='" + fullURL + "' style='border: none; width: 100%; height: 100%;' frameborder='0'></iframe></div>";
+        var iframe = "<div style='" + "position: absolute; top: 0; right: 0; bottom: 0; left: 0;'><iframe  " + id + " src='" + fullURL + "' style='border: none; width: 100%; height: 100%;' frameborder='0'></iframe></div>";
         appendTargetClassName(targetNode);
         targetNode.style.position = "relative";
         targetNode.style.overflow = "auto";
@@ -290,8 +289,8 @@
 
             return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
 
-        //If traditional support is provided, or if this is a modern browser and not iOS (see comment for supportsPDFs declaration)
-        } else if(supportsPDFs || (assumptionMode && isModernBrowser && !isIOS)){
+        //If traditional support is provided, or if this is a modern browser and not a mobile device
+        } else if(supportsPDFs || (assumptionMode && isModernBrowser && !isMobileDevice)){
 
             // Safari will not honour redirect responses on embed src.
             if (supportRedirect && isSafariOsx) {
