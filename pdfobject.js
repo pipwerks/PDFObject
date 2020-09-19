@@ -32,30 +32,49 @@
     //Will choke on undefined navigator and window vars when run on server
     //Return boolean false and exit function when running server-side
 
-    if(typeof window === "undefined" || typeof navigator === "undefined"){ return false; }
+    if( typeof window === "undefined" || 
+        typeof window.navigator === "undefined" || 
+        typeof window.navigator.userAgent === "undefined" || 
+        typeof window.navigator.mimeTypes === "undefined"){ 
+            
+            return false;
+
+    }
 
     var pdfobjectversion = "2.1.1",
+    
+        nav = window.navigator,
         ua = window.navigator.userAgent,
 
         //declare booleans
-        supportsPDFs,
         isIE,
-        isSafariOsx,
-        supportsPdfMimeType = (typeof navigator.mimeTypes !== "undefined" && typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
         supportsPdfActiveX,
-        
-        isMobileDevice = /Mobi|Tablet|Android|iPad|iPhone/.test(navigator.userAgent),
-        isModernBrowser = (function (){ return (typeof window.Promise !== "undefined"); })(),
-        isFirefox = (function (){ return (ua.indexOf("irefox") !== -1); } )(),
-        isFirefoxWithPDFJS = (function (){
-            //Firefox started shipping PDF.js in Firefox 19.
-            //If this is Firefox 19 or greater, assume PDF.js is available
-            if(!isFirefox){ return false; }
-            //parse userAgent string to get release version ("rv")
-            //ex: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0
-            return (parseInt(ua.split("rv:")[1].split(".")[0], 10) > 18);
-        })(),
+        supportsPDFs,
 
+        //Time to jump through hoops -- browser vendors do not make it easy to detect PDF support.
+
+        //There is a coincidental correlation between implementation of window.promises and native PDF support
+        isModernBrowser = (typeof window.Promise !== "undefined"),
+
+        //Older browsers still expose the mimeType
+        supportsPdfMimeType = (typeof nav.mimeTypes['application/pdf'] !== "undefined"),
+
+        //Safari on iPadOS doesn't report as 'mobile' when requesting desktop site, yet still fails to embed PDFs
+        isSafariIOS = ( typeof nav.platform !== "undefined" && 
+                        nav.platform === 'MacIntel' && 
+                        typeof nav.maxTouchPoints !== "undefined" && 
+                        nav.maxTouchPoints > 1 ),
+
+        //Quick test for mobile devices.
+        isMobileDevice = (isSafariIOS || /Mobi|Tablet|Android|iPad|iPhone/.test(ua)),
+
+        //Safari desktop requires special handling 
+        isSafariDesktop = ( !isMobileDevice && 
+                            typeof nav.vendor !== "undefined" && 
+                            /Apple/.test(nav.vendor) && /Safari/.test(ua) ),
+        
+        //Firefox started shipping PDF.js in Firefox 19. If this is Firefox 19 or greater, assume PDF.js is available
+        isFirefoxWithPDFJS = (!isMobileDevice && /irefox/.test(ua)) ? (parseInt(ua.split("rv:")[1].split(".")[0], 10) > 18) : false,
 
         //declare functions
         createAXO,
@@ -88,16 +107,9 @@
     //window.ActiveXObject the same way previous versions of IE did
     //window.ActiveXObject will evaluate to false in IE 11, but "ActiveXObject" in window evaluates to true
     //so check the first one for older IE, and the second for IE11
-    //FWIW, MS Edge (replacing IE11) does not support ActiveX at all, both will evaluate false
+    //MS Edge does not support ActiveX at all, both will evaluate false
     //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
     isIE = function (){ return !!(window.ActiveXObject || "ActiveXObject" in window); };
-
-    // Detect desktop Safari
-    isSafariOsx = (
-        !isMobileDevice &&
-        navigator.vendor && navigator.vendor.indexOf('Apple') !== -1 &&
-        navigator.userAgent && navigator.userAgent.indexOf('Safari') !== -1
-    );
 
     //If either ActiveX support for "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
     //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
@@ -110,10 +122,9 @@
             //Modern versions of Firefox come bundled with PDFJS
             isFirefoxWithPDFJS ||
             //Browsers that still support the original MIME type check
-            supportsPdfMimeType || (
-                //Pity the poor souls still using IE
-                isIE() && supportsPdfActiveX()
-            )
+            supportsPdfMimeType ||
+            //Pity the poor souls still using IE
+            (isIE() && supportsPdfActiveX())
         )
     );
 
@@ -293,7 +304,7 @@
         } else if(supportsPDFs || (assumptionMode && isModernBrowser && !isMobileDevice)){
 
             // Safari will not honour redirect responses on embed src.
-            if (supportRedirect && isSafariOsx) {
+            if (supportRedirect && isSafariDesktop) {
                 return generateIframeElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
             }
 
