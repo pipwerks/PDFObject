@@ -82,7 +82,6 @@
         embedError,
         embed,
         getTargetElement,
-        appendTargetClassName,
         generatePDFJSiframe,
         generateEmbedElement,
         generateIframeElement;
@@ -191,16 +190,6 @@
 
     };
 
-    appendTargetClassName = function (targetNode) { 
-        // Use classList if we don't need IE9 support
-        var classToAppend = "pdfobject-container";
-        var classes = targetNode.className.split(/\s+/);
-        if (classes.indexOf(classToAppend) === -1) {
-            classes.push(classToAppend);
-            targetNode.className = classes.join(' ');
-        }
-    }
-
     generatePDFJSiframe = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id){
 
         var fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
@@ -217,7 +206,7 @@
         div.style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0;";
         div.appendChild(iframe);
 
-        appendTargetClassName(targetNode);
+        targetNode.classList.add("pdfobject-container");
         targetNode.style.position = "relative";
         targetNode.style.overflow = "auto";        
         targetNode.appendChild(div);
@@ -236,8 +225,6 @@
             style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
         }
 
-        appendTargetClassName(targetNode); 
-
         var embed = document.createElement('embed');
         embed.src = url + pdfOpenFragment;
         embed.id = id;
@@ -245,6 +232,7 @@
         embed.type = "application/pdf";
         embed.style = style;
 
+        targetNode.classList.add("pdfobject-container");
         targetNode.appendChild(embed);
 
         return targetNode.getElementsByTagName("embed")[0];
@@ -261,8 +249,6 @@
             style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
         }
 
-        appendTargetClassName(targetNode); 
-
         var iframe = document.createElement('iframe');
         iframe.src = url + pdfOpenFragment;
         iframe.id = id;
@@ -270,6 +256,7 @@
         iframe.type = "application/pdf";
         iframe.style = style;
 
+        targetNode.classList.add("pdfobject-container");
         targetNode.appendChild(iframe);
 
         return targetNode.getElementsByTagName("iframe")[0];
