@@ -34,6 +34,7 @@ iframe { -webkit-overflow-scrolling: touch; overflow-y: scroll; }
 
 <body>
 <main>
+<p><a href="/">Return to PDFObject.com</a></p>
 <h1>Static Embed Test Page</h1>
 <p>PDFs can be embedded into HTML pages without using JavaScript. Below are four examples of the most common techniques.</p>
 <p>This page can be used to test whether a particular browser renders PDFs correctly. As of Fall 2020, these examples work in all modern desktop browsers, but fail in all mobile browsers.</p>
@@ -94,7 +95,12 @@ This browser does not support PDFs. Please download the PDF to view it:
 
     "use strict";
 
-    //Copy each example's actual markup and display on-page with syntax highlighting
+    //NodeList.forEach polyfill for IE11. Sigh.
+    if (window.NodeList && !NodeList.prototype.forEach) {
+        NodeList.prototype.forEach = Array.prototype.forEach;
+    }
+    
+    //Copy each example's markup and display on-page with syntax highlighting
     var examples = document.querySelectorAll(".static-pdf-example");
 
     //Grab markup

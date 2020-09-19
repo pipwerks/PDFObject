@@ -3,14 +3,9 @@
 
 (function (){
 
-//Inform the visitor whether their browser supports PDF embedding
-document.querySelector(".pdf-support").innerHTML = (PDFObject.supportsPDFs) ? "supports" : "does not support";
-document.querySelector(".qualitative-statement").innerHTML = (PDFObject.supportsPDFs) ? "You lucky dog, you!" : "Sad pandas.";
+//Polyfills for IE11. Sigh. 
 
-//auto-append deep links to section headings
-//Polyfill for older browsers: https://developer.mozilla.org/en-US/docs/Web/API/Element/closest
-if (!Element.prototype.matches) Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
-
+//https://developer.mozilla.org/en-US/docs/Web/API/Element/closest
 if (!Element.prototype.closest) {
     Element.prototype.closest = function(s) {
         var el = this;
@@ -23,6 +18,16 @@ if (!Element.prototype.closest) {
     };
 }
 
+//https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
+if (window.NodeList && !NodeList.prototype.forEach) {
+    NodeList.prototype.forEach = Array.prototype.forEach;
+}
+
+//Inform the visitor whether their browser supports PDF embedding
+document.querySelector(".pdf-support").innerHTML = (PDFObject.supportsPDFs) ? "supports" : "does not support";
+document.querySelector(".qualitative-statement").innerHTML = (PDFObject.supportsPDFs) ? "You lucky dog, you!" : "Sad pandas.";
+
+//auto-append deep links to section headings
 var h2s = document.querySelectorAll("section h2");
 h2s.forEach(function (i){
     var id = i.closest("section").id;

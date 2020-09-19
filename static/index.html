@@ -146,7 +146,12 @@ This browser does not support PDFs. Please download the PDF to view it:
 
     "use strict";
 
-    //Copy each example's actual markup and display on-page with syntax highlighting
+    //NodeList.forEach polyfill for IE11. Sigh.
+    if (window.NodeList && !NodeList.prototype.forEach) {
+        NodeList.prototype.forEach = Array.prototype.forEach;
+    }
+    
+    //Copy each example's markup and display on-page with syntax highlighting
     var examples = document.querySelectorAll(".static-pdf-example");
 
     //Grab markup
