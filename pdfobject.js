@@ -2,7 +2,7 @@
 //jshint unused:false, strict: false
 
 /**
- *  PDFObject v2.2
+ *  PDFObject v2.2.0
  *  https://github.com/pipwerks/PDFObject
  *  @license
  *  Copyright (c) 2008-2020 Philip Hutchison
@@ -41,7 +41,7 @@
 
     }
 
-    var pdfobjectversion = "2.1.1",
+    var pdfobjectversion = "2.2.0",
     
         nav = window.navigator,
         ua = window.navigator.userAgent,
