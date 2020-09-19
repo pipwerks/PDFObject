@@ -32,13 +32,11 @@
     //Will choke on undefined navigator and window vars when run on server
     //Return boolean false and exit function when running server-side
 
-    if( typeof window === "undefined" || 
-        typeof window.navigator === "undefined" || 
-        typeof window.navigator.userAgent === "undefined" || 
-        typeof window.navigator.mimeTypes === "undefined"){ 
-            
+    if( window === undefined || 
+        window.navigator === undefined || 
+        window.navigator.userAgent === undefined || 
+        window.navigator.mimeTypes === undefined){ 
             return false;
-
     }
 
     var pdfobjectversion = "2.2.0",
@@ -54,15 +52,15 @@
         //Time to jump through hoops -- browser vendors do not make it easy to detect PDF support.
 
         //There is a coincidental correlation between implementation of window.promises and native PDF support
-        isModernBrowser = (typeof window.Promise !== "undefined"),
+        isModernBrowser = (window.Promise !== undefined),
 
         //Older browsers still expose the mimeType
-        supportsPdfMimeType = (typeof nav.mimeTypes["application/pdf"] !== "undefined"),
+        supportsPdfMimeType = (nav.mimeTypes["application/pdf"] !== undefined),
 
         //Safari on iPadOS doesn't report as 'mobile' when requesting desktop site, yet still fails to embed PDFs
-        isSafariIOS = ( typeof nav.platform !== "undefined" && 
+        isSafariIOS = ( nav.platform !== undefined && 
                         nav.platform === "MacIntel" && 
-                        typeof nav.maxTouchPoints !== "undefined" && 
+                        nav.maxTouchPoints !== undefined && 
                         nav.maxTouchPoints > 1 ),
 
         //Quick test for mobile devices.
@@ -70,8 +68,9 @@
 
         //Safari desktop requires special handling 
         isSafariDesktop = ( !isMobileDevice && 
-                            typeof nav.vendor !== "undefined" && 
-                            /Apple/.test(nav.vendor) && /Safari/.test(ua) ),
+                            nav.vendor !== undefined && 
+                            /Apple/.test(nav.vendor) && 
+                            /Safari/.test(ua) ),
         
         //Firefox started shipping PDF.js in Firefox 19. If this is Firefox 19 or greater, assume PDF.js is available
         isFirefoxWithPDFJS = (!isMobileDevice && /irefox/.test(ua)) ? (parseInt(ua.split("rv:")[1].split(".")[0], 10) > 18) : false,
@@ -173,12 +172,12 @@
             //Is CSS selector
             targetNode = document.querySelector(targetSelector);
 
-        } else if (typeof jQuery !== "undefined" && targetSelector instanceof jQuery && targetSelector.length) {
+        } else if (jQuery !== undefined && targetSelector instanceof jQuery && targetSelector.length) {
 
             //Is jQuery element. Extract HTML node
             targetNode = targetSelector.get(0);
 
-        } else if (typeof targetSelector.nodeType !== "undefined" && targetSelector.nodeType === 1){
+        } else if (targetSelector.nodeType !== undefined && targetSelector.nodeType === 1){
 
             //Is HTML element
             targetNode = targetSelector;
@@ -244,23 +243,23 @@
         if(typeof url !== "string"){ return embedError("URL is not valid"); }
 
         //If targetSelector is not defined, convert to boolean
-        targetSelector = (typeof targetSelector !== "undefined") ? targetSelector : false;
+        var selector = targetSelector || false;
 
         //Ensure options object is not undefined -- enables easier error checking below
-        options = (typeof options !== "undefined") ? options : {};
+        var opt = options || {};
 
         //Get passed options, or set reasonable defaults
-        var id = (options.id && typeof options.id === "string") ? "id='" + options.id + "'" : "",
-            page = (options.page) ? options.page : false,
-            pdfOpenParams = (options.pdfOpenParams) ? options.pdfOpenParams : {},
-            fallbackLink = (typeof options.fallbackLink !== "undefined") ? options.fallbackLink : true,
-            width = (options.width) ? options.width : "100%",
-            height = (options.height) ? options.height : "100%",
-            assumptionMode = (typeof options.assumptionMode === "boolean") ? options.assumptionMode : true,
-            forcePDFJS = (typeof options.forcePDFJS === "boolean") ? options.forcePDFJS : false,
-            supportRedirect = (typeof options.supportRedirect === "boolean") ? options.supportRedirect : false,
-            PDFJS_URL = (options.PDFJS_URL) ? options.PDFJS_URL : false,
-            targetNode = getTargetElement(targetSelector),
+        var id = (opt.id && typeof opt.id === "string") ? "id='" + opt.id + "'" : "",
+            page = opt.page || false,
+            pdfOpenParams = opt.pdfOpenParams || {},
+            fallbackLink = opt.fallbackLink || true,
+            width = opt.width || "100%",
+            height = opt.height || "100%",
+            assumptionMode = (typeof opt.assumptionMode === "boolean") ? opt.assumptionMode : true,
+            forcePDFJS = (typeof opt.forcePDFJS === "boolean") ? opt.forcePDFJS : false,
+            supportRedirect = (typeof opt.supportRedirect === "boolean") ? opt.supportRedirect : false,
+            PDFJS_URL = opt.PDFJS_URL || false,
+            targetNode = getTargetElement(selector),
             fallbackHTML = "",
             pdfOpenFragment = "",
             fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href='[url]'>Download PDF</a></p>";
