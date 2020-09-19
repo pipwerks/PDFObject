@@ -204,27 +204,48 @@
     generatePDFJSiframe = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id){
 
         var fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
-        var iframe = "<div style='" + "position: absolute; top: 0; right: 0; bottom: 0; left: 0;'><iframe  " + id + " src='" + fullURL + "' style='border: none; width: 100%; height: 100%;' frameborder='0'></iframe></div>";
+
+        var iframe = document.createElement('iframe');
+        iframe.src = fullURL;
+        iframe.id = id;
+        iframe.className = "pdfobject";
+        iframe.type = "application/pdf";
+        iframe.style = "border: none; width: 100%; height: 100%;";
+        iframe.frameborder = "0";
+
+        var div = document.createElement('div');
+        div.style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0;";
+        div.appendChild(iframe);
+
         appendTargetClassName(targetNode);
         targetNode.style.position = "relative";
-        targetNode.style.overflow = "auto";
-        targetNode.innerHTML = iframe;
+        targetNode.style.overflow = "auto";        
+        targetNode.appendChild(div);
+        
         return targetNode.getElementsByTagName("iframe")[0];
 
     };
 
     generateEmbedElement = function (targetNode, targetSelector, url, pdfOpenFragment, width, height, id){
 
-        var style = "";
+        var style = "overflow: auto;";
 
         if(targetSelector && targetSelector !== document.body){
-            style = "width: " + width + "; height: " + height + ";";
+            style += "width: " + width + "; height: " + height + ";";
         } else {
-            style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
+            style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
         }
 
-        appendTargetClassName(targetNode);
-        targetNode.innerHTML = "<embed " + id + " class='pdfobject' src='" + url + pdfOpenFragment + "' type='application/pdf' style='overflow: auto; " + style + "'/>";
+        appendTargetClassName(targetNode); 
+
+        var embed = document.createElement('embed');
+        embed.src = url + pdfOpenFragment;
+        embed.id = id;
+        embed.className = "pdfobject";
+        embed.type = "application/pdf";
+        embed.style = style;
+
+        targetNode.appendChild(embed);
 
         return targetNode.getElementsByTagName("embed")[0];
 
@@ -232,16 +253,24 @@
 
     generateIframeElement = function (targetNode, targetSelector, url, pdfOpenFragment, width, height, id){
 
-        var style = "";
+        var style = "border: none;";
 
         if(targetSelector && targetSelector !== document.body){
-            style = "width: " + width + "; height: " + height + ";";
+            style += "width: " + width + "; height: " + height + ";";
         } else {
-            style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
+            style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
         }
 
-        targetNode.className += " pdfobject-container";
-        targetNode.innerHTML = "<iframe " + id + " class='pdfobject' src='" + url + pdfOpenFragment + "' type='application/pdf' style='border: none; " + style + "'/>";
+        appendTargetClassName(targetNode); 
+
+        var iframe = document.createElement('iframe');
+        iframe.src = url + pdfOpenFragment;
+        iframe.id = id;
+        iframe.className = "pdfobject";
+        iframe.type = "application/pdf";
+        iframe.style = style;
+
+        targetNode.appendChild(iframe);
 
         return targetNode.getElementsByTagName("iframe")[0];
 
