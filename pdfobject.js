@@ -83,8 +83,7 @@
         embed,
         getTargetElement,
         generatePDFJSiframe,
-        generateEmbedElement,
-        generateIframeElement;
+        generateEmbedElement;
 
 
     /* ----------------------------------------------------
@@ -215,9 +214,9 @@
 
     };
 
-    generateEmbedElement = function (targetNode, targetSelector, url, pdfOpenFragment, width, height, id){
+    generateEmbedElement = function (embedType, targetNode, targetSelector, url, pdfOpenFragment, width, height, id){
 
-        var style = "overflow: auto;";
+        var style = (embedType === "embed") ? "overflow: auto;" : "border: none;";
 
         if(targetSelector && targetSelector !== document.body){
             style += "width: " + width + "; height: " + height + ";";
@@ -225,7 +224,7 @@
             style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
         }
 
-        var embed = document.createElement('embed');
+        var embed = document.createElement(embedType);
         embed.src = url + pdfOpenFragment;
         embed.id = id;
         embed.className = "pdfobject";
@@ -235,31 +234,7 @@
         targetNode.classList.add("pdfobject-container");
         targetNode.appendChild(embed);
 
-        return targetNode.getElementsByTagName("embed")[0];
-
-    };
-
-    generateIframeElement = function (targetNode, targetSelector, url, pdfOpenFragment, width, height, id){
-
-        var style = "border: none;";
-
-        if(targetSelector && targetSelector !== document.body){
-            style += "width: " + width + "; height: " + height + ";";
-        } else {
-            style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
-        }
-
-        var iframe = document.createElement('iframe');
-        iframe.src = url + pdfOpenFragment;
-        iframe.id = id;
-        iframe.className = "pdfobject";
-        iframe.type = "application/pdf";
-        iframe.style = style;
-
-        targetNode.classList.add("pdfobject-container");
-        targetNode.appendChild(iframe);
-
-        return targetNode.getElementsByTagName("iframe")[0];
+        return targetNode.getElementsByTagName(embedType)[0];
 
     };
 
@@ -314,10 +289,10 @@
 
             // Safari will not honour redirect responses on embed src.
             if (supportRedirect && isSafariDesktop) {
-                return generateIframeElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
+                return generateEmbedElement("iframe", targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
             }
 
-            return generateEmbedElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
+            return generateEmbedElement("embed", targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
 
         //If everything else has failed and a PDFJS fallback is provided, try to use it
         } else if(PDFJS_URL){
