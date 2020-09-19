@@ -79,7 +79,6 @@
         //declare functions
         createAXO,
         buildFragmentString,
-        log,
         embedError,
         embed,
         getTargetElement,
@@ -158,14 +157,8 @@
 
     };
 
-    log = function (msg){
-        if(typeof console !== "undefined" && console.log){
-            console.log("[PDFObject] " + msg);
-        }
-    };
-
     embedError = function (msg){
-        log(msg);
+        console.log("[PDFObject] " + msg);
         return false;
     };
 
@@ -198,7 +191,7 @@
 
     };
 
-    appendTargetClassName = function (targetNode) {
+    appendTargetClassName = function (targetNode) { 
         // Use classList if we don't need IE9 support
         var classToAppend = "pdfobject-container";
         var classes = targetNode.className.split(/\s+/);
