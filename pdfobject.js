@@ -176,7 +176,7 @@
 
     };
 
-    let generatePDFJSiframe = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles){
+    let generatePDFJSMarkup = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles){
 
         let fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
         let div = document.createElement("div");
@@ -203,7 +203,7 @@
 
     };
 
-    let generateEmbedElement = function (embedType, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles){
+    let generatePDFObjectMarkup = function (embedType, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles){
 
         let embed = document.createElement(embedType);
         embed.src = url + pdfOpenFragment;
@@ -276,7 +276,7 @@
 
         //If the forcePDFJS option is invoked, skip everything else and embed as directed
         if(forcePDFJS && PDFJS_URL){
-            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles);
+            return generatePDFJSMarkup(targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles);
         }
  
         // --== Embed attempt #2 ==--
@@ -291,18 +291,18 @@
             //Redirect appears to work fine when using <iframe> instead of <embed> (Addresses issue #210)
             let embedtype = (forceIframe || (supportRedirect && isSafariDesktop)) ? "iframe" : "embed";
             
-            return generateEmbedElement(embedtype, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles);
+            return generatePDFObjectMarkup(embedtype, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles);
 
         }
         
         // --== Embed attempt #3 ==--
-
+        
         //If everything else has failed and a PDFJS fallback is provided, try to use it
         if(PDFJS_URL){
-            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles);
+            return generatePDFJSMarkup(targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles);
         }
         
-        // --== EMBED FAILED! use fallback ==-- 
+        // --== PDF embed not supported! Use fallback ==-- 
 
         //Display the fallback link if available
         if(fallbackLink){
