@@ -252,6 +252,7 @@
         let supportRedirect = (typeof opt.supportRedirect === "boolean") ? opt.supportRedirect : false;
         let omitInlineStyles = (typeof opt.omitInlineStyles === "boolean") ? opt.omitInlineStyles : false;
         let suppressConsole = (typeof opt.suppressConsole === "boolean") ? opt.suppressConsole : false;
+        let forceIframe = (typeof opt.forceIframe === "boolean") ? opt.forceIframe : false;
         let PDFJS_URL = opt.PDFJS_URL || false;
         let targetNode = getTargetElement(selector);
         let fallbackHTML = "";
@@ -270,41 +271,48 @@
         //Stringify optional Adobe params for opening document (as fragment identifier)
         pdfOpenFragment = buildURLFragmentString(pdfOpenParams);
 
-        //Do the dance
+
+        // --== Do the dance: Embed attempt #1 ==--
 
         //If the forcePDFJS option is invoked, skip everything else and embed as directed
         if(forcePDFJS && PDFJS_URL){
-
             return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles);
+        }
+ 
+        // --== Embed attempt #2 ==--
 
-        //If traditional support is provided, or if this is a modern browser and not a mobile device
-        } else if(supportsPDFs || (assumptionMode && isModernBrowser && !isMobileDevice)){
-
-            // Safari will not honour redirect responses on embed src.
-            if (supportRedirect && isSafariDesktop) {
-                return generateEmbedElement("iframe", targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles);
-            }
-
-            return generateEmbedElement("embed", targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles);
-
-        //If everything else has failed and a PDFJS fallback is provided, try to use it
-        } else if(PDFJS_URL){
-
-            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles);
-
-        } else {
-
-            //Display the fallback link if available
-            if(fallbackLink){
-
-                fallbackHTML = (typeof fallbackLink === "string") ? fallbackLink : fallbackHTML_default;
-                targetNode.innerHTML = fallbackHTML.replace(/\[url\]/g, url);
-
-            }
-
-            return embedError("This browser does not support embedded PDFs", suppressConsole);
+        //Embed PDF if traditional support is provided, or if this developer is willing to roll with assumption
+        //that modern desktop (not mobile) browsers natively support PDFs 
+        if(supportsPDFs || (assumptionMode && isModernBrowser && !isMobileDevice)){
+            
+            //Should we use <embed> or <iframe>? In most cases <embed>. 
+            //Allow developer to force <iframe>, if desired
+            //There is an edge case where Safari does not respect 302 redirect requests for PDF files when using <embed> element.
+            //Redirect appears to work fine when using <iframe> instead of <embed> (Addresses issue #210)
+            let embedtype = (forceIframe || (supportRedirect && isSafariDesktop)) ? "iframe" : "embed";
+            
+            return generateEmbedElement(embedtype, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles);
 
         }
+        
+        // --== Embed attempt #3 ==--
+
+        //If everything else has failed and a PDFJS fallback is provided, try to use it
+        if(PDFJS_URL){
+            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles);
+        }
+        
+        // --== EMBED FAILED! use fallback ==-- 
+
+        //Display the fallback link if available
+        if(fallbackLink){
+
+            fallbackHTML = (typeof fallbackLink === "string") ? fallbackLink : fallbackHTML_default;
+            targetNode.innerHTML = fallbackHTML.replace(/\[url\]/g, url);
+
+        }
+
+        return embedError("This browser does not support embedded PDFs", suppressConsole);
 
     };
 
