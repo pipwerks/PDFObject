@@ -166,7 +166,7 @@
             //Is CSS selector
             targetNode = document.querySelector(targetSelector);
 
-        } else if (jQuery !== undefined && targetSelector instanceof jQuery && targetSelector.length) {
+        } else if (window.jQuery !== undefined && targetSelector instanceof jQuery && targetSelector.length) {
 
             //Is jQuery element. Extract HTML node
             targetNode = targetSelector.get(0);
