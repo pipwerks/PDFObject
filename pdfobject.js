@@ -188,47 +188,54 @@
 
     };
 
-    generatePDFJSiframe = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id){
+    generatePDFJSiframe = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles){
 
         var fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
 
+        var div = document.createElement("div");
         var iframe = document.createElement("iframe");
         iframe.src = fullURL;
         iframe.id = id;
         iframe.className = "pdfobject";
         iframe.type = "application/pdf";
-        iframe.style = "border: none; width: 100%; height: 100%;";
         iframe.frameborder = "0";
 
-        var div = document.createElement("div");
-        div.style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0;";
-        div.appendChild(iframe);
+        if(!omitInlineStyles){
+            div.style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0;";
+            iframe.style = "border: none; width: 100%; height: 100%;";
+            targetNode.style.position = "relative";
+            targetNode.style.overflow = "auto";        
+        }
 
-        targetNode.classList.add("pdfobject-container");
-        targetNode.style.position = "relative";
-        targetNode.style.overflow = "auto";        
+        div.appendChild(iframe);
         targetNode.appendChild(div);
+        targetNode.classList.add("pdfobject-container");
         
         return targetNode.getElementsByTagName("iframe")[0];
 
     };
 
-    generateEmbedElement = function (embedType, targetNode, targetSelector, url, pdfOpenFragment, width, height, id){
-
-        var style = (embedType === "embed") ? "overflow: auto;" : "border: none;";
-
-        if(targetSelector && targetSelector !== document.body){
-            style += "width: " + width + "; height: " + height + ";";
-        } else {
-            style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
-        }
+    generateEmbedElement = function (embedType, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles){
 
         var embed = document.createElement(embedType);
         embed.src = url + pdfOpenFragment;
         embed.id = id;
         embed.className = "pdfobject";
         embed.type = "application/pdf";
-        embed.style = style;
+
+        if(!omitInlineStyles){
+
+            var style = (embedType === "embed") ? "overflow: auto;" : "border: none;";
+
+            if(targetSelector && targetSelector !== document.body){
+                style += "width: " + width + "; height: " + height + ";";
+            } else {
+                style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
+            }
+
+            embed.style = style;
+
+        }
 
         targetNode.classList.add("pdfobject-container");
         targetNode.appendChild(embed);
@@ -258,6 +265,7 @@
             assumptionMode = (typeof opt.assumptionMode === "boolean") ? opt.assumptionMode : true,
             forcePDFJS = (typeof opt.forcePDFJS === "boolean") ? opt.forcePDFJS : false,
             supportRedirect = (typeof opt.supportRedirect === "boolean") ? opt.supportRedirect : false,
+            omitInlineStyles = (typeof opt.omitInlineStyles === "boolean") ? opt.omitInlineStyles : false,
             PDFJS_URL = opt.PDFJS_URL || false,
             targetNode = getTargetElement(selector),
             fallbackHTML = "",
@@ -281,22 +289,22 @@
         //If the forcePDFJS option is invoked, skip everything else and embed as directed
         if(forcePDFJS && PDFJS_URL){
 
-            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
+            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles);
 
         //If traditional support is provided, or if this is a modern browser and not a mobile device
         } else if(supportsPDFs || (assumptionMode && isModernBrowser && !isMobileDevice)){
 
             // Safari will not honour redirect responses on embed src.
             if (supportRedirect && isSafariDesktop) {
-                return generateEmbedElement("iframe", targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
+                return generateEmbedElement("iframe", targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles);
             }
 
-            return generateEmbedElement("embed", targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
+            return generateEmbedElement("embed", targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles);
 
         //If everything else has failed and a PDFJS fallback is provided, try to use it
         } else if(PDFJS_URL){
 
-            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
+            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles);
 
         } else {
 
