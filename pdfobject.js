@@ -277,9 +277,7 @@
 
 
         //page option overrides pdfOpenParams, if found
-        if(page){
-            pdfOpenParams.page = page;
-        }
+        if(page){ pdfOpenParams.page = page; }
 
         //Stringify optional Adobe params for opening document (as fragment identifier)
         pdfOpenFragment = buildFragmentString(pdfOpenParams);
