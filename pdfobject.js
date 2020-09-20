@@ -147,6 +147,12 @@
         return false;
     };
 
+    let emptyNodeContents = function (node){
+        while(node.firstChild){
+            node.removeChild(node.firstChild);
+        }
+    };
+
     let getTargetElement = function (targetSelector){
 
         //Default to body for full-browser PDF
@@ -178,6 +184,9 @@
 
     let generatePDFJSMarkup = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles){
 
+        //Ensure target element is empty first
+        emptyNodeContents(targetNode);
+
         let fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
         let div = document.createElement("div");
         let iframe = document.createElement("iframe");
@@ -204,6 +213,9 @@
     };
 
     let generatePDFObjectMarkup = function (embedType, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles){
+
+        //Ensure target element is empty first
+        emptyNodeContents(targetNode);
 
         let embed = document.createElement(embedType);
         embed.src = url + pdfOpenFragment;
