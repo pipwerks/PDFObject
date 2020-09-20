@@ -41,30 +41,38 @@
 
     var pdfobjectversion = "2.2.0",
     
+        supportsPdfActiveX,
+        supportsPDFs,
         nav = window.navigator,
         ua = window.navigator.userAgent,
 
-        //declare booleans
-        isIE,
-        supportsPdfActiveX,
-        supportsPDFs,
+        /*
+            IE11 still uses ActiveX for Adobe Reader, but IE 11 doesn't expose window.ActiveXObject the same way 
+            previous versions of IE did. window.ActiveXObject will evaluate to false in IE 11, but "ActiveXObject" 
+            in window evaluates to true.
+
+            MS Edge does not support ActiveX so this test will evaluate false
+        */
+        isIE = ("ActiveXObject" in window),
 
         //Time to jump through hoops -- browser vendors do not make it easy to detect PDF support.
 
-        //There is a coincidental correlation between implementation of window.promises and native PDF support
+        //There is a coincidental correlation between implementation of window.promises and native PDF support in desktop browsers
+        //We use this to assume if the browser supports promises it supports embedded PDFs
+        //Is this fragile? Sort of. But browser vendors removed mimetype detection, so we're left to improvise
         isModernBrowser = (window.Promise !== undefined),
 
         //Older browsers still expose the mimeType
         supportsPdfMimeType = (nav.mimeTypes["application/pdf"] !== undefined),
 
         //Safari on iPadOS doesn't report as 'mobile' when requesting desktop site, yet still fails to embed PDFs
-        isSafariIOS = ( nav.platform !== undefined && 
-                        nav.platform === "MacIntel" && 
-                        nav.maxTouchPoints !== undefined && 
-                        nav.maxTouchPoints > 1 ),
+        isSafariIOSDesktopMode = (  nav.platform !== undefined && 
+                                    nav.platform === "MacIntel" && 
+                                    nav.maxTouchPoints !== undefined && 
+                                    nav.maxTouchPoints > 1 ),
 
         //Quick test for mobile devices.
-        isMobileDevice = (isSafariIOS || /Mobi|Tablet|Android|iPad|iPhone/.test(ua)),
+        isMobileDevice = (isSafariIOSDesktopMode || /Mobi|Tablet|Android|iPad|iPhone/.test(ua)),
 
         //Safari desktop requires special handling 
         isSafariDesktop = ( !isMobileDevice && 
@@ -98,14 +106,6 @@
         }
         return ax;
     };
-
-    //IE11 still uses ActiveX for Adobe Reader, but IE 11 doesn't expose
-    //window.ActiveXObject the same way previous versions of IE did
-    //window.ActiveXObject will evaluate to false in IE 11, but "ActiveXObject" in window evaluates to true
-    //so check the first one for older IE, and the second for IE11
-    //MS Edge does not support ActiveX at all, both will evaluate false
-    //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
-    isIE = function (){ return !!(window.ActiveXObject || "ActiveXObject" in window); };
 
     //If either ActiveX support for "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
     //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
