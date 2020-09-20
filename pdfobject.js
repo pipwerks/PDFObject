@@ -1,6 +1,3 @@
-/*global ActiveXObject, window, console, define, module, jQuery */
-//jshint unused:false, strict: false
-
 /**
  *  PDFObject v2.2.0
  *  https://github.com/pipwerks/PDFObject
@@ -26,7 +23,6 @@
 }(this, function () {
 
     "use strict";
-    //jshint unused:true
 
     //PDFObject is designed for client-side (browsers), not server-side (node)
     //Will choke on undefined navigator and window vars when run on server
