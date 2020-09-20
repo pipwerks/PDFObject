@@ -155,7 +155,9 @@
     };
 
     embedError = function (msg){
-        console.log("[PDFObject] " + msg);
+        if(!suppressConsole){
+            console.log("[PDFObject] " + msg);
+        }
         return false;
     };
 
@@ -246,9 +248,6 @@
 
     embed = function(url, targetSelector, options){
 
-        //Ensure URL is available. If not, exit now.
-        if(typeof url !== "string"){ return embedError("URL is not valid"); }
-
         //If targetSelector is not defined, convert to boolean
         var selector = targetSelector || false;
 
@@ -266,15 +265,18 @@
             forcePDFJS = (typeof opt.forcePDFJS === "boolean") ? opt.forcePDFJS : false,
             supportRedirect = (typeof opt.supportRedirect === "boolean") ? opt.supportRedirect : false,
             omitInlineStyles = (typeof opt.omitInlineStyles === "boolean") ? opt.omitInlineStyles : false,
+            suppressConsole = (typeof opt.suppressConsole === "boolean") ? opt.suppressConsole : false,
             PDFJS_URL = opt.PDFJS_URL || false,
             targetNode = getTargetElement(selector),
             fallbackHTML = "",
             pdfOpenFragment = "",
             fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href='[url]'>Download PDF</a></p>";
 
-        //If target element is specified but is not valid, exit without doing anything
-        if(!targetNode){ return embedError("Target element cannot be determined"); }
+        //Ensure URL is available. If not, exit now.
+        if(typeof url !== "string"){ return embedError("URL is not valid", suppressConsole); }
 
+        //If target element is specified but is not valid, exit without doing anything
+        if(!targetNode){ return embedError("Target element cannot be determined", suppressConsole); }
 
         //page option overrides pdfOpenParams, if found
         if(page){ pdfOpenParams.page = page; }
@@ -314,7 +316,7 @@
 
             }
 
-            return embedError("This browser does not support embedded PDFs");
+            return embedError("This browser does not support embedded PDFs", suppressConsole);
 
         }
 
