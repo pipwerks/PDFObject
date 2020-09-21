@@ -1,0 +1,287 @@
+* {
+    box-sizing: border-box;
+}
+
+
+/* Elements */
+
+html {
+    font-size: 15px;
+}
+
+body {
+    font-family: "Roboto Slab", sans-serif;
+    color: #333;
+    font-size: 1rem;
+    line-height: 140%;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+}
+
+#flex-wrapper {
+    display: flex;
+    align-items: flex-start;
+}
+
+b { color: rgba(0,0,0,.66); }
+
+a:link,
+a:visited {
+    color: #0E97EE;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(61, 159, 236, .5);
+}
+
+a:link:hover,
+a:visited:hover {
+    color: #0E97EE;
+    text-decoration: none;
+    background: rgba(61, 159, 236, .05);
+    border-bottom: 1px solid #0E97EE;
+}
+
+a:active,
+a:focus {
+    color: #fff;
+    background: rgba(61, 159, 236, .85);
+    border-bottom: 1px solid #0E97EE;
+    outline: none;
+}
+
+h1 {
+    font-family: "Roboto Slab", sans-serif;
+    padding: 1rem 0 0 0;
+    margin: 0;
+}
+
+h1 a:link,
+h1 a:visited {
+    font-weight: bold;
+    font-size: 2rem;
+    color: rgba(0, 0, 0, .65);
+    text-shadow: 0 2px 0 rgba(255, 255, 255, .8);
+    border: none;
+}
+
+h1 a:active,
+h1 a:focus {
+    background: rgba(61, 159, 236, .1);
+}
+
+h2 {
+    font-weight: normal;
+    font-size: 1.8rem;
+    color: rgb(221, 74, 104);
+    margin-top: 3rem;
+}
+
+a.deep-link { border: none; font-size: 1.2rem; color: #ccc; }
+
+h3 {
+    font-size: 1.4rem;
+    color: rgb(85, 98, 112);
+    font-weight: bold;
+    margin-top: 3rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+}
+
+h5 {
+    font-size: 1rem;
+    font-weight: normal;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+}
+
+p {}
+
+p code,
+h5 code,
+li code {
+    background: #f5f2f0; /* same color as Prism.js background */
+}
+
+pre {
+    font-size: .85rem;
+    overflow: auto!important;
+    word-wrap: normal!important;
+    white-space: pre!important;
+}
+
+ul {
+    list-style-type: disc;
+    margin: 0 0 0 2rem;
+    padding: 0;
+}
+
+li {
+    margin: 1rem 0;
+}
+
+header,
+nav,
+section {
+    display: block;
+}
+
+img {
+    max-width: 100%;
+}
+
+header {
+    font-family: sans-serif;
+    font-size: .9rem;
+    max-width: 25%;
+    min-width: 15rem;
+    padding: 1rem 2rem;
+    text-align: left;
+    background: rgba(0, 0, 0, .025);
+    margin: 0;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+nav { margin-bottom: 2rem; }
+
+nav ul {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+}
+
+nav li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+}
+
+nav a:link,
+nav a:visited {
+    color: rgba(0, 0, 0, .66);
+    border-bottom: none;
+    border-left: 1px solid transparent;
+    display: block;
+    padding: .33rem 0 .33rem 1rem;
+    border-color: transparent;
+}
+
+nav a:link:hover,
+nav a:visited:hover {
+    border-bottom: none;
+    border-left: 1px solid #0E97EE;
+}
+
+nav a:active,
+nav a:focus {
+    border-bottom: none;
+    border-left: 1px solid #0E97EE;
+    background: rgba(61, 159, 236, .05);
+}
+
+nav a.active:link,
+nav a.active:visited {
+    font-weight: bold;
+    border-left: 1px solid #0E97EE;
+    color: #0E97EE;
+}
+
+.back-to-top {
+    text-align: right;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: .8rem;
+    margin: 2rem 0;
+}
+
+main {
+    margin: 0;
+    padding: 0 2rem 2rem 2rem;
+    background: #fff;
+    flex-grow: 1;
+    max-width: 60rem;
+}
+
+section {
+    padding: 1rem 0 0;
+}
+
+#api ul {
+    list-style-type: none;
+    margin: 2rem 0 0 0;
+    padding: 0;
+}
+
+#api ul ul {
+    list-style-type: disc;
+    margin: 0 0 0 2rem;
+    padding: 0;
+}
+
+#api li {
+    margin: 3rem 0;
+}
+
+#api li li {
+    margin: 1rem 0;
+}
+
+.highlight {
+    background: rgba(105, 210, 231, .1);
+}
+
+.pdf-test {
+    background: rgba(255, 255, 255, .75);
+    margin: 2rem auto;
+    padding: 0;
+}
+
+.hero-pdf .example-wrapper .example-comments {
+    margin-top: 2rem;
+}
+
+.question, .answer {
+    font-size: 2rem;
+    line-height: 2rem;
+    color: rgb(85, 98, 112);
+}
+
+.question b, .answer b {
+    display: block;
+}
+
+.small {
+    font-size: .8rem;
+    line-height: 1rem;
+}
+
+
+/* mobile */
+
+@media only screen and (max-width: 50rem) {
+    #flex-wrapper {
+        display: block;
+    }
+    header {
+        max-width: 100%;
+        min-width: 100%;
+        position: relative;
+    }
+    main {
+        flex-grow: unset;
+    }
+    section {
+        padding: 0 1rem;
+    }
+    .pdf-test {
+        margin: .5rem auto;
+    }
+}
