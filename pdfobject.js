@@ -192,10 +192,13 @@
         let iframe = document.createElement("iframe");
         
         iframe.src = fullURL;
-        iframe.id = id;
         iframe.className = "pdfobject";
         iframe.type = "application/pdf";
         iframe.frameborder = "0";
+        
+        if(id){
+            iframe.id = id;
+        }
 
         if(!omitInlineStyles){
             div.style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0;";
@@ -219,9 +222,12 @@
 
         let embed = document.createElement(embedType);
         embed.src = url + pdfOpenFragment;
-        embed.id = id;
         embed.className = "pdfobject";
         embed.type = "application/pdf";
+
+        if(id){
+            embed.id = id;
+        }
 
         if(!omitInlineStyles){
 
@@ -253,7 +259,7 @@
         let opt = options || {};
 
         //Get passed options, or set reasonable defaults
-        let id = (opt.id && typeof opt.id === "string") ? "id='" + opt.id + "'" : "";
+        let id = (typeof opt.id === "string") ? opt.id : "";
         let page = opt.page || false;
         let pdfOpenParams = opt.pdfOpenParams || {};
         let fallbackLink = opt.fallbackLink || true;
