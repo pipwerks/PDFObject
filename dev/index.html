@@ -6,30 +6,30 @@
 <title>PDFObject: A JavaScript utility for embedding PDFs</title>
 <!-- site analytics, unrelated to any example code presented on this page -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1394306-6"></script>
-<script src="js/analytics.js"></script>
+<script src="/js/analytics.js"></script>
 <!-- /site analytics -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Peralta" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,700" />
-<link rel="stylesheet" href="css/site.css" />
+<link rel="stylesheet" href="/css/site.css" />
 
 <!-- begin favicon madness -->
-<link rel="apple-touch-icon" sizes="57x57" href="favicons/apple-touch-icon-57x57.png">
-<link rel="apple-touch-icon" sizes="60x60" href="favicons/apple-touch-icon-60x60.png">
-<link rel="apple-touch-icon" sizes="72x72" href="favicons/apple-touch-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="76x76" href="favicons/apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" sizes="114x114" href="favicons/apple-touch-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="120x120" href="favicons/apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" sizes="144x144" href="favicons/apple-touch-icon-144x144.png">
-<link rel="apple-touch-icon" sizes="152x152" href="favicons/apple-touch-icon-152x152.png">
-<link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon-180x180.png">
-<link rel="icon" type="image/png" href="favicons/favicon-32x32.png" sizes="32x32">
-<link rel="icon" type="image/png" href="favicons/android-chrome-192x192.png" sizes="192x192">
-<link rel="icon" type="image/png" href="favicons/favicon-96x96.png" sizes="96x96">
-<link rel="icon" type="image/png" href="favicons/favicon-16x16.png" sizes="16x16">
-<link rel="manifest" href="favicons/manifest.json">
-<link rel="mask-icon" href="favicons/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="apple-touch-icon" sizes="57x57" href="/favicons/apple-touch-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-touch-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/favicons/apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/favicons/apple-touch-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/favicons/apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/favicons/apple-touch-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/favicons/apple-touch-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicons/android-chrome-192x192.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/favicons/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="/favicons/manifest.json">
+<link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
 <meta name="msapplication-TileColor" content="#da532c">
-<meta name="msapplication-TileImage" content="favicons/mstile-144x144.png">
+<meta name="msapplication-TileImage" content="/favicons/mstile-144x144.png">
 <meta name="theme-color" content="#ffffff">
 <!-- end favicon madness -->
 
@@ -46,12 +46,7 @@
     <p>An open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents.</p>
     <nav>
         <ul>
-            <li><a href="/#the-why">Why Use PDFObject?</a></li>
-            <li><a href="/#browser-support">Browser Support</a></li>
-            <li><a href="/#changelog">Changelog</a></li>
-            <li><a href="/#api">API</a></li>
-            <li><a href="/#use-cases">Common Use Cases</a></li>
-            <li><a href="/#examples">Examples</a></li>
+            <li><a href="/">PDFObject.com main page</a></li>
             <li><hr/></li>
             <li><a href="generator/"><i class="fas fa-cogs"></i> Code Generator</a></li>
             <li><a href="static/"><i class="fas fa-file-code"></i> Embedding PDFs without JavaScript</a></li>
@@ -74,30 +69,30 @@
         <p>The following pages are test cases for PDF embeds. They are configured to use the beta version of PDFObject (currently 2.2.0).</p>
 
         <ul>
-            <li><a href="examples/conditional-js-advanced.html">Invoking conditional JavaScript upon successful embed (onclick)</a></li>
-            <li><a href="examples/conditional-js.html">Invoking conditional JavaScript upon successful embed</a></li>
-            <li><a href="examples/detection.html">Detection of PDF support</a></li>
-            <li><a href="examples/embed-multiple-PDFs.html">Embed two PDFs on one HTML page</a></li>
-            <li><a href="examples/full-browser-default.html">Full-browser embed (no selector specified)</a></li>
-            <li><a href="examples/full-browser-explicit-pdfparams.html">Full-browser embed (explicit selector) with PDF Open Params specified</a></li>
-            <li><a href="examples/full-browser-explicit.html">Full-browser embed (explicit selector)</a></li>
-            <li><a href="examples/passing-element-jquery-styled.html">Passing jQuery element, CSS styles applied</a></li>
-            <li><a href="examples/passing-element-jquery.html">Passing jQuery element</a></li>
-            <li><a href="examples/passing-element-styled.html">Passing vanilla HTML element, CSS styles applied</a></li>
-            <li><a href="examples/passing-element.html">Passing vanilla HTML element</a></li>
-            <li><a href="examples/passing-selector-styled.html">Passing CSS selector, CSS styles applied</a></li>
-            <li><a href="examples/passing-selector.html">Passing CSS selector</a></li>
-            <li><a href="examples/pdfjs-forced.html">PDF.js (forced)</a></li>
-            <li><a href="examples/pdfjs.html">PDF.js fallback</a></li>
-            <li><a href="examples/querystring-URL-with-params.html">Specifying PDF URL containing querystring, with PDF Open Parameters</a></li>
-            <li><a href="examples/querystring-URL.html">Specifying PDF URL containing querystring</a></li>
-            <li><a href="examples/replace-PDF-with-second-PDF.html">Replace one PDF with another</a></li>
-            <li><a href="examples/specifying-custom-fallback-link.html">Specifying custom fallback link</a></li>
-            <li><a href="examples/base64.html">Embedding a PDF encoded as a base64 string</a></li>
-            <li><a href="examples/redirect-302.html">Specifying PDF URL that will redirect via 302 to a different URL</a></li>
-            <li><a href="examples/iframe-forced.html">Forcing PDFObject to use an iframe for embeds</a></li>
-            <li><a href="examples/omit-inline-styles.html">Embed the PDF without any inline styles (relies on external CSS for proper display)</a></li>
-            <li><a href="examples/omit-inline-styles-forced-iframe.html">Embed the PDF without any inline styles, and also require PDF to use an iframe to embed the PDF</a></li>
+            <li><a href="tests/conditional-js-advanced.html">Invoking conditional JavaScript upon successful embed (onclick)</a></li>
+            <li><a href="tests/conditional-js.html">Invoking conditional JavaScript upon successful embed</a></li>
+            <li><a href="tests/detection.html">Detection of PDF support</a></li>
+            <li><a href="tests/embed-multiple-PDFs.html">Embed two PDFs on one HTML page</a></li>
+            <li><a href="tests/full-browser-default.html">Full-browser embed (no selector specified)</a></li>
+            <li><a href="tests/full-browser-explicit-pdfparams.html">Full-browser embed (explicit selector) with PDF Open Params specified</a></li>
+            <li><a href="tests/full-browser-explicit.html">Full-browser embed (explicit selector)</a></li>
+            <li><a href="tests/passing-element-jquery-styled.html">Passing jQuery element, CSS styles applied</a></li>
+            <li><a href="tests/passing-element-jquery.html">Passing jQuery element</a></li>
+            <li><a href="tests/passing-element-styled.html">Passing vanilla HTML element, CSS styles applied</a></li>
+            <li><a href="tests/passing-element.html">Passing vanilla HTML element</a></li>
+            <li><a href="tests/passing-selector-styled.html">Passing CSS selector, CSS styles applied</a></li>
+            <li><a href="tests/passing-selector.html">Passing CSS selector</a></li>
+            <li><a href="tests/pdfjs-forced.html">PDF.js (forced)</a></li>
+            <li><a href="tests/pdfjs.html">PDF.js fallback</a></li>
+            <li><a href="tests/querystring-URL-with-params.html">Specifying PDF URL containing querystring, with PDF Open Parameters</a></li>
+            <li><a href="tests/querystring-URL.html">Specifying PDF URL containing querystring</a></li>
+            <li><a href="tests/replace-PDF-with-second-PDF.html">Replace one PDF with another</a></li>
+            <li><a href="tests/specifying-custom-fallback-link.html">Specifying custom fallback link</a></li>
+            <li><a href="tests/base64.html">Embedding a PDF encoded as a base64 string</a></li>
+            <li><a href="tests/redirect-302.html">Specifying PDF URL that will redirect via 302 to a different URL</a></li>
+            <li><a href="tests/iframe-forced.html">Forcing PDFObject to use an iframe for embeds</a></li>
+            <li><a href="tests/omit-inline-styles.html">Embed the PDF without any inline styles (relies on external CSS for proper display)</a></li>
+            <li><a href="tests/omit-inline-styles-forced-iframe.html">Embed the PDF without any inline styles, and also require PDF to use an iframe to embed the PDF</a></li>
         </ul>
 
     </section>
@@ -106,7 +101,7 @@
 
 </div><!-- /flex-wrapper -->
 
-<script src="js/site.js"></script>
+<script src="/js/site.js"></script>
 
 </body>
 </html>
