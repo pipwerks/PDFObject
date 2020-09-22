@@ -11,7 +11,7 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 ### 2.2.0, September 2020
 * **New behavior:** Dropping support for IE9 and IE10, which have practically 0 marketshare now.
-* **New behavior:** Now explicitly displaying fallback content for **all mobile devices**, even "Request Desktop" versionof pages in iOS. The reasoning is simple: As the time of this update, no mobile device (Android, iOS) natively supports embedded PDFs. This change will lead to a consistent experience across all mobile devices. PDFs can be rendered via PDF.js on mobile if embedding on mobile is a critical need. PDF.js is not included with PDFObject.
+* **New behavior:** Now explicitly displaying fallback content for **all mobile devices**, even "Request Desktop" version of pages in iOS. The reasoning is simple: As the time of this update, no mobile device (Android, iOS) natively supports embedded PDFs. This change will lead to a consistent experience across all mobile devices. PDFs can be rendered via PDF.js on mobile if embedding on mobile is a critical need. PDF.js is not included with PDFObject.
 * **New option:** Omit inline styles by setting option `omitInlineStyles` to `true`. This helps developers who use strict environments where inline styles are not allowed. Note you will be responsible for applying proper styling via your own CSS.
 * **New option:** Suppress console logging by setting option `suppressConsole` to `true`. PDFObject current places error messages in the console if the PDF can't be embedded for some reason. This optioon allows you to mute those alerts.
 * **New option:** Force PDFObject to embed the PDF in an iframe (instead of an `<embed>`) by setting `forceIframe` to `true`.
