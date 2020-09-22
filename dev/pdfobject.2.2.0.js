@@ -201,8 +201,8 @@
         }
 
         if(!omitInlineStyles){
-            div.style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0;";
-            iframe.style = "border: none; width: 100%; height: 100%;";
+            div.setAttribute("style","position: absolute; top: 0; right: 0; bottom: 0; left: 0;");
+            div.setAttribute("style","border: none; width: 100%; height: 100%;");
             targetNode.style.position = "relative";
             targetNode.style.overflow = "auto";        
         }
@@ -239,7 +239,9 @@
                 style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
             }
 
-            embed.setAttribute("style",style); //using setAttribute to make IE11 happy
+            //using setAttribute to make IE11 happy. 
+            //IE was throwing an error that style cannot be set directly when in strict mode.
+            embed.setAttribute("style",style); 
 
         }
 
