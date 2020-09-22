@@ -201,8 +201,8 @@
         }
 
         if(!omitInlineStyles){
-            div.setAttribute("style","position: absolute; top: 0; right: 0; bottom: 0; left: 0;");
-            div.setAttribute("style","border: none; width: 100%; height: 100%;");
+            div.style.cssText = "position: absolute; top: 0; right: 0; bottom: 0; left: 0;";
+            div.style.cssText = "border: none; width: 100%; height: 100%;";
             targetNode.style.position = "relative";
             targetNode.style.overflow = "auto";        
         }
@@ -239,9 +239,7 @@
                 style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
             }
 
-            //using setAttribute to make IE11 happy. 
-            //IE was throwing an error that style cannot be set directly when in strict mode.
-            embed.setAttribute("style",style); 
+            embed.style.cssText = style; 
 
         }
 
