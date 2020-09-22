@@ -16,6 +16,7 @@ MIT-style license: http://pipwerks.mit-license.org/
 * **New option:** Suppress console logging by setting option `suppressConsole` to `true`. PDFObject currently places error messages in the console if the PDF can't be embedded for some reason. This option allows you to mute those alerts.
 * **New option:** Force PDFObject to embed the PDF in an iframe (instead of an `<embed>`) by setting `forceIframe` to `true`.
 * Refactored to use more modern code conventions, such as `let` in lieu of `var`, `el.classList.add()` in place of `el.className = 'foo'`, and `myvar === undefined` in place of `typeof myvar === "undefined"`. Implemented a `let` declaration before each variable instead of the Crockford practice of one `var` per function.
+* **New option:** On macOS systems, Safari does not properly embed PDFs that have been requested via 302 URL redirection when embedding using the `<embed>` element. Setting `supportRedirect` to `true` forces PDFObject to use an `<iframe` instead of an `<embed>` for desktop Safari. Hat tip to [John Hunter](https://github.com/johnhunter) for the discovery and fix.
 * Refactored to make code safer for server-side node.js-based environments.
 * Refactored to eliminate string-based element creation via `innerHTML`. Replaced with standard DOM methods. This helps alleviate unforeseen issues with file names. Only exception is insertion of fallback content, which is passed as a string via `innerHTML`.
 * Removed iframe scrollfix for iOS, as it is no longer needed as of iOS13. iOS 12 and lower have ~5-7% marketshare and shrinking fast.
