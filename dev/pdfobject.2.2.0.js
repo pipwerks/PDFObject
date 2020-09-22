@@ -106,7 +106,7 @@
             //Browsers that still support the original MIME type check
             supportsPdfMimeType ||
             //Pity the poor souls still using IE
-            (isIE() && supportsPdfActiveX())
+            (isIE && supportsPdfActiveX())
         )
     );
 
