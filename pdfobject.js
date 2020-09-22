@@ -1,20 +1,17 @@
-/*global ActiveXObject, window, console, define, module, jQuery */
-//jshint unused:false, strict: false
-
 /**
- *  PDFObject v2.1.1
+ *  PDFObject v2.2.0
  *  https://github.com/pipwerks/PDFObject
  *  @license
- *  Copyright (c) 2008-2018 Philip Hutchison
+ *  Copyright (c) 2008-2020 Philip Hutchison
  *  MIT-style license: http://pipwerks.mit-license.org/
  *  UMD module pattern from https://github.com/umdjs/umd/blob/master/templates/returnExports.js
  */
 
 (function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
+    if (typeof define === "function" && define.amd) {
         // AMD. Register as an anonymous module.
         define([], factory);
-    } else if (typeof module === 'object' && module.exports) {
+    } else if (typeof module === "object" && module.exports) {
         // Node. Does not work with strict CommonJS, but
         // only CommonJS-like environments that support module.exports,
         // like Node.
@@ -26,53 +23,67 @@
 }(this, function () {
 
     "use strict";
-    //jshint unused:true
 
     //PDFObject is designed for client-side (browsers), not server-side (node)
     //Will choke on undefined navigator and window vars when run on server
     //Return boolean false and exit function when running server-side
 
-    if(typeof window === "undefined" || typeof navigator === "undefined"){ return false; }
+    if( window === undefined || 
+        window.navigator === undefined || 
+        window.navigator.userAgent === undefined || 
+        window.navigator.mimeTypes === undefined){ 
+            return false;
+    }
 
-    var pdfobjectversion = "2.1.1",
-        ua = window.navigator.userAgent,
+    let pdfobjectversion = "2.2.0";
+    let nav = window.navigator;
+    let ua = window.navigator.userAgent;
 
-        //declare booleans
-        supportsPDFs,
-        isIE,
-        isSafariOsx,
-        supportsPdfMimeType = (typeof navigator.mimeTypes !== "undefined" && typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
-        supportsPdfActiveX,
-        isModernBrowser = (function (){ return (typeof window.Promise !== "undefined"); })(),
-        isFirefox = (function (){ return (ua.indexOf("irefox") !== -1); } )(),
-        isFirefoxWithPDFJS = (function (){
-            //Firefox started shipping PDF.js in Firefox 19.
-            //If this is Firefox 19 or greater, assume PDF.js is available
-            if(!isFirefox){ return false; }
-            //parse userAgent string to get release version ("rv")
-            //ex: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0
-            return (parseInt(ua.split("rv:")[1].split(".")[0], 10) > 18);
-        })(),
-        isIOS = (function (){ return (/iphone|ipad|ipod/i.test(ua.toLowerCase())); })(),
+    //Time to jump through hoops -- browser vendors do not make it easy to detect PDF support.
 
-        //declare functions
-        createAXO,
-        buildFragmentString,
-        log,
-        embedError,
-        embed,
-        getTargetElement,
-        appendTargetClassName,
-        generatePDFJSiframe,
-        generateEmbedElement,
-        generateIframeElement;
+    /*
+        IE11 still uses ActiveX for Adobe Reader, but IE 11 doesn't expose window.ActiveXObject the same way 
+        previous versions of IE did. window.ActiveXObject will evaluate to false in IE 11, but "ActiveXObject" 
+        in window evaluates to true.
+
+        MS Edge does not support ActiveX so this test will evaluate false
+    */
+    let isIE = ("ActiveXObject" in window);
+
+    /*
+        There is a coincidental correlation between implementation of window.promises and native PDF support in desktop browsers
+        We use this to assume if the browser supports promises it supports embedded PDFs
+        Is this fragile? Sort of. But browser vendors removed mimetype detection, so we're left to improvise
+    */
+    let isModernBrowser = (window.Promise !== undefined);
+
+    //Older browsers still expose the mimeType
+    let supportsPdfMimeType = (nav.mimeTypes["application/pdf"] !== undefined);
+
+    //Safari on iPadOS doesn't report as 'mobile' when requesting desktop site, yet still fails to embed PDFs
+    let isSafariIOSDesktopMode = (  nav.platform !== undefined && 
+                                    nav.platform === "MacIntel" && 
+                                    nav.maxTouchPoints !== undefined && 
+                                    nav.maxTouchPoints > 1 );
+
+    //Quick test for mobile devices.
+    let isMobileDevice = (isSafariIOSDesktopMode || /Mobi|Tablet|Android|iPad|iPhone/.test(ua));
+
+    //Safari desktop requires special handling 
+    let isSafariDesktop = ( !isMobileDevice && 
+                            nav.vendor !== undefined && 
+                            /Apple/.test(nav.vendor) && 
+                            /Safari/.test(ua) );
+    
+    //Firefox started shipping PDF.js in Firefox 19. If this is Firefox 19 or greater, assume PDF.js is available
+    let isFirefoxWithPDFJS = (!isMobileDevice && /irefox/.test(ua)) ? (parseInt(ua.split("rv:")[1].split(".")[0], 10) > 18) : false;
 
 
     /* ----------------------------------------------------
        Supporting functions
        ---------------------------------------------------- */
 
-    createAXO = function (type){
+    let createAXO = function (type){
         var ax;
         try {
             ax = new ActiveXObject(type);
@@ -82,46 +93,28 @@
         return ax;
     };
 
-    //IE11 still uses ActiveX for Adobe Reader, but IE 11 doesn't expose
-    //window.ActiveXObject the same way previous versions of IE did
-    //window.ActiveXObject will evaluate to false in IE 11, but "ActiveXObject" in window evaluates to true
-    //so check the first one for older IE, and the second for IE11
-    //FWIW, MS Edge (replacing IE11) does not support ActiveX at all, both will evaluate false
-    //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
-    isIE = function (){ return !!(window.ActiveXObject || "ActiveXObject" in window); };
-
-    // Detect desktop Safari
-    isSafariOsx = (
-        !isIOS &&
-        navigator.vendor && navigator.vendor.indexOf('Apple') !== -1 &&
-        navigator.userAgent && navigator.userAgent.indexOf('Safari') !== -1
-    );
-
     //If either ActiveX support for "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
     //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
-    supportsPdfActiveX = function (){ return !!(createAXO("AcroPDF.PDF") || createAXO("PDF.PdfCtrl")); };
+    let supportsPdfActiveX = function (){ return !!(createAXO("AcroPDF.PDF") || createAXO("PDF.PdfCtrl")); };
 
     //Determines whether PDF support is available
-    supportsPDFs = (
-        //as of iOS 12, inline PDF rendering is still not supported in Safari or native webview
-        //3rd-party browsers (eg Chrome, Firefox) use Apple's webview for rendering, and thus the same result as Safari
-        //Therefore if iOS, we shall assume that PDF support is not available
-        !isIOS && (
+    let supportsPDFs = (
+        //As of Sept 2020 no mobile browsers properly support PDF embeds
+        !isMobileDevice && (
             //Modern versions of Firefox come bundled with PDFJS
             isFirefoxWithPDFJS ||
             //Browsers that still support the original MIME type check
-            supportsPdfMimeType || (
-                //Pity the poor souls still using IE
-                isIE() && supportsPdfActiveX()
-            )
+            supportsPdfMimeType ||
+            //Pity the poor souls still using IE
+            (isIE && supportsPdfActiveX())
         )
     );
 
     //Create a fragment identifier for using PDF Open parameters when embedding PDF
-    buildFragmentString = function(pdfParams){
+    let buildURLFragmentString = function(pdfParams){
 
-        var string = "",
-            prop;
+        let string = "";
+        let prop;
 
         if(pdfParams){
 
@@ -147,21 +140,23 @@
 
     };
 
-    log = function (msg){
-        if(typeof console !== "undefined" && console.log){
+    let embedError = function (msg){
+        if(!suppressConsole){
             console.log("[PDFObject] " + msg);
         }
-    };
-
-    embedError = function (msg){
-        log(msg);
         return false;
     };
 
-    getTargetElement = function (targetSelector){
+    let emptyNodeContents = function (node){
+        while(node.firstChild){
+            node.removeChild(node.firstChild);
+        }
+    };
+
+    let getTargetElement = function (targetSelector){
 
         //Default to body for full-browser PDF
-        var targetNode = document.body;
+        let targetNode = document.body;
 
         //If a targetSelector is specified, check to see whether
         //it's passing a selector, jQuery object, or an HTML element
@@ -171,12 +166,12 @@
             //Is CSS selector
             targetNode = document.querySelector(targetSelector);
 
-        } else if (typeof jQuery !== "undefined" && targetSelector instanceof jQuery && targetSelector.length) {
+        } else if (window.jQuery !== undefined && targetSelector instanceof jQuery && targetSelector.length) {
 
             //Is jQuery element. Extract HTML node
             targetNode = targetSelector.get(0);
 
-        } else if (typeof targetSelector.nodeType !== "undefined" && targetSelector.nodeType === 1){
+        } else if (targetSelector.nodeType !== undefined && targetSelector.nodeType === 1){
 
             //Is HTML element
             targetNode = targetSelector;
@@ -187,137 +182,155 @@
 
     };
 
-    appendTargetClassName = function (targetNode) {
-        // Use classList if we don't need IE9 support
-        var classToAppend = "pdfobject-container";
-        var classes = targetNode.className.split(/\s+/);
-        if (classes.indexOf(classToAppend) === -1) {
-            classes.push(classToAppend);
-            targetNode.className = classes.join(' ');
+    let generatePDFJSMarkup = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles){
+
+        //Ensure target element is empty first
+        emptyNodeContents(targetNode);
+
+        let fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
+        let div = document.createElement("div");
+        let iframe = document.createElement("iframe");
+        
+        iframe.src = fullURL;
+        iframe.className = "pdfobject";
+        iframe.type = "application/pdf";
+        iframe.frameborder = "0";
+        
+        if(id){
+            iframe.id = id;
         }
-    }
 
-    generatePDFJSiframe = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id){
+        if(!omitInlineStyles){
+            div.style.cssText = "position: absolute; top: 0; right: 0; bottom: 0; left: 0;";
+            div.style.cssText = "border: none; width: 100%; height: 100%;";
+            targetNode.style.position = "relative";
+            targetNode.style.overflow = "auto";        
+        }
 
-        var fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
-        var scrollfix = (isIOS) ? "-webkit-overflow-scrolling: touch; overflow-y: scroll; " : "overflow: hidden; ";
-        var iframe = "<div style='" + scrollfix + "position: absolute; top: 0; right: 0; bottom: 0; left: 0;'><iframe  " + id + " src='" + fullURL + "' style='border: none; width: 100%; height: 100%;' frameborder='0'></iframe></div>";
-        appendTargetClassName(targetNode);
-        targetNode.style.position = "relative";
-        targetNode.style.overflow = "auto";
-        targetNode.innerHTML = iframe;
+        div.appendChild(iframe);
+        targetNode.appendChild(div);
+        targetNode.classList.add("pdfobject-container");
+        
         return targetNode.getElementsByTagName("iframe")[0];
 
     };
 
-    generateEmbedElement = function (targetNode, targetSelector, url, pdfOpenFragment, width, height, id){
+    let generatePDFObjectMarkup = function (embedType, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles){
 
-        var style = "";
+        //Ensure target element is empty first
+        emptyNodeContents(targetNode);
 
-        if(targetSelector && targetSelector !== document.body){
-            style = "width: " + width + "; height: " + height + ";";
-        } else {
-            style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
+        let embed = document.createElement(embedType);
+        embed.src = url + pdfOpenFragment;
+        embed.className = "pdfobject";
+        embed.type = "application/pdf";
+
+        if(id){
+            embed.id = id;
         }
 
-        appendTargetClassName(targetNode);
-        targetNode.innerHTML = "<embed " + id + " class='pdfobject' src='" + url + pdfOpenFragment + "' type='application/pdf' style='overflow: auto; " + style + "'/>";
+        if(!omitInlineStyles){
 
-        return targetNode.getElementsByTagName("embed")[0];
+            let style = (embedType === "embed") ? "overflow: auto;" : "border: none;";
+
+            if(targetSelector && targetSelector !== document.body){
+                style += "width: " + width + "; height: " + height + ";";
+            } else {
+                style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
+            }
+
+            embed.style.cssText = style; 
+
+        }
+
+        targetNode.classList.add("pdfobject-container");
+        targetNode.appendChild(embed);
+
+        return targetNode.getElementsByTagName(embedType)[0];
 
     };
 
-    generateIframeElement = function (targetNode, targetSelector, url, pdfOpenFragment, width, height, id){
-
-        var style = "";
-
-        if(targetSelector && targetSelector !== document.body){
-            style = "width: " + width + "; height: " + height + ";";
-        } else {
-            style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
-        }
-
-        targetNode.className += " pdfobject-container";
-        targetNode.innerHTML = "<iframe " + id + " class='pdfobject' src='" + url + pdfOpenFragment + "' type='application/pdf' style='border: none; " + style + "'/>";
-
-        return targetNode.getElementsByTagName("iframe")[0];
-
-    };
-
-    embed = function(url, targetSelector, options){
-
-        //Ensure URL is available. If not, exit now.
-        if(typeof url !== "string"){ return embedError("URL is not valid"); }
+    let embed = function(url, targetSelector, options){
 
         //If targetSelector is not defined, convert to boolean
-        targetSelector = (typeof targetSelector !== "undefined") ? targetSelector : false;
+        let selector = targetSelector || false;
 
         //Ensure options object is not undefined -- enables easier error checking below
-        options = (typeof options !== "undefined") ? options : {};
+        let opt = options || {};
 
         //Get passed options, or set reasonable defaults
-        var id = (options.id && typeof options.id === "string") ? "id='" + options.id + "'" : "",
-            page = (options.page) ? options.page : false,
-            pdfOpenParams = (options.pdfOpenParams) ? options.pdfOpenParams : {},
-            fallbackLink = (typeof options.fallbackLink !== "undefined") ? options.fallbackLink : true,
-            width = (options.width) ? options.width : "100%",
-            height = (options.height) ? options.height : "100%",
-            assumptionMode = (typeof options.assumptionMode === "boolean") ? options.assumptionMode : true,
-            forcePDFJS = (typeof options.forcePDFJS === "boolean") ? options.forcePDFJS : false,
-            supportRedirect = (typeof options.supportRedirect === "boolean") ? options.supportRedirect : false,
-            PDFJS_URL = (options.PDFJS_URL) ? options.PDFJS_URL : false,
-            targetNode = getTargetElement(targetSelector),
-            fallbackHTML = "",
-            pdfOpenFragment = "",
-            fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href='[url]'>Download PDF</a></p>";
+        let id = (typeof opt.id === "string") ? opt.id : "";
+        let page = opt.page || false;
+        let pdfOpenParams = opt.pdfOpenParams || {};
+        let fallbackLink = opt.fallbackLink || true;
+        let width = opt.width || "100%";
+        let height = opt.height || "100%";
+        let assumptionMode = (typeof opt.assumptionMode === "boolean") ? opt.assumptionMode : true;
+        let forcePDFJS = (typeof opt.forcePDFJS === "boolean") ? opt.forcePDFJS : false;
+        let supportRedirect = (typeof opt.supportRedirect === "boolean") ? opt.supportRedirect : false;
+        let omitInlineStyles = (typeof opt.omitInlineStyles === "boolean") ? opt.omitInlineStyles : false;
+        let suppressConsole = (typeof opt.suppressConsole === "boolean") ? opt.suppressConsole : false;
+        let forceIframe = (typeof opt.forceIframe === "boolean") ? opt.forceIframe : false;
+        let PDFJS_URL = opt.PDFJS_URL || false;
+        let targetNode = getTargetElement(selector);
+        let fallbackHTML = "";
+        let pdfOpenFragment = "";
+        let fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href='[url]'>Download PDF</a></p>";
+
+        //Ensure URL is available. If not, exit now.
+        if(typeof url !== "string"){ return embedError("URL is not valid", suppressConsole); }
 
         //If target element is specified but is not valid, exit without doing anything
-        if(!targetNode){ return embedError("Target element cannot be determined"); }
-
+        if(!targetNode){ return embedError("Target element cannot be determined", suppressConsole); }
 
         //page option overrides pdfOpenParams, if found
-        if(page){
-            pdfOpenParams.page = page;
-        }
+        if(page){ pdfOpenParams.page = page; }
 
         //Stringify optional Adobe params for opening document (as fragment identifier)
-        pdfOpenFragment = buildFragmentString(pdfOpenParams);
+        pdfOpenFragment = buildURLFragmentString(pdfOpenParams);
 
-        //Do the dance
+
+        // --== Do the dance: Embed attempt #1 ==--
 
         //If the forcePDFJS option is invoked, skip everything else and embed as directed
         if(forcePDFJS && PDFJS_URL){
+            return generatePDFJSMarkup(targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles);
+        }
+ 
+        // --== Embed attempt #2 ==--
 
-            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
-
-        //If traditional support is provided, or if this is a modern browser and not iOS (see comment for supportsPDFs declaration)
-        } else if(supportsPDFs || (assumptionMode && isModernBrowser && !isIOS)){
-
-            // Safari will not honour redirect responses on embed src.
-            if (supportRedirect && isSafariOsx) {
-                return generateIframeElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
-            }
-
-            return generateEmbedElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
-
-        //If everything else has failed and a PDFJS fallback is provided, try to use it
-        } else if(PDFJS_URL){
-
-            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
-
-        } else {
-
-            //Display the fallback link if available
-            if(fallbackLink){
-
-                fallbackHTML = (typeof fallbackLink === "string") ? fallbackLink : fallbackHTML_default;
-                targetNode.innerHTML = fallbackHTML.replace(/\[url\]/g, url);
-
-            }
-
-            return embedError("This browser does not support embedded PDFs");
+        //Embed PDF if traditional support is provided, or if this developer is willing to roll with assumption
+        //that modern desktop (not mobile) browsers natively support PDFs 
+        if(supportsPDFs || (assumptionMode && isModernBrowser && !isMobileDevice)){
+            
+            //Should we use <embed> or <iframe>? In most cases <embed>. 
+            //Allow developer to force <iframe>, if desired
+            //There is an edge case where Safari does not respect 302 redirect requests for PDF files when using <embed> element.
+            //Redirect appears to work fine when using <iframe> instead of <embed> (Addresses issue #210)
+            let embedtype = (forceIframe || (supportRedirect && isSafariDesktop)) ? "iframe" : "embed";
+            
+            return generatePDFObjectMarkup(embedtype, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles);
 
         }
+        
+        // --== Embed attempt #3 ==--
+        
+        //If everything else has failed and a PDFJS fallback is provided, try to use it
+        if(PDFJS_URL){
+            return generatePDFJSMarkup(targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles);
+        }
+        
+        // --== PDF embed not supported! Use fallback ==-- 
+
+        //Display the fallback link if available
+        if(fallbackLink){
+
+            fallbackHTML = (typeof fallbackLink === "string") ? fallbackLink : fallbackHTML_default;
+            targetNode.innerHTML = fallbackHTML.replace(/\[url\]/g, url);
+
+        }
+
+        return embedError("This browser does not support embedded PDFs", suppressConsole);
 
     };
 
