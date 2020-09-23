@@ -9,6 +9,9 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 ## Changelog
 
+### 2.2.1, September 2020
+Fixed typo affecting styling of iframe when forcing PDFJS.
+
 ### 2.2.0, September 2020
 * **New behavior:** Dropping support for IE9 and IE10, which have practically 0 marketshare now.
 * **New behavior:** Now explicitly displaying fallback content for **all mobile devices**, even "Request Desktop" version of pages in iOS. The reasoning is simple: As the time of this update, no mobile device (Android, iOS) natively supports embedded PDFs. This change will lead to a consistent experience across all mobile devices. PDFs can be rendered via PDF.js on mobile if embedding on mobile is a critical need. PDF.js is not included with PDFObject.
