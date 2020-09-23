@@ -1,5 +1,5 @@
 /**
- *  PDFObject v2.2.0
+ *  PDFObject v2.2.1
  *  https://github.com/pipwerks/PDFObject
  *  @license
  *  Copyright (c) 2008-2020 Philip Hutchison
@@ -35,7 +35,7 @@
             return false;
     }
 
-    let pdfobjectversion = "2.2.0";
+    let pdfobjectversion = "2.2.1";
     let nav = window.navigator;
     let ua = window.navigator.userAgent;
 
@@ -202,7 +202,7 @@
 
         if(!omitInlineStyles){
             div.style.cssText = "position: absolute; top: 0; right: 0; bottom: 0; left: 0;";
-            div.style.cssText = "border: none; width: 100%; height: 100%;";
+            iframe.style.cssText = "border: none; width: 100%; height: 100%;";
             targetNode.style.position = "relative";
             targetNode.style.overflow = "auto";        
         }
