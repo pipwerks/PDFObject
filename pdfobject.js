@@ -140,7 +140,7 @@
 
     };
 
-    let embedError = function (msg){
+    let embedError = function (msg, suppressConsole){
         if(!suppressConsole){
             console.log("[PDFObject] " + msg);
         }
