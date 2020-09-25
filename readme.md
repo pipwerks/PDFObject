@@ -9,6 +9,9 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 ## Changelog
 
+### 2.2.2, September 2020
+Fixed typo affecting `suppressConsole` functionality. Hat tip to [John Hunter](https://github.com/johnhunter) for the discovery and fix.
+
 ### 2.2.1, September 2020
 Fixed typo affecting styling of iframe when forcing PDFJS.
 
