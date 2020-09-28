@@ -1,7 +1,7 @@
 /* global ActiveXObject, define, jQuery */
 
 /**
- *  PDFObject v2.2.1
+ *  PDFObject v2.2.3
  *  https://github.com/pipwerks/PDFObject
  *  @license
  *  Copyright (c) 2008-2020 Philip Hutchison
@@ -38,7 +38,7 @@
     return false
   }
 
-  const pdfObjectVersion = '2.2.1'
+  const pdfObjectVersion = '2.2.3'
   const nav = window.navigator
   const ua = window.navigator.userAgent
 
@@ -295,7 +295,7 @@
     const fallbackHTMLDefault =
       "<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href='[url]'>Download PDF</a></p>"
 
-    const embedError = function (msg) {
+    const embedError = function (msg, suppressConsole) {
       if (!suppressConsole) {
         console.log('[PDFObject] ' + msg)
       }
