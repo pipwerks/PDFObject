@@ -1,5 +1,5 @@
 /**
- *  PDFObject v2.2.3
+ *  PDFObject v2.2.4
  *  https://github.com/pipwerks/PDFObject
  *  @license
  *  Copyright (c) 2008-2020 Philip Hutchison
@@ -28,7 +28,7 @@
     //Will choke on undefined navigator and window vars when run on server
     //Return boolean false and exit function when running server-side
 
-    if( window === undefined || 
+    if( typeof window === "undefined" || 
         window.navigator === undefined || 
         window.navigator.userAgent === undefined || 
         window.navigator.mimeTypes === undefined){ 

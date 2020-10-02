@@ -9,6 +9,9 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 ## Changelog
 
+### 2.2.4, October 2020
+Reinstated `typeof` check for `window` to play nice with React and NextJS.
+
 ### 2.2.3, September 2020
 Version bump for NPM. Sigh.
 
