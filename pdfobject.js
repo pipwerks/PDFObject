@@ -1,7 +1,7 @@
 /* global ActiveXObject, define, jQuery */
 
 /**
- *  PDFObject v2.2.3
+ *  PDFObject v2.2.4
  *  https://github.com/pipwerks/PDFObject
  *  @license
  *  Copyright (c) 2008-2020 Philip Hutchison
@@ -30,7 +30,7 @@
   // Return boolean false and exit function when running server-side
 
   if (
-    window === undefined ||
+    typeof window === 'undefined' ||
     window.navigator === undefined ||
     window.navigator.userAgent === undefined ||
     window.navigator.mimeTypes === undefined
@@ -38,7 +38,7 @@
     return false
   }
 
-  const pdfObjectVersion = '2.2.3'
+  const pdfObjectVersion = '2.2.4'
   const nav = window.navigator
   const ua = window.navigator.userAgent
 

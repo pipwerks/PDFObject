@@ -1,10 +1,11 @@
 {
   "name": "pdfobject",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "An open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents",
-  "main": "pdfobject.js",
+  "main": "./pdfobject.js",
   "scripts": {
-    "build": "terser pdfobject.js --comments --mangle --source-map --output pdfobject.min.js",
+    "minify": "terser ./pdfobject.js --comments --mangle --source-map --output ./pdfobject.min.js",
+    "standardize": "standard --fix ./pdfobject.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/pipwerks/PDFObject#readme",
   "devDependencies": {
-    "terser": "^5.3.2"
+    "standard": "^14.3.4",
+    "terser": "^5.3.4"
   }
 }
