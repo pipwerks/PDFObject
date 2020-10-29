@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/pipwerks/PDFObject#readme",
   "devDependencies": {
-    "standard": "^15.0.0",
+    "standard": "^16.0.0",
     "terser": "^5.3.5"
   }
 }
