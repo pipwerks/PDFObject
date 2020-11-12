@@ -2,28 +2,28 @@
   "name": "pdfobject",
   "version": "2.2.4",
   "description": "An open-source standards-friendly JavaScript utility for embedding PDF files into HTML documents",
+  "keywords": [
+    "pdf",
+    "pdfobject"
+  ],
+  "homepage": "https://github.com/pipwerks/PDFObject#readme",
+  "bugs": {
+    "url": "https://github.com/pipwerks/PDFObject/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://pipwerks@github.com/pipwerks/PDFObject.git"
+  },
+  "license": "MIT",
+  "author": "Philip Hutchison <philip@pipwerks.com> (http://pipwerks.com)",
   "main": "./pdfobject.js",
   "scripts": {
     "minify": "terser ./pdfobject.js --comments --mangle --source-map --output ./pdfobject.min.js",
     "standardize": "standard --fix ./pdfobject.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://pipwerks@github.com/pipwerks/PDFObject.git"
-  },
-  "keywords": [
-    "pdf",
-    "pdfobject"
-  ],
-  "author": "Philip Hutchison <philip@pipwerks.com> (http://pipwerks.com)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/pipwerks/PDFObject/issues"
-  },
-  "homepage": "https://github.com/pipwerks/PDFObject#readme",
   "devDependencies": {
-    "standard": "^16.0.0",
-    "terser": "^5.3.5"
+    "standard": "^16.0.2",
+    "terser": "^5.3.8"
   }
 }
