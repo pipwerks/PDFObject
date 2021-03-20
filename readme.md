@@ -1,6 +1,6 @@
 PDFObject is a lightweight JavaScript utility for dynamically embedding PDFs in HTML documents.
 
-Copyright (c) 2008-2020 Philip Hutchison
+Copyright (c) 2008-2021 Philip Hutchison
 MIT-style license: http://pipwerks.mit-license.org/
 
 -----
@@ -8,6 +8,11 @@ MIT-style license: http://pipwerks.mit-license.org/
 [![CDNJS](https://img.shields.io/cdnjs/v/pdfobject.svg)](https://cdnjs.com/libraries/pdfobject/)
 
 ## Changelog
+
+### 2.2.5, March 2021
+* Expanded assumptions to counteract Chrome's deprecation of MIME type checks. Any 'modern' browser will be given a green light regardless of whether `assumptionMode` is enabled. However `assumptionMode` will still be available for browsers that are not declared modern.
+* Added `allow="fullscreen"` attribute to iframe embeds, in case anyone needs their PDFs to be rendered fullscreen.
+* Fixed Firefox user agent sniffing for edge case (thanks to David Novodchuck for the PR)
 
 ### 2.2.4, October 2020
 Reinstated `typeof` check for `window` to play nice with React and NextJS.
