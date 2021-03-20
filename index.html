@@ -76,8 +76,8 @@
             <li><a href="static/"><i class="fas fa-file-code"></i> Embedding PDFs without JavaScript</a></li>
             <li><a href="https://github.com/pipwerks/PDFObject/"><i class="fab fa-github-alt"></i> GitHub</a></li>
             <li><a href="https://www.npmjs.com/package/pdfobject/"><i class="fab fa-npm"></i> NPM</a></li>
-            <li><a href="https://unpkg.com/pdfobject@2.2.4/pdfobject.min.js"><i class="fas fa-cloud"></i> UNPKG (CDN)</a></li>
-            <li><a href="https://cdn.jsdelivr.net/npm/pdfobject@2.2.4/pdfobject.min.js"><i class="fas fa-cloud"></i> jsdelivr (CDN)</a></li>
+            <li><a href="https://unpkg.com/pdfobject@2.2.5/pdfobject.min.js"><i class="fas fa-cloud"></i> UNPKG (CDN)</a></li>
+            <li><a href="https://cdn.jsdelivr.net/npm/pdfobject@2.2.5/pdfobject.min.js"><i class="fas fa-cloud"></i> jsdelivr (CDN)</a></li>
             <li><a href="https://cdnjs.com/libraries/pdfobject/"><i class="fas fa-cloud"></i> CDNJS (CDN)</a></li>
             <li><hr/></li>
         </ul>
@@ -501,6 +501,13 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
     <section id="changelog">
         <h2>Changelog</h2>
         <ul>
+            <li><b>2.2.5, March 2021</b>:
+                <ul>
+                    <li>Expanded assumptions to counteract Chrome's deprecation of MIME type checks. Any 'modern' browser will be given a green light regardless of whether assumptionMode is enabled. However assumptionMode will still be available for browsers that are not declared modern.</li>
+                    <li>Added <code>allow="fullscreen"</code> attribute to iframe embeds, in case anyone needs their PDFs to be rendered fullscreen</li>
+                    <li>Fixed Firefox user agent sniffing for edge case (thanks to David Novodchuck for the PR).</li>
+                </ul>
+            </li>
             <li><b>2.2.4, October 2020</b>: Reinstated <code>typeof</code> check for <code>window</code> to play nice with React and NextJS.</li>
             <li><b>2.2.3, September 2020</b>: Version bump for NPM. Sigh.</li>
             <li><b>2.2.2, September 2020</b>: Fixed typo affecting `suppressConsole` functionality. Hat tip to <a href="https://github.com/johnhunter">John Hunter</a> for the discovery and fix.</li>
@@ -530,7 +537,7 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
 
 </div><!-- /flex-wrapper -->
 
-<script src="https://unpkg.com/pdfobject@2.2.4/pdfobject.min.js"></script>
+<script src="https://unpkg.com/pdfobject@2.2.5/pdfobject.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js"></script>
 <script src="js/in-view.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/cferdinandi/smooth-scroll@14.2.1/dist/smooth-scroll.polyfills.min.js"></script>
