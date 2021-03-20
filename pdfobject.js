@@ -337,7 +337,7 @@
     return {
         embed: function (a,b,c){ return embed(a,b,c); },
         pdfobjectversion: (function () { return pdfobjectversion; })(),
-        supportsPDFs: (function (){ return supportsPDFs || (assumptionMode && isModernBrowser && !isMobileDevice); })()
+        supportsPDFs: (function (){ return supportsPDFs; })()
     };
 
 }));
