@@ -1,8 +1,8 @@
 /**
- *  PDFObject v2.2.4
+ *  PDFObject v2.2.5
  *  https://github.com/pipwerks/PDFObject
  *  @license
- *  Copyright (c) 2008-2020 Philip Hutchison
+ *  Copyright (c) 2008-2021 Philip Hutchison
  *  MIT-style license: http://pipwerks.mit-license.org/
  *  UMD module pattern from https://github.com/umdjs/umd/blob/master/templates/returnExports.js
  */
