@@ -101,6 +101,8 @@
     let supportsPDFs = (
         //As of Sept 2020 no mobile browsers properly support PDF embeds
         !isMobileDevice && (
+            //We're moving into the age of MIME-less browsers. They mostly all support PDF rendering without plugins.
+            isModernBrowser ||
             //Modern versions of Firefox come bundled with PDFJS
             isFirefoxWithPDFJS ||
             //Browsers that still support the original MIME type check
@@ -306,7 +308,7 @@
 
         //Embed PDF if traditional support is provided, or if this developer is willing to roll with assumption
         //that modern desktop (not mobile) browsers natively support PDFs 
-        if(supportsPDFs || (assumptionMode && isModernBrowser && !isMobileDevice)){
+        if(supportsPDFs || (assumptionMode && !isMobileDevice)){
             
             //Should we use <embed> or <iframe>? In most cases <embed>. 
             //Allow developer to force <iframe>, if desired
