@@ -2,7 +2,7 @@
 //jshint unused:false, strict: false
 
 /*
-    Copyright (c) 2008-2020 Philip Hutchison
+    Copyright (c) 2008-2021 Philip Hutchison
     MIT-style license: http://pipwerks.mit-license.org/
 */
 
