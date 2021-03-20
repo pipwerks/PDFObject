@@ -195,6 +195,7 @@
         iframe.className = "pdfobject";
         iframe.type = "application/pdf";
         iframe.frameborder = "0";
+        iframe.allow = "fullscreen";
         
         if(id){
             iframe.id = id;
@@ -227,6 +228,10 @@
 
         if(id){
             embed.id = id;
+        }
+
+        if(embedType === "iframe"){
+            embed.allow = "fullscreen";
         }
 
         if(!omitInlineStyles){
