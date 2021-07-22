@@ -1,5 +1,7 @@
 PDFObject is a lightweight JavaScript utility for dynamically embedding PDFs in HTML documents.
 
+Examples and documentation can be found at https://pdfobject.com.
+
 Copyright (c) 2008-2021 Philip Hutchison
 MIT-style license: http://pipwerks.mit-license.org/
 
@@ -8,6 +10,12 @@ MIT-style license: http://pipwerks.mit-license.org/
 [![CDNJS](https://img.shields.io/cdnjs/v/pdfobject.svg)](https://cdnjs.com/libraries/pdfobject/)
 
 ## Changelog
+
+### 2.2.6, July 2021
+* Add `title` attribute to `embed` and `iframe` elements per #248
+* Force Safari desktop to embed via iframe due to freezing bug in macOS 11 (Big Sur) per #243
+* Fixed version number per #247
+* Added note about documentation to readme file per #251
 
 ### 2.2.5, March 2021
 * Expanded assumptions to counteract Chrome's deprecation of MIME type checks. Any 'modern' browser will be given a green light regardless of whether `assumptionMode` is enabled. However `assumptionMode` will still be available for browsers that are not declared modern.

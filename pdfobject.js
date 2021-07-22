@@ -1,5 +1,5 @@
 /**
- *  PDFObject v2.2.5
+ *  PDFObject v2.2.6
  *  https://github.com/pipwerks/PDFObject
  *  @license
  *  Copyright (c) 2008-2021 Philip Hutchison
@@ -35,7 +35,7 @@
             return false;
     }
 
-    let pdfobjectversion = "2.2.3";
+    let pdfobjectversion = "2.2.6";
     let nav = window.navigator;
     let ua = window.navigator.userAgent;
 
@@ -218,7 +218,7 @@
 
     };
 
-    let generatePDFObjectMarkup = function (embedType, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles){
+    let generatePDFObjectMarkup = function (embedType, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, title, omitInlineStyles){
 
         //Ensure target element is empty first
         emptyNodeContents(targetNode);
@@ -227,6 +227,7 @@
         embed.src = url + pdfOpenFragment;
         embed.className = "pdfobject";
         embed.type = "application/pdf";
+        embed.title = title;
 
         if(id){
             embed.id = id;
@@ -272,6 +273,7 @@
         let fallbackLink = opt.fallbackLink || true;
         let width = opt.width || "100%";
         let height = opt.height || "100%";
+        let title = opt.title || "Embedded PDF";
         let assumptionMode = (typeof opt.assumptionMode === "boolean") ? opt.assumptionMode : true;
         let forcePDFJS = (typeof opt.forcePDFJS === "boolean") ? opt.forcePDFJS : false;
         let supportRedirect = (typeof opt.supportRedirect === "boolean") ? opt.supportRedirect : false;
@@ -314,9 +316,10 @@
             //Allow developer to force <iframe>, if desired
             //There is an edge case where Safari does not respect 302 redirect requests for PDF files when using <embed> element.
             //Redirect appears to work fine when using <iframe> instead of <embed> (Addresses issue #210)
-            let embedtype = (forceIframe || (supportRedirect && isSafariDesktop)) ? "iframe" : "embed";
+            //Forcing Safari desktop to use iframe due to freezing bug in macOS 11 (Big Sur)
+            let embedtype = (forceIframe || supportRedirect || isSafariDesktop) ? "iframe" : "embed";
             
-            return generatePDFObjectMarkup(embedtype, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, omitInlineStyles);
+            return generatePDFObjectMarkup(embedtype, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, title, omitInlineStyles);
 
         }
         
