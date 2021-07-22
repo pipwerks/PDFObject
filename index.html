@@ -501,7 +501,16 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
 
     <section id="changelog">
         <h2>Changelog</h2>
+        <p>A big <b>thank you</b> to everyone who submitted issues in GitHub and helped test PDFObject.</p>
         <ul>
+            <li><b>2.2.6, July 2021</b>:
+                <ul>
+                    <li>Add title attribute to <code>embed</code> and <code>iframe</code>> elements per issue #248.</li>
+                    <li>Force Safari desktop to embed via iframe due to freezing bug in macOS 11 (Big Sur) per issue #243.</li>
+                    <li>Fixed version number per issue #247.</li>
+                    <li>Added note about documentation to readme file per issue #251.</li>
+                </ul>
+            </li>
             <li><b>2.2.5, March 2021</b>:
                 <ul>
                     <li>Expanded assumptions to counteract Chrome's deprecation of MIME type checks. Any 'modern' browser will be given a green light regardless of whether assumptionMode is enabled. However assumptionMode will still be available for browsers that are not declared modern.</li>
