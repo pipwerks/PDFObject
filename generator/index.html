@@ -6,7 +6,14 @@
 <title>PDFObject: Code Generator</title>
 <!-- site analytics, unrelated to any example code presented on this page -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1394306-6"></script>
-<script src="../js/analytics.js"></script><!-- /site analytics -->
+<script>
+if(window.location.hostname === "pdfobject.com"){
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag("js", new Date());
+	gtag("config", "UA-1394306-6");
+}
+</script><!-- /site analytics -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Peralta" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,700" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism.min.css" />
