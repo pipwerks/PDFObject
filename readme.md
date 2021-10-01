@@ -11,6 +11,9 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 ## Changelog
 
+### 2.2.7, September 2021
+* Add `title` attribute to PDFJS `iframe` elements per #258
+
 ### 2.2.6, July 2021
 * Add `title` attribute to `embed` and `iframe` elements per #248
 * Force Safari desktop to embed via iframe due to freezing bug in macOS 11 (Big Sur) per #243
