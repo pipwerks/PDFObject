@@ -184,7 +184,7 @@
 
     };
 
-    let generatePDFJSMarkup = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles){
+    let generatePDFJSMarkup = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id, title, omitInlineStyles){
 
         //Ensure target element is empty first
         emptyNodeContents(targetNode);
@@ -198,6 +198,7 @@
         iframe.type = "application/pdf";
         iframe.frameborder = "0";
         iframe.allow = "fullscreen";
+        iframe.title = title;
         
         if(id){
             iframe.id = id;
@@ -303,7 +304,7 @@
 
         //If the forcePDFJS option is invoked, skip everything else and embed as directed
         if(forcePDFJS && PDFJS_URL){
-            return generatePDFJSMarkup(targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles);
+            return generatePDFJSMarkup(targetNode, url, pdfOpenFragment, PDFJS_URL, id, title, omitInlineStyles);
         }
  
         // --== Embed attempt #2 ==--
@@ -327,7 +328,7 @@
         
         //If everything else has failed and a PDFJS fallback is provided, try to use it
         if(PDFJS_URL){
-            return generatePDFJSMarkup(targetNode, url, pdfOpenFragment, PDFJS_URL, id, omitInlineStyles);
+            return generatePDFJSMarkup(targetNode, url, pdfOpenFragment, PDFJS_URL, id, title, omitInlineStyles);
         }
         
         // --== PDF embed not supported! Use fallback ==-- 
