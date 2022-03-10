@@ -271,7 +271,11 @@
         let id = (typeof opt.id === "string") ? opt.id : "";
         let page = opt.page || false;
         let pdfOpenParams = opt.pdfOpenParams || {};
-        let fallbackLink = opt.fallbackLink || true;
+        let fallbackLink =
+            typeof opt.fallbackLink === "string" ||
+            typeof opt.fallbackLink === "boolean"
+                ? opt.fallbackLink
+                : true;
         let width = opt.width || "100%";
         let height = opt.height || "100%";
         let title = opt.title || "Embedded PDF";
