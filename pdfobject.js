@@ -189,7 +189,13 @@
         //Ensure target element is empty first
         emptyNodeContents(targetNode);
 
-        let fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
+        if (PDFJS_URL.indexOf("?") !== -1) {
+            PDFJS_URL += '&';
+        } else {
+            PDFJS_URL += '?';
+        }
+
+        let fullURL = PDFJS_URL + "file=" + encodeURIComponent(url) + pdfOpenFragment;
         let div = document.createElement("div");
         let iframe = document.createElement("iframe");
         
