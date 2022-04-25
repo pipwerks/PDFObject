@@ -1,5 +1,5 @@
 /**
- *  PDFObject v2.2.7
+ *  PDFObject v2.2.8
  *  https://github.com/pipwerks/PDFObject
  *  @license
  *  Copyright (c) 2008-2021 Philip Hutchison
@@ -35,7 +35,7 @@
             return false;
     }
 
-    let pdfobjectversion = "2.2.7";
+    let pdfobjectversion = "2.2.8";
     let nav = window.navigator;
     let ua = window.navigator.userAgent;
 
