@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PDFObject Example: PDF.js fallback</title>
+<title>PDFObject Example: Declining to provide a fallback</title>
 <!--
 	This example created for PDFObject.com by Philip Hutchison (www.pipwerks.com)
 	Copyright 2016-2022, MIT-style license http://pipwerks.mit-license.org/
@@ -32,58 +32,20 @@ if(window.location.hostname === "pdfobject.com"){
 </script>
 <!-- END SITE ANALYTICS -->
 
-<style>
-/*
-PDFObject appends the classname "pdfobject-container" to the target element.
-This enables you to style the element differently depending on whether the embed was successful.
-In this example, a successful embed will result in a large box.
-A failed embed will not have dimensions specified, so you don't see an oddly large empty box.
-*/
-
-.pdfobject-container {
-	width: 100%;
-	max-width: 600px;
-	height: 600px;
-	margin: 2em 0;
-}
-
-.pdfobject { border: solid 1px #666; }
-#results { padding: 1rem; }
-.hidden { display: none; }
-.success { color: #4F8A10; background-color: #DFF2BF; }
-.fail { color: #D8000C; background-color: #FFBABA; }
-</style>
-
 </head>
 
 <body>
-<h1>PDFObject Example: PDF.js fallback</h1>
+<h1>PDFObject Example: Declining to provide a fallback</h1>
 
-<div id="results" class="hidden"></div>
-
-<div id="pdf"></div>
+<div id="my-pdf"></div>
 
 <div class="pdfobject-com"><a href="http://pdfobject.com">PDFObject.com</a></div>
 
+<p>If your browser doesn't support inline PDFs, you will see nothing except this message and the page title.</p>
+
 <script src="https://unpkg.com/pdfobject@2.2.8/pdfobject.min.js"></script>
 <script>
-var options = {
-	pdfOpenParams: {
-		navpanes: 0,
-		toolbar: 0,
-		statusbar: 0,
-		pagemode: "thumbs",
-		view: "FitV"
-	},
-	PDFJS_URL: "../pdfjs/web/viewer.html"
-};
-
-var myPDF = PDFObject.embed("https://pdfobject.com/pdf/sample-3pp.pdf", "#pdf", options);
-
-var el = document.querySelector("#results");
-el.setAttribute("class", (myPDF) ? "success" : "fail");
-el.innerHTML = (myPDF) ? "PDFObject was successful!" : "Uh-oh, the embed didn't work.";
-
+PDFObject.embed("/pdf/sample-3pp.pdf", "#my-pdf", { fallbackLink: false });
 </script>
 
 </body>

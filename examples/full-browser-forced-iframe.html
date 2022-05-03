@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PDFObject Example: PDF.js fallback</title>
+<title>PDFObject Example: Forcing PDFObject to use an iframe, filling the viewport</title>
 <!--
 	This example created for PDFObject.com by Philip Hutchison (www.pipwerks.com)
 	Copyright 2016-2022, MIT-style license http://pipwerks.mit-license.org/
@@ -57,33 +57,11 @@ A failed embed will not have dimensions specified, so you don't see an oddly lar
 </head>
 
 <body>
-<h1>PDFObject Example: PDF.js fallback</h1>
-
-<div id="results" class="hidden"></div>
-
 <div id="pdf"></div>
-
 <div class="pdfobject-com"><a href="http://pdfobject.com">PDFObject.com</a></div>
-
 <script src="https://unpkg.com/pdfobject@2.2.8/pdfobject.min.js"></script>
 <script>
-var options = {
-	pdfOpenParams: {
-		navpanes: 0,
-		toolbar: 0,
-		statusbar: 0,
-		pagemode: "thumbs",
-		view: "FitV"
-	},
-	PDFJS_URL: "../pdfjs/web/viewer.html"
-};
-
-var myPDF = PDFObject.embed("https://pdfobject.com/pdf/sample-3pp.pdf", "#pdf", options);
-
-var el = document.querySelector("#results");
-el.setAttribute("class", (myPDF) ? "success" : "fail");
-el.innerHTML = (myPDF) ? "PDFObject was successful!" : "Uh-oh, the embed didn't work.";
-
+var myPDF = PDFObject.embed("https://pdfobject.com/pdf/sample-3pp.pdf", document.body, { forceIframe: true });
 </script>
 
 </body>

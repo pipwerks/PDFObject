@@ -86,8 +86,8 @@ if(window.location.hostname === "pdfobject.com"){
             <li><a href="static/"><i class="fas fa-file-code"></i> Embedding PDFs without JavaScript</a></li>
             <li><a href="https://github.com/pipwerks/PDFObject/"><i class="fab fa-github-alt"></i> GitHub</a></li>
             <li><a href="https://www.npmjs.com/package/pdfobject/"><i class="fab fa-npm"></i> NPM</a></li>
-            <li><a href="https://unpkg.com/pdfobject@2.2.7/pdfobject.min.js"><i class="fas fa-cloud"></i> UNPKG (CDN)</a></li>
-            <li><a href="https://cdn.jsdelivr.net/npm/pdfobject@2.2.7/pdfobject.min.js"><i class="fas fa-cloud"></i> jsdelivr (CDN)</a></li>
+            <li><a href="https://unpkg.com/pdfobject@2.2.8/pdfobject.min.js"><i class="fas fa-cloud"></i> UNPKG (CDN)</a></li>
+            <li><a href="https://cdn.jsdelivr.net/npm/pdfobject@2.2.8/pdfobject.min.js"><i class="fas fa-cloud"></i> jsdelivr (CDN)</a></li>
             <li><a href="https://cdnjs.com/libraries/pdfobject/"><i class="fas fa-cloud"></i> CDNJS (CDN)</a></li>
             <li><hr/></li>
         </ul>
@@ -479,10 +479,12 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
             <li><a href="examples/conditional-js-advanced.html">Invoking conditional JavaScript upon successful embed (onclick)</a></li>
             <li><a href="examples/conditional-js.html">Invoking conditional JavaScript upon successful embed</a></li>
             <li><a href="examples/detection.html">Detection of PDF support</a></li>
+            <li><a href="examples/detection-navigator-pdfViewerEnabled.html">Detection using navigator.pdfViewerEnabled</a></li>
             <li><a href="examples/embed-multiple-PDFs.html">Embed two PDFs on one HTML page</a></li>
             <li><a href="examples/full-browser-default.html">Full-browser embed (no selector specified)</a></li>
             <li><a href="examples/full-browser-explicit-pdfparams.html">Full-browser embed (explicit selector) with PDF Open Params specified</a></li>
             <li><a href="examples/full-browser-explicit.html">Full-browser embed (explicit selector)</a></li>
+            <li><a href="examples/full-browser-forced-iframe.html">Full-browser embed, forced iframe</a></li>
             <li><a href="examples/passing-element-jquery-styled.html">Passing jQuery element, CSS styles applied</a></li>
             <li><a href="examples/passing-element-jquery.html">Passing jQuery element</a></li>
             <li><a href="examples/passing-element-styled.html">Passing vanilla HTML element, CSS styles applied</a></li>
@@ -496,6 +498,7 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
             <li><a href="examples/querystring-URL.html">Specifying PDF URL containing querystring</a></li>
             <li><a href="examples/replace-PDF-with-second-PDF.html">Replace one PDF with another</a></li>
             <li><a href="examples/specifying-custom-fallback-link.html">Specifying custom fallback link</a></li>
+            <li><a href="examples/declining-a-fallback.html">Declining to provide a fallback link</a></li>
             <li><a href="examples/base64.html">Embedding a PDF encoded as a base64 string</a></li>
             <li><a href="examples/redirect-302.html">Specifying PDF URL that will redirect via 302 to a different URL</a></li>
             <li><a href="examples/iframe-forced.html">Forcing PDFObject to use an iframe for embeds</a></li>
@@ -513,6 +516,12 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
         <h2>Changelog</h2>
         <p>A big <b>thank you</b> to everyone who submitted issues in GitHub and helped test PDFObject.</p>
         <ul>
+            <li><b>2.2.8, April 2022</b>:
+                <ul>
+                    <li>Refactored to reduce redundant code. Simplified iframe and PDFJS handling. Subsequently resolves #263 (double scroll bars) and PR #267 (<code>PDFJS_URL</code> param fix). Hat tip to Theo Beers, Sascha Greuel, meier-andersen, and everyone who helped identify and confirm the underlying issues.</li>
+                    <li>Fixed <code>fallbackLink</code> handling to ensure <code>false</code> is respected. Hat tip to Theo Beers.</li>
+                </ul>
+            </li>
             <li><b>2.2.7, September 2021</b>: Add title attribute to PDFJS iframe, per issue #258.</li>
             <li><b>2.2.6, July 2021</b>:
                 <ul>
@@ -558,7 +567,7 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
 
 </div><!-- /flex-wrapper -->
 
-<script src="https://unpkg.com/pdfobject@2.2.7/pdfobject.min.js"></script>
+<script src="https://unpkg.com/pdfobject@2.2.8/pdfobject.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js"></script>
 <script src="js/in-view.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/cferdinandi/smooth-scroll@14.2.1/dist/smooth-scroll.polyfills.min.js"></script>
