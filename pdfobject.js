@@ -1,5 +1,5 @@
 /**
- *  PDFObject v2.2.8
+ *  PDFObject v2.2.9
  *  https://github.com/pipwerks/PDFObject
  *  @license
  *  Copyright (c) 2008-2022 Philip Hutchison
@@ -195,6 +195,8 @@
             //If PDFJS_URL already contains a ?, assume querystring is in place, and use an ampersand to append PDFJS's file parameter
             let connector = (PDFJS_URL.indexOf("?") !== -1) ? "&" : "?"; 
             source = PDFJS_URL + connector + "file=" + encodeURIComponent(url) + pdfOpenFragment;
+        } else {
+            source += pdfOpenFragment;
         }
 
         let el_type = (embedType === "pdfjs" || embedType === "iframe") ? "iframe" : "embed";

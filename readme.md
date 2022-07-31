@@ -11,6 +11,9 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 ## Changelog
 
+### 2.2.9, July 2022
+* Fixed regression for `pdfOpenParams` handling, resolves issue #272. Hat tip to Theo Beers.
+
 ### 2.2.8, April 2022
 * Refactored to reduce redundant code. Simplified iframe and PDFJS handling. Subsequently resolves #263 (double scroll bars) and PR #267 (PDFJS_URL param fix). Hat tip to Theo Beers, Sascha Greuel, meier-andersen, and everyone who helped identify and confirm the underlying issues.
 * Fixed `fallbackLink` handling to ensure `false` is respected. Hat tip to Theo Beers.
