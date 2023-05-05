@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PDFObject Example: Passing vanilla HTML element, CSS styles applied</title>
+<title>PDFObject Example: Specifying custom attribute</title>
 <!-- 
 	SITE ANALYTICS, DO NOT COPY THIS CODE! 
 	The following snippet is for analyizing pdfobject.com traffic. Please do not paste this code into your website.
@@ -30,27 +30,10 @@ if(window.location.hostname === "pdfobject.com"){
 
 <!-- CSS for basic page styling, not related to example -->
 <link href="/css/examples.css" rel="stylesheet" />
-
-
-<!--
-    CSS specific to this example
-    PDFObject appends the classname "pdfobject-container" to the target element.
-    This enables you to style the element differently depending on whether the embed was successful.-->
-<style>
-.pdfobject-container {
-    max-width: 100%;
-	width: 600px;
-	height: 600px;
-	border: 10px solid rgba(0,0,0,.2);
-	margin: 0;
-}
-</style>
-
-
 </head>
 
 <body>
-<h1>PDFObject Example: Passing vanilla HTML element, CSS styles applied</h1>
+<h1>PDFObject Example: Specifying custom attribute</h1>
 
 <div id="my-pdf"></div>
 
@@ -58,8 +41,11 @@ if(window.location.hostname === "pdfobject.com"){
 
 <script src="/dev/pdfobject.2.2.9.js"></script>
 <script>
-var container = document.querySelector("#my-pdf");
-PDFObject.embed("/pdf/this one's fun.pdf", container);
+var options = {
+	customAttribute: { key: "foo", value: "bar" }
+};
+
+PDFObject.embed("/pdf/sample-3pp.pdf", "#my-pdf", options);
 </script>
 
 </body>
