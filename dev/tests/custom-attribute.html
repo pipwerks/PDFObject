@@ -35,17 +35,22 @@ if(window.location.hostname === "pdfobject.com"){
 <body>
 <h1>PDFObject Example: Specifying custom attribute</h1>
 
-<div id="my-pdf"></div>
+<h2>PDF using <code>embed</code> element (where supported)</h2>
+<div id="pdf-embed"></div>
+
+<h2>PDF using <code>iframe</code> element</h2>
+<div id="pdf-iframe"></div>
 
 <div class="pdfobject-com"><a href="http://pdfobject.com/dev">PDFObject.com test cases</a></div>
 
 <script src="/dev/pdfobject.2.2.9.js"></script>
 <script>
-var options = {
-	customAttribute: { key: "foo", value: "bar" }
-};
+PDFObject.embed("/pdf/sample-3pp.pdf", "#pdf-embed", { customAttribute: { key: "foo", value: "bar" } });
 
-PDFObject.embed("/pdf/sample-3pp.pdf", "#my-pdf", options);
+PDFObject.embed("/pdf/sample-3pp.pdf", "#pdf-iframe", {
+	customAttribute: { key: "foo", value: "bar" },
+	forceIframe: true
+});
 </script>
 
 </body>
