@@ -11,6 +11,9 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 ## Changelog
 
+### 2.2.10, May 2023
+Version bump for cleaning up docs and aligning on NPM. I'm a bit rusty.
+
 ### 2.2.9, May 2023
 * Fixed regression for `pdfOpenParams` handling, resolves issue #272. Hat tip to Theo Beers.
 * Added ability to specify custom attribute on `embed` and `iframe` elements, per #274
