@@ -64,6 +64,7 @@ if(window.location.hostname === "pdfobject.com"){
             <li><a data-scroll href="#api">API</a>
                 <ul>
                     <li><a href="#assumptionMode">assumptionMode</a></li>
+                    <li><a href="#customAttribute">customAttribute</a></li>
                     <li><a href="#fallbackLink">fallbackLink</a></li>
                     <li><a href="#forceIframe">forceIframe</a></li>
                     <li><a href="#forcePDFJS">forcePDFJS</a></li>
@@ -86,8 +87,8 @@ if(window.location.hostname === "pdfobject.com"){
             <li><a href="static/"><i class="fas fa-file-code"></i> Embedding PDFs without JavaScript</a></li>
             <li><a href="https://github.com/pipwerks/PDFObject/"><i class="fab fa-github-alt"></i> GitHub</a></li>
             <li><a href="https://www.npmjs.com/package/pdfobject/"><i class="fab fa-npm"></i> NPM</a></li>
-            <li><a href="https://unpkg.com/pdfobject@2.2.8/pdfobject.min.js"><i class="fas fa-cloud"></i> UNPKG (CDN)</a></li>
-            <li><a href="https://cdn.jsdelivr.net/npm/pdfobject@2.2.8/pdfobject.min.js"><i class="fas fa-cloud"></i> jsdelivr (CDN)</a></li>
+            <li><a href="https://unpkg.com/pdfobject@2.2.10/pdfobject.min.js"><i class="fas fa-cloud"></i> UNPKG (CDN)</a></li>
+            <li><a href="https://cdn.jsdelivr.net/npm/pdfobject@2.2.10/pdfobject.min.js"><i class="fas fa-cloud"></i> jsdelivr (CDN)</a></li>
             <li><a href="https://cdnjs.com/libraries/pdfobject/"><i class="fas fa-cloud"></i> CDNJS (CDN)</a></li>
             <li><hr/></li>
         </ul>
@@ -254,21 +255,32 @@ PDFObject.embed("myfile.pdf", $node);</code></pre>
                 <p><img src="img/assumption-mode-logic.png" alt="Flowchart of logic for assumptionMode" /></p>
                 <p><code>assumptionMode</code> is a direct response to Mozilla's decision to remove <code>navigator.mimeTypes</code> support in Firefox. Mozilla is attempting to make Firefox more secure by reducing opportunities for browser fingerprinting. Plugin inspection is a core component of many browser fingerprinting techniques. However, many well-intentioned scripts such as PDFObject query <code>navigator.mimeTypes</code> to determine whether specific media, such as PDFs (<code>navigator.mimeTypes['application/pdf']</code>), Flash SWFs, and specific audio or video codecs are supported.</p>
             </li>
+            <li id="customAttribute">
+                <h5><b>customAttribute</b> [object]. Default: <code>null</code></h5>
+                <p>This option allows developers to specify a custom attribute on the <code>embed</code> and <code>iframe</code> elements. For example, you could specify the <code>loading</code> attribute on the iframe to be <code>"lazy"</code>.</p>
+                <p>Values must be set as <code>key</code> and <code>value</code>, as shown in the following example:</p>
+<pre><code class='language-javascript'>var options = {
+    customAttribute: { key: "foo", value: "bar" }
+};
+PDFObject.embed("myfile.pdf", "#my-container", options);
+</code></pre>
+                <p><a href="/examples/custom-attribute.html">See a custom attribute example in action.</a></p>
+            </li>
             <li id="fallbackLink">
                 <h5><b>fallbackLink</b> [string] or [boolean]. Default: <code>"&lt;p>This browser does not support inline PDFs. Please download the PDF to view it: &lt;a href='[url]'>Download PDF&lt;/a>&lt;/p>"</code></h5>
                 <p>Any string entered here will be inserted into the target element when the browser doesn't support inline PDFs.</p>
                 <ul>
                     <li>HTML is supported</li>
                     <li>Use the shortcode <code>[url]</code> to insert the URL of the PDF (as specified via the URL parameter in the <code>embed()</code> method).
-            <pre><code class='language-javascript'>var options = {
-            fallbackLink: "&lt;p>This is a &lt;a href='[url]'>fallback link&lt;/a>&lt;/p>"
-            };
-            PDFObject.embed("myfile.pdf", "#my-container", options);
-            //If browser doesn't support inline PDFs, outputs:
-            //&lt;p>This is a &lt;a href='myfile.pdf'>fallback link&lt;/a>&lt;/p></code></pre></li>
-                    <li>Entering <code>false</code> will disable the fallback text option and prevent PDFObject from inserting fallback text
-                    <pre><code class='language-javascript'>PDFObject.embed("myfile.pdf", "#my-container", {fallbackLink: false});
-            //If browser doesn't support inline PDFs, outputs nothing</code></pre></li>
+<pre><code class='language-javascript'>var options = {
+fallbackLink: "&lt;p>This is a &lt;a href='[url]'>fallback link&lt;/a>&lt;/p>"
+};
+PDFObject.embed("myfile.pdf", "#my-container", options);
+//If browser doesn't support inline PDFs, outputs:
+//&lt;p>This is a &lt;a href='myfile.pdf'>fallback link&lt;/a>&lt;/p></code></pre></li>
+        <li>Entering <code>false</code> will disable the fallback text option and prevent PDFObject from inserting fallback text
+        <pre><code class='language-javascript'>PDFObject.embed("myfile.pdf", "#my-container", {fallbackLink: false});
+//If browser doesn't support inline PDFs, outputs nothing</code></pre></li>
                 </ul>
             </li>            
             <li id="forceIframe">
@@ -284,13 +296,13 @@ PDFObject.embed("myfile.pdf", $node);</code></pre>
                 <p>Will insert the height as an inline style via the <code>style</code> attribute on the the generated element (<code>&lt;embed></code> or <code>&lt;iframe></code> depending on situation). If left unspecified, PDFObject will default to 100%. Is standard CSS, supports all units, including px, %, em, and rem.</p>
                 <p>If you would like PDFObject to omit all inline styles, set the <code>omitInlineStyles</code> option to <code>true</code>.</p>
                 <p><i>Tip: It's safer to specify dimensions using non-inline CSS instead of this inline code. See "Specifying dimensions" below.</i></p>
-                <pre><code class='language-javascript'>PDFObject.embed("myfile.pdf", "#my-container", {height: "20rem"});
+<pre><code class='language-javascript'>PDFObject.embed("myfile.pdf", "#my-container", {height: "20rem"});
 //outputs &lt;embed src="myfile.pdf" style="height:20rem;"></code></pre>
             </li>
             <li id="id">
                 <h5><b>id</b> [string]. Default: <code>null</code></h5>
                 <p>Any string entered here will be appended to the generated <code>&lt;embed></code> or <code>&lt;iframe></code> element as the ID. If left unspecified, no ID will be appended.</p>
-                <pre><code class='language-javascript'>PDFObject.embed("myfile.pdf", "#my-container", {id: "myID"});
+<pre><code class='language-javascript'>PDFObject.embed("myfile.pdf", "#my-container", {id: "myID"});
 //outputs &lt;embed src="myfile.pdf" id="myID"></code></pre>
             </li>
             <li id="omitInlineStyles">
@@ -301,7 +313,7 @@ PDFObject.embed("myfile.pdf", $node);</code></pre>
             <li id="page">
                 <h5><b>page</b> [string or number]. Default: <code>null</code></h5>
                 <p>Alias for PDF Open Parameters "page" option. Any number entered here will cause the PDF be opened to the specified page number, <b>if the browser supports it</b>. If left unspecified, the PDF will open on page 1.</p>
-                <pre><code class='language-javascript'>PDFObject.embed("myfile.pdf", "#my-container", {page: "2"});</code></pre>
+<pre><code class='language-javascript'>PDFObject.embed("myfile.pdf", "#my-container", {page: "2"});</code></pre>
             </li>
             <li id="PDFJS_URL">
                 <h5><b>PDFJS_URL</b> [string]. Default: <code>null</code></h5>
@@ -313,11 +325,11 @@ PDFObject.embed("myfile.pdf", $node);</code></pre>
                 <p><b>Warning: These are proprietary and not well supported outside of Adobe products.</b> Most PDF readers support the <code>page</code> parameter, but not much else. PDF.js supports <code>page</code>, <code>zoom</code>, <code>nameddest</code>, and <code>pagemode</code>.</p>
                 <ul>
                     <li><b><code>page</code></b> is the most widely-supported PDF Open Parameter outside of Adobe products.
-            <pre><code class='language-javascript'>PDFObject.embed("myfile.pdf", "#my-container", {pdfOpenParams: { page: 10 }});
+<pre><code class='language-javascript'>PDFObject.embed("myfile.pdf", "#my-container", {pdfOpenParams: { page: 10 }});
 //If supported, will cause the PDF viewer to load
 //the PDF and automatically scroll to page 10</code></pre>
                     Note that PDFObject provides a convenient alias for <code>page</code> so you don't need to use the <code>pdfOpenParams</code> child object. All other PDF Open Parameters need to be listed as children of the <code>pdfOpenParams</code> object, as illustrated above.
-            <pre><code class='language-javascript'>PDFObject.embed("myfile.pdf", "#my-container", { page: 10 });
+<pre><code class='language-javascript'>PDFObject.embed("myfile.pdf", "#my-container", { page: 10 });
 //If supported, will cause the PDF viewer to load
 //the PDF and automatically scroll to page 10</code></pre>
                     </li>
@@ -506,6 +518,7 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
             <li><a href="examples/omit-inline-styles-forced-iframe.html">Embed the PDF without any inline styles, and also require PDF to use an iframe to embed the PDF</a></li>
             <li><a href="examples/apostrophe-in-filename.html">Embedding a file with spaces and an apostrophe in the filename</a></li>
             <li><a href="examples/setting-title.html">Setting the title attribute on the embed element</a></li>
+            <li><a href="examples/custom-attribute.html">Specifying custom attribute</a></li>
         </ul>
 
     </section>
@@ -516,6 +529,13 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
         <h2>Changelog</h2>
         <p>A big <b>thank you</b> to everyone who submitted issues in GitHub and helped test PDFObject.</p>
         <ul>
+            <li><b>2.2.10, May 2023</b>: Version bump for cleaning up docs and aligning on NPM. I'm a bit rusty.</li>
+            <li><b>2.2.9, May 2023</b>:
+                <ul>
+                    <li>Fixed regression for pdfOpenParams handling, resolves issue #272. Hat tip to Theo Beers.</li>
+                    <li>Added ability to specify custom attribute on <code>embed</code> and <code>iframe</code> elements, per #274</li>
+                </ul>
+            </li>
             <li><b>2.2.8, April 2022</b>:
                 <ul>
                     <li>Refactored to reduce redundant code. Simplified iframe and PDFJS handling. Subsequently resolves #263 (double scroll bars) and PR #267 (<code>PDFJS_URL</code> param fix). Hat tip to Theo Beers, Sascha Greuel, meier-andersen, and everyone who helped identify and confirm the underlying issues.</li>
@@ -567,7 +587,7 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-container", options);</code></pre>
 
 </div><!-- /flex-wrapper -->
 
-<script src="https://unpkg.com/pdfobject@2.2.8/pdfobject.min.js"></script>
+<script src="https://unpkg.com/pdfobject@2.2.10/pdfobject.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js"></script>
 <script src="js/in-view.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/cferdinandi/smooth-scroll@14.2.1/dist/smooth-scroll.polyfills.min.js"></script>
