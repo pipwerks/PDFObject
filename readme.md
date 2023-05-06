@@ -2,7 +2,7 @@ PDFObject is a lightweight JavaScript utility for dynamically embedding PDFs in 
 
 Examples and documentation can be found at https://pdfobject.com.
 
-Copyright (c) 2008-2022 Philip Hutchison
+Copyright (c) 2008-2023 Philip Hutchison
 MIT-style license: http://pipwerks.mit-license.org/
 
 -----
@@ -11,8 +11,9 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 ## Changelog
 
-### 2.2.9, July 2022
+### 2.2.9, May 2023
 * Fixed regression for `pdfOpenParams` handling, resolves issue #272. Hat tip to Theo Beers.
+* Added ability to specify custom attribute on `embed` and `iframe` elements, per #274
 
 ### 2.2.8, April 2022
 * Refactored to reduce redundant code. Simplified iframe and PDFJS handling. Subsequently resolves #263 (double scroll bars) and PR #267 (PDFJS_URL param fix). Hat tip to Theo Beers, Sascha Greuel, meier-andersen, and everyone who helped identify and confirm the underlying issues.

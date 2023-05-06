@@ -2,7 +2,7 @@
  *  PDFObject v2.2.9
  *  https://github.com/pipwerks/PDFObject
  *  @license
- *  Copyright (c) 2008-2022 Philip Hutchison
+ *  Copyright (c) 2008-2023 Philip Hutchison
  *  MIT-style license: http://pipwerks.mit-license.org/
  *  UMD module pattern from https://github.com/umdjs/umd/blob/master/templates/returnExports.js
  */
@@ -184,7 +184,7 @@
 
     };
 
-    let generatePDFObjectMarkup = function (embedType, targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, PDFJS_URL){
+    let generatePDFObjectMarkup = function (embedType, targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute, PDFJS_URL){
 
         //Ensure target element is empty first
         emptyNodeContents(targetNode);
@@ -232,6 +232,12 @@
 
         }
 
+        //Allow developer to insert custom attribute on embed/iframe element, but ensure it does not conflict with attributes used by PDFObject
+        let reservedTokens = ["className", "type", "title", "src", "style", "id", "allow", "frameborder"];
+        if(customAttribute && customAttribute.key && reservedTokens.every(token => !customAttribute.key.includes(token))){
+            el.setAttribute(customAttribute.key, (typeof customAttribute.value !== "undefined") ? customAttribute.value : "");
+        }
+
         targetNode.classList.add("pdfobject-container");
         targetNode.appendChild(el);
 
@@ -265,6 +271,7 @@
         let targetNode = getTargetElement(selector);
         let fallbackHTML = "";
         let pdfOpenFragment = "";
+        let customAttribute = opt.customAttribute || {};
         let fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href='[url]'>Download PDF</a></p>";
 
         //Ensure URL is available. If not, exit now.
@@ -284,7 +291,7 @@
 
         //If the forcePDFJS option is invoked, skip everything else and embed as directed
         if(forcePDFJS && PDFJS_URL){
-            return generatePDFObjectMarkup("pdfjs", targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, PDFJS_URL);
+            return generatePDFObjectMarkup("pdfjs", targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute, PDFJS_URL);
         }
  
         // --== Embed attempt #2 ==--
@@ -300,7 +307,7 @@
             //Forcing Safari desktop to use iframe due to freezing bug in macOS 11 (Big Sur)
             let embedtype = (forceIframe || supportRedirect || isSafariDesktop) ? "iframe" : "embed";
             
-            return generatePDFObjectMarkup(embedtype, targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles);
+            return generatePDFObjectMarkup(embedtype, targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute);
 
         }
         
@@ -308,7 +315,7 @@
         
         //If everything else has failed and a PDFJS fallback is provided, try to use it
         if(PDFJS_URL){
-            return generatePDFObjectMarkup("pdfjs", targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, PDFJS_URL);
+            return generatePDFObjectMarkup("pdfjs", targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute, PDFJS_URL);
         }
         
         // --== PDF embed not supported! Use fallback ==-- 
