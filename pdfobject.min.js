@@ -1,5 +1,5 @@
 /**
- *  PDFObject v2.2.9
+ *  PDFObject v2.2.10
  *  https://github.com/pipwerks/PDFObject
  *  @license
  *  Copyright (c) 2008-2023 Philip Hutchison
