@@ -11,6 +11,9 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 ## Changelog
 
+### 2.2.11, May 2023
+Typo in version number within PDFObject code. Yup, I'm a bit rusty.
+
 ### 2.2.10, May 2023
 Version bump for cleaning up docs and aligning on NPM. I'm a bit rusty.
 
