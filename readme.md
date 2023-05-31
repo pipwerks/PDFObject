@@ -7,7 +7,7 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 -----
 
-[![CDNJS](https://img.shields.io/cdnjs/v/pdfobject.svg)](https://cdnjs.com/libraries/pdfobject/)
+[![npm](https://img.shields.io/npm/v/pdfobject.svg?style=flat)](https://www.npmjs.org/package/pdfobject) [![CDNJS](https://img.shields.io/cdnjs/v/pdfobject.svg)](https://cdnjs.com/libraries/pdfobject/)
 
 ## Changelog
 
