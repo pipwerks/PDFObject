@@ -11,6 +11,9 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 ## Changelog
 
+### 2.2.12, May 2023
+Refactored fat arrow function to restore compatibility with Internet Explorer 11 per #287.
+
 ### 2.2.11, May 2023
 Typo in version number within PDFObject code. Yup, I'm a bit rusty.
 

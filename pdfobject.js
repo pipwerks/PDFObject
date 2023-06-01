@@ -1,5 +1,5 @@
 /**
- *  PDFObject v2.2.11
+ *  PDFObject v2.2.12
  *  https://github.com/pipwerks/PDFObject
  *  @license
  *  Copyright (c) 2008-2023 Philip Hutchison
@@ -35,7 +35,7 @@
             return false;
     }
 
-    let pdfobjectversion = "2.2.11";
+    let pdfobjectversion = "2.2.12";
     let nav = window.navigator;
     let ua = window.navigator.userAgent;
 
@@ -234,7 +234,7 @@
 
         //Allow developer to insert custom attribute on embed/iframe element, but ensure it does not conflict with attributes used by PDFObject
         let reservedTokens = ["className", "type", "title", "src", "style", "id", "allow", "frameborder"];
-        if(customAttribute && customAttribute.key && reservedTokens.every(token => !customAttribute.key.includes(token))){
+        if(customAttribute && customAttribute.key && reservedTokens.every(function (token) { return !customAttribute.key.includes(token); })){
             el.setAttribute(customAttribute.key, (typeof customAttribute.value !== "undefined") ? customAttribute.value : "");
         }
 
