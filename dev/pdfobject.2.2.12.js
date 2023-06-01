@@ -234,7 +234,7 @@
 
         //Allow developer to insert custom attribute on embed/iframe element, but ensure it does not conflict with attributes used by PDFObject
         let reservedTokens = ["className", "type", "title", "src", "style", "id", "allow", "frameborder"];
-        if(customAttribute && customAttribute.key && reservedTokens.indexOf(token) === -1){
+        if(customAttribute && customAttribute.key && reservedTokens.indexOf(customAttribute.key) === -1){
             el.setAttribute(customAttribute.key, (typeof customAttribute.value !== "undefined") ? customAttribute.value : "");
         }
 
