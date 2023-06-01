@@ -41,6 +41,10 @@ if(window.location.hostname === "pdfobject.com"){
 <h2>PDF using <code>iframe</code> element</h2>
 <div id="pdf-iframe"></div>
 
+<h2>Reserved token</h2>
+<p>Trying to use reserved token for the attribute key. The embed should work, and the custom attribute should be ignored.</p>
+<div id="pdf-reservedtoken"></div>
+
 <div class="pdfobject-com"><a href="http://pdfobject.com/dev">PDFObject.com test cases</a></div>
 
 <script src="/dev/pdfobject.2.2.12.js"></script>
@@ -50,6 +54,10 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#pdf-embed", { customAttribute: { key: "
 PDFObject.embed("/pdf/sample-3pp.pdf", "#pdf-iframe", {
 	customAttribute: { key: "foo", value: "bar" },
 	forceIframe: true
+});
+
+PDFObject.embed("/pdf/sample-3pp.pdf", "#pdf-reservedtoken", {
+	customAttribute: { key: "title", value: "This shouldn't work" }
 });
 </script>
 
