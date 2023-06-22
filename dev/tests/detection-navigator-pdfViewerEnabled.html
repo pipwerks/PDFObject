@@ -57,6 +57,8 @@ A failed embed will not have dimensions specified, so you don't see an oddly lar
 
 <div id="supports-inline-pdfs" class="results"></div>
 
+<div id="pdf"></div>
+
 <div class="pdfobject-com"><a href="http://pdfobject.com/dev">PDFObject.com test cases</a></div>
 
 <script>
@@ -69,6 +71,21 @@ var class_string = (navigator.pdfViewerEnabled) ? "success" : "fail";
 el.className = el.className + " " + class_string;
 var status = (navigator.pdfViewerEnabled) ? "supports" : "does not support";
 el.innerHTML = "This browser " + status + " inline PDFs";
+
+if(supportsNavPdfViewerEnabled && navigator.pdfViewerEnabled){
+	
+	let container = document.querySelector("#pdf");
+	let el = document.createElement("iframe");
+	el.className = "pdfobject";
+	el.type = "application/pdf";
+	el.src = "https://pdfobject.com/pdf/sample-3pp.pdf";
+	el.allow = "fullscreen";
+	el.frameborder = "0";
+	el.style.cssText = "border: none; width: 80%; height: 400px;"; 
+	container.classList.add("pdfobject-container");
+	container.appendChild(el);
+
+}
 </script>
 
 </body>
