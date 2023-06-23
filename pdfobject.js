@@ -90,7 +90,7 @@
         if(isMobileDevice){ return false; }
         
         //Modern browsers began supporting navigator.pdfViewerEnabled in late 2022 and early 2023.
-        let supportsPDFVE = (nav.pdfViewerEnabled === "boolean");
+        let supportsPDFVE = (typeof nav.pdfViewerEnabled === "boolean");
 
         //If browser supports nav.pdfViewerEnabled and is explicitly saying PDFs are NOT supported (e.g. PDFJS disabled by user in Firefox), respect it.
         if(supportsPDFVE && !nav.pdfViewerEnabled){ return false; }
