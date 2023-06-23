@@ -189,26 +189,18 @@
             source += pdfOpenFragment;
         }
 
-        let el_type = (embedType === "pdfjs" || embedType === "iframe") ? "iframe" : "embed";
-        let el = document.createElement(el_type);
-
+        let el = document.createElement("iframe");
         el.className = "pdfobject";
         el.type = "application/pdf";
         el.title = title;
         el.src = source;
-
-        if(id){
-            el.id = id;
-        }
-
-        if(el_type === "iframe"){
-            el.allow = "fullscreen";
-            el.frameborder = "0";
-        }
+        el.allow = "fullscreen";
+        el.frameborder = "0";
+        if(id){ el.id = id; }
 
         if(!omitInlineStyles){
 
-            let style = (el_type === "embed") ? "overflow: auto;" : "border: none;";
+            let style = "border: none;";
 
             if(targetNode !== document.body){
                 //assign width and height to target node
@@ -222,7 +214,7 @@
 
         }
 
-        //Allow developer to insert custom attribute on embed/iframe element, but ensure it does not conflict with attributes used by PDFObject
+        //Allow developer to insert custom attribute on iframe element, but ensure it does not conflict with attributes used by PDFObject
         let reservedTokens = ["className", "type", "title", "src", "style", "id", "allow", "frameborder"];
         if(customAttribute && customAttribute.key && reservedTokens.indexOf(customAttribute.key) === -1){
             el.setAttribute(customAttribute.key, (typeof customAttribute.value !== "undefined") ? customAttribute.value : "");
@@ -231,7 +223,7 @@
         targetNode.classList.add("pdfobject-container");
         targetNode.appendChild(el);
 
-        return targetNode.getElementsByTagName(el_type)[0];
+        return targetNode.getElementsByTagName("iframe")[0];
 
     };
 
@@ -256,7 +248,6 @@
         let supportRedirect = (typeof opt.supportRedirect === "boolean") ? opt.supportRedirect : false;
         let omitInlineStyles = (typeof opt.omitInlineStyles === "boolean") ? opt.omitInlineStyles : false;
         let suppressConsole = (typeof opt.suppressConsole === "boolean") ? opt.suppressConsole : false;
-        let forceIframe = (typeof opt.forceIframe === "boolean") ? opt.forceIframe : false;
         let PDFJS_URL = opt.PDFJS_URL || false;
         let targetNode = getTargetElement(selector);
         let fallbackHTML = "";
@@ -289,15 +280,8 @@
         //Embed PDF if traditional support is provided, or if this developer is willing to roll with assumption
         //that modern desktop (not mobile) browsers natively support PDFs 
         if(supportsPDFs || (assumptionMode && !isMobileDevice)){
-            
-            //Should we use <embed> or <iframe>? In most cases <embed>. 
-            //Allow developer to force <iframe>, if desired
-            //There is an edge case where Safari does not respect 302 redirect requests for PDF files when using <embed> element.
-            //Redirect appears to work fine when using <iframe> instead of <embed> (Addresses issue #210)
-            //Forcing Safari desktop to use iframe due to freezing bug in macOS 11 (Big Sur)
-            let embedtype = (forceIframe || supportRedirect || isSafariDesktop) ? "iframe" : "embed";
-            
-            return generatePDFObjectMarkup(embedtype, targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute);
+                        
+            return generatePDFObjectMarkup("iframe", targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute);
 
         }
         
