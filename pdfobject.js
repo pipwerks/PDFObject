@@ -30,8 +30,7 @@
 
     if( typeof window === "undefined" || 
         window.navigator === undefined || 
-        window.navigator.userAgent === undefined || 
-        window.navigator.mimeTypes === undefined){ 
+        window.navigator.userAgent === undefined){ 
             return false;
     }
 
@@ -56,9 +55,6 @@
         Is this fragile? Sort of. But browser vendors removed mimetype detection, so we're left to improvise
     */
     let isModernBrowser = (window.Promise !== undefined);
-
-    //Older browsers still expose the mimeType
-    let supportsPdfMimeType = (nav.mimeTypes["application/pdf"] !== undefined);
 
     //Safari on iPadOS doesn't report as 'mobile' when requesting desktop site, yet still fails to embed PDFs
     let isSafariIOSDesktopMode = (  nav.platform !== undefined && 
@@ -105,8 +101,6 @@
             isModernBrowser ||
             //Modern versions of Firefox come bundled with PDFJS
             isFirefoxWithPDFJS ||
-            //Browsers that still support the original MIME type check
-            supportsPdfMimeType ||
             //Pity the poor souls still using IE
             (isIE && supportsPdfActiveX())
         )
