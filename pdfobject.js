@@ -31,7 +31,8 @@
     if(typeof window === "undefined" || window.navigator === undefined || window.navigator.userAgent === undefined){ return false; }
 
     let pdfobjectversion = "2.3";
-    let nav = window.navigator;
+    let win = window;
+    let nav = win.navigator;
     let ua = nav.userAgent;
 
     //Fallback validation when navigator.pdfViewerEnabled is not supported
@@ -39,21 +40,21 @@
 
         /*
            userAgent sniffing is not the ideal path, but most browsers revoked the ability to check navigator.mimeTypes 
-           for security purposes. Browsers have begun implementing navigator.pdfViewerEnabled, but older versions do not
-           have navigator.pdfViewerEnabled or the ability to check navigator.mimeTypes. We're left with basic browser 
+           for security purposes. As of 2023, browsers have begun implementing navigator.pdfViewerEnabled, but older versions
+            do not have navigator.pdfViewerEnabled or the ability to check navigator.mimeTypes. We're left with basic browser 
            sniffing and assumptions of PDF support based on browser vendor.
         */
 
         //Chromium has provided native PDF support since 2011.
         //Most modern browsers use Chromium under the hood: Google Chrome, Microsoft Edge, Opera, Brave, Vivaldi, Arc, and more.
-        let isChromium = (window.chrome !== undefined);
+        let isChromium = (win.chrome !== undefined);
 
         //Safari on macOS has provided native PDF support since 2009. 
         //This code snippet also detects the DuckDuckGo browser, which uses Safari/Webkit under the hood.
-        let isSafari = (window.safari !== undefined || (nav.vendor !== undefined && /Apple/.test(nav.vendor) && /Safari/.test(ua)));
+        let isSafari = (win.safari !== undefined || (nav.vendor !== undefined && /Apple/.test(nav.vendor) && /Safari/.test(ua)));
 
         //Firefox has provided PDF support via PDFJS since 2013.
-        let isFirefox = (window.Mozilla !== undefined || /irefox/.test(ua));
+        let isFirefox = (win.Mozilla !== undefined || /irefox/.test(ua));
 
         return isChromium || isSafari || isFirefox;  
 
@@ -76,7 +77,7 @@
         return !!ax; //convert resulting object to boolean
     };
 
-    let hasActiveXPDFPlugin = function (){ return ("ActiveXObject" in window) && (validateAX("AcroPDF.PDF") || validateAX("PDF.PdfCtrl")) };
+    let hasActiveXPDFPlugin = function (){ return ("ActiveXObject" in win) && (validateAX("AcroPDF.PDF") || validateAX("PDF.PdfCtrl")) };
 
     let checkSupport = function (){
 
@@ -87,8 +88,8 @@
 
         //As of June 2023, no mobile browsers properly support inline PDFs. If mobile, just say no.
         if(isMobileDevice){ return false; }
-
-        //Modern browsers began supporting navigation.pdfViewerEnabled in late 2022 and early 2023.
+        
+        //Modern browsers began supporting navigator.pdfViewerEnabled in late 2022 and early 2023.
         let supportsPDFVE = (nav.pdfViewerEnabled === "boolean");
 
         //If browser supports nav.pdfViewerEnabled and is explicitly saying PDFs are NOT supported (e.g. PDFJS disabled by user in Firefox), respect it.
@@ -157,7 +158,7 @@
             //Is CSS selector
             targetNode = document.querySelector(targetSelector);
 
-        } else if (window.jQuery !== undefined && targetSelector instanceof jQuery && targetSelector.length) {
+        } else if (win.jQuery !== undefined && targetSelector instanceof jQuery && targetSelector.length) {
 
             //Is jQuery element. Extract HTML node
             targetNode = targetSelector.get(0);
