@@ -28,15 +28,10 @@
     //Will choke on undefined navigator and window vars when run on server
     //Return boolean false and exit function when running server-side
 
-    if( typeof window === "undefined" || 
-        window.navigator === undefined || 
-        window.navigator.userAgent === undefined){ 
-            return false;
-    }
+    if(typeof window === "undefined" || window.navigator === undefined || window.navigator.userAgent === undefined){ return false; }
 
     let pdfobjectversion = "2.3";
     let nav = window.navigator;
-    let ua = window.navigator.userAgent;
 
     //Time to jump through hoops -- browser vendors do not make it easy to detect PDF support.
 
@@ -63,6 +58,7 @@
                                     nav.maxTouchPoints > 1 );
 
     //Quick test for mobile devices.
+    let ua = nav.userAgent;
     let isMobileDevice = (isSafariIOSDesktopMode || /Mobi|Tablet|Android|iPad|iPhone/.test(ua));
 
     //Safari desktop requires special handling 
