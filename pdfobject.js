@@ -32,75 +32,74 @@
 
     let pdfobjectversion = "2.3";
     let nav = window.navigator;
-
-    //Time to jump through hoops -- browser vendors do not make it easy to detect PDF support.
-
-    /*
-        IE11 still uses ActiveX for Adobe Reader, but IE 11 doesn't expose window.ActiveXObject the same way 
-        previous versions of IE did. window.ActiveXObject will evaluate to false in IE 11, but "ActiveXObject" 
-        in window evaluates to true.
-
-        MS Edge does not support ActiveX so this test will evaluate false
-    */
-    let isIE = ("ActiveXObject" in window);
-
-    /*
-        There is a coincidental correlation between implementation of window.promises and native PDF support in desktop browsers
-        We use this to assume if the browser supports promises it supports embedded PDFs
-        Is this fragile? Sort of. But browser vendors removed mimetype detection, so we're left to improvise
-    */
-    let isModernBrowser = (window.Promise !== undefined);
-
-    //Safari on iPadOS doesn't report as 'mobile' when requesting desktop site, yet still fails to embed PDFs
-    let isSafariIOSDesktopMode = (  nav.platform !== undefined && 
-                                    nav.platform === "MacIntel" && 
-                                    nav.maxTouchPoints !== undefined && 
-                                    nav.maxTouchPoints > 1 );
-
-    //Quick test for mobile devices.
     let ua = nav.userAgent;
-    let isMobileDevice = (isSafariIOSDesktopMode || /Mobi|Tablet|Android|iPad|iPhone/.test(ua));
 
-    //Safari desktop requires special handling 
-    let isSafariDesktop = ( !isMobileDevice && 
-                            nav.vendor !== undefined && 
-                            /Apple/.test(nav.vendor) && 
-                            /Safari/.test(ua) );
-    
-    //Firefox started shipping PDF.js in Firefox 19. If this is Firefox 19 or greater, assume PDF.js is available
-    let isFirefoxWithPDFJS = (!isMobileDevice && /irefox/.test(ua) && ua.split("rv:").length > 1) ? (parseInt(ua.split("rv:")[1].split(".")[0], 10) > 18) : false;
+    //Fallback validation when navigator.pdfViewerEnabled is not supported
+    let isModernBrowser = function (){
 
+        /*
+           userAgent sniffing is not the ideal path, but most browsers revoked the ability to check navigator.mimeTypes 
+           for security purposes. Browsers have begun implementing navigator.pdfViewerEnabled, but older versions do not
+           have navigator.pdfViewerEnabled or the ability to check navigator.mimeTypes. We're left with basic browser 
+           sniffing and assumptions of PDF support based on browser vendor.
+        */
 
-    /* ----------------------------------------------------
-       Supporting functions
-       ---------------------------------------------------- */
+        //Chromium has provided native PDF support since 2011.
+        //Most modern browsers use Chromium under the hood: Google Chrome, Microsoft Edge, Opera, Brave, Vivaldi, Arc, and more.
+        let isChromium = (window.chrome !== undefined);
 
-    let createAXO = function (type){
-        var ax;
+        //Safari on macOS has provided native PDF support since 2009. 
+        //This code snippet also detects the DuckDuckGo browser, which uses Safari/Webkit under the hood.
+        let isSafari = (window.safari !== undefined || (nav.vendor !== undefined && /Apple/.test(nav.vendor) && /Safari/.test(ua)));
+
+        //Firefox has provided PDF support via PDFJS since 2013.
+        let isFirefox = (window.Mozilla !== undefined || /irefox/.test(ua));
+
+        return isChromium || isSafari || isFirefox;  
+
+    };
+
+    /*
+       Special handling for Internet Explorer 11.
+       Check for ActiveX support, then whether "AcroPDF.PDF" or "PDF.PdfCtrl" are valid.
+       IE11 uses ActiveX for Adobe Reader and other PDF plugins, but window.ActiveXObject will evaluate to false. ("ActiveXObject" in window) evaluates to true.
+       MS Edge does not support ActiveX so this test will evaluate false for MS Edge.
+    */
+    let validateAX = function (type){
+        var ax = null;
         try {
             ax = new ActiveXObject(type);
         } catch (e) {
-            ax = null; //ensure ax remains null
+            //ensure ax remains null when ActiveXObject attempt fails
+            ax = null;
         }
-        return ax;
+        return !!ax; //convert resulting object to boolean
     };
 
-    //If either ActiveX support for "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
-    //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
-    let supportsPdfActiveX = function (){ return !!(createAXO("AcroPDF.PDF") || createAXO("PDF.PdfCtrl")); };
+    let hasActiveXPDFPlugin = function (){ return ("ActiveXObject" in window) && (validateAX("AcroPDF.PDF") || validateAX("PDF.PdfCtrl")) };
+
+    let checkSupport = function (){
+
+        //Safari on iPadOS doesn't report as 'mobile' when requesting desktop site, yet still fails to embed PDFs
+        let isSafariIOSDesktopMode = (nav.platform !== undefined && nav.platform === "MacIntel" && nav.maxTouchPoints !== undefined && nav.maxTouchPoints > 1);
+
+        let isMobileDevice = (isSafariIOSDesktopMode || /Mobi|Tablet|Android|iPad|iPhone/.test(ua));
+
+        //As of June 2023, no mobile browsers properly support inline PDFs. If mobile, just say no.
+        if(isMobileDevice){ return false; }
+
+        //Modern browsers began supporting navigation.pdfViewerEnabled in late 2022 and early 2023.
+        let supportsPDFVE = (nav.pdfViewerEnabled === "boolean");
+
+        //If browser supports nav.pdfViewerEnabled and is explicitly saying PDFs are NOT supported (e.g. PDFJS disabled by user in Firefox), respect it.
+        if(supportsPDFVE && !nav.pdfViewerEnabled){ return false; }
+
+        return (supportsPDFVE && nav.pdfViewerEnabled) || isModernBrowser() || hasActiveXPDFPlugin();
+
+    };
 
     //Determines whether PDF support is available
-    let supportsPDFs = (
-        //As of Sept 2020 no mobile browsers properly support PDF embeds
-        !isMobileDevice && (
-            //We're moving into the age of MIME-less browsers. They mostly all support PDF rendering without plugins.
-            isModernBrowser ||
-            //Modern versions of Firefox come bundled with PDFJS
-            isFirefoxWithPDFJS ||
-            //Pity the poor souls still using IE
-            (isIE && supportsPdfActiveX())
-        )
-    );
+    let supportsPDFs = checkSupport();
 
     //Create a fragment identifier for using PDF Open parameters when embedding PDF
     let buildURLFragmentString = function(pdfParams){
@@ -243,9 +242,7 @@
         let width = opt.width || "100%";
         let height = opt.height || "100%";
         let title = opt.title || "Embedded PDF";
-        let assumptionMode = (typeof opt.assumptionMode === "boolean") ? opt.assumptionMode : true;
         let forcePDFJS = (typeof opt.forcePDFJS === "boolean") ? opt.forcePDFJS : false;
-        let supportRedirect = (typeof opt.supportRedirect === "boolean") ? opt.supportRedirect : false;
         let omitInlineStyles = (typeof opt.omitInlineStyles === "boolean") ? opt.omitInlineStyles : false;
         let suppressConsole = (typeof opt.suppressConsole === "boolean") ? opt.suppressConsole : false;
         let PDFJS_URL = opt.PDFJS_URL || false;
@@ -277,12 +274,9 @@
  
         // --== Embed attempt #2 ==--
 
-        //Embed PDF if traditional support is provided, or if this developer is willing to roll with assumption
-        //that modern desktop (not mobile) browsers natively support PDFs 
-        if(supportsPDFs || (assumptionMode && !isMobileDevice)){
-                        
+        //Embed PDF if support is detected, or if this is a relatively modern browser 
+        if(supportsPDFs){
             return generatePDFObjectMarkup("iframe", targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute);
-
         }
         
         // --== Embed attempt #3 ==--
@@ -296,10 +290,8 @@
 
         //Display the fallback link if available
         if(fallbackLink){
-
             fallbackHTML = (typeof fallbackLink === "string") ? fallbackLink : fallbackHTML_default;
             targetNode.innerHTML = fallbackHTML.replace(/\[url\]/g, url);
-
         }
 
         return embedError("This browser does not support embedded PDFs", suppressConsole);
