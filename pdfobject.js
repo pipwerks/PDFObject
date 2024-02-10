@@ -48,6 +48,8 @@
 
         //Chromium has provided native PDF support since 2011.
         //Most modern browsers use Chromium under the hood: Google Chrome, Microsoft Edge, Opera, Brave, Vivaldi, Arc, and more.
+        //Chromium uses the PDFium rendering engine, which is based on Foxit's PDF rendering engine.
+        //Note that MS Edge opts to use a different PDF rendering engine. As of 2024, Edge uses a version of Adobe's Reader
         let isChromium = (win.chrome !== undefined);
 
         //Safari on macOS has provided native PDF support since 2009. 
@@ -64,7 +66,8 @@
     /*
        Special handling for Internet Explorer 11.
        Check for ActiveX support, then whether "AcroPDF.PDF" or "PDF.PdfCtrl" are valid.
-       IE11 uses ActiveX for Adobe Reader and other PDF plugins, but window.ActiveXObject will evaluate to false. ("ActiveXObject" in window) evaluates to true.
+       IE11 uses ActiveX for Adobe Reader and other PDF plugins, but window.ActiveXObject will evaluate to false. 
+       ("ActiveXObject" in window) evaluates to true.
        MS Edge does not support ActiveX so this test will evaluate false for MS Edge.
     */
     let validateAX = function (type){
@@ -109,7 +112,8 @@
         let string = "";
         let prop;
         let paramArray = [];
-
+        let fdf = "";
+        
         //The comment, viewrect, and highlight parameters require page to be set first. 
 
         //Check to ensure page is used if comment, viewrect, or highlight are specified
@@ -133,17 +137,31 @@
             delete pdfParams.page;
         }
 
+        //FDF needs to be the last parameter in the string
+        if(pdfParams.fdf){
+            fdf = pdfParams.fdf;
+            delete pdfParams.fdf;
+        }
+        
+        //Add all other parameters, as needed
         if(pdfParams){
 
             for (prop in pdfParams) {
                 if (pdfParams.hasOwnProperty(prop)) {
                     paramArray.push(encodeURIComponent(prop) + "=" + encodeURIComponent(pdfParams[prop]));
                 }
-            }            
+            }
 
+            //Add fdf as the last parameter, if needed
+            if(fdf){
+                paramArray.push("fdf=" + encodeURIComponent(fdf));
+            }
+
+            //Join all parameters in the array into a string
             string = paramArray.join("&");
 
-            //The string will be empty if no PDF Params found
+            //The string will be empty if no PDF Parameters were provided
+            //Only prepend the hash if the string is not empty
             if(string){
                 string = "#" + string;
             }
