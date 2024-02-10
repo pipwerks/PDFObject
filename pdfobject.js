@@ -2,7 +2,7 @@
  *  PDFObject v2.3
  *  https://github.com/pipwerks/PDFObject
  *  @license
- *  Copyright (c) 2008-2023 Philip Hutchison
+ *  Copyright (c) 2008-2024 Philip Hutchison
  *  MIT-style license: http://pipwerks.mit-license.org/
  *  UMD module pattern from https://github.com/umdjs/umd/blob/master/templates/returnExports.js
  */
@@ -34,6 +34,7 @@
     let win = window;
     let nav = win.navigator;
     let ua = nav.userAgent;
+    let suppressConsole = false;
 
     //Fallback validation when navigator.pdfViewerEnabled is not supported
     let isModernBrowser = function (){
@@ -41,7 +42,7 @@
         /*
            userAgent sniffing is not the ideal path, but most browsers revoked the ability to check navigator.mimeTypes 
            for security purposes. As of 2023, browsers have begun implementing navigator.pdfViewerEnabled, but older versions
-            do not have navigator.pdfViewerEnabled or the ability to check navigator.mimeTypes. We're left with basic browser 
+           do not have navigator.pdfViewerEnabled or the ability to check navigator.mimeTypes. We're left with basic browser 
            sniffing and assumptions of PDF support based on browser vendor.
         */
 
@@ -107,23 +108,44 @@
 
         let string = "";
         let prop;
+        let paramArray = [];
+
+        //The comment, viewrect, and highlight parameters require page to be set first. 
+
+        //Check to ensure page is used if comment, viewrect, or highlight are specified
+        if(pdfParams.comment || pdfParams.viewrect || pdfParams.highlight){
+
+            if(!pdfParams.page){
+                
+                //If page is not set, use the first page
+                pdfParams.page = 1;
+                
+                //Inform user that page needs to be set properly
+                embedError("The comment, viewrect, and highlight parameters require a page parameter, but none was specified. Defaulting to page 1.");
+            
+            }
+
+        }
+
+        //Let's go ahead and ensure page is always the first parameter.
+        if(pdfParams.page){
+            paramArray.push("page=" + encodeURIComponent(pdfParams.page));
+            delete pdfParams.page;
+        }
 
         if(pdfParams){
 
             for (prop in pdfParams) {
                 if (pdfParams.hasOwnProperty(prop)) {
-                    string += encodeURIComponent(prop) + "=" + encodeURIComponent(pdfParams[prop]) + "&";
+                    paramArray.push(encodeURIComponent(prop) + "=" + encodeURIComponent(pdfParams[prop]));
                 }
-            }
+            }            
+
+            string = paramArray.join("&");
 
             //The string will be empty if no PDF Params found
             if(string){
-
                 string = "#" + string;
-
-                //Remove last ampersand
-                string = string.slice(0, string.length - 1);
-
             }
 
         }
@@ -132,9 +154,9 @@
 
     };
 
-    let embedError = function (msg, suppressConsole){
+    let embedError = function (msg){
         if(!suppressConsole){
-            console.log("[PDFObject] " + msg);
+            console.log("[PDFObject]", msg);
         }
         return false;
     };
@@ -236,6 +258,7 @@
         let opt = options || {};
 
         //Get passed options, or set reasonable defaults
+        suppressConsole = (typeof opt.suppressConsole === "boolean") ? opt.suppressConsole : false;
         let id = (typeof opt.id === "string") ? opt.id : "";
         let page = opt.page || false;
         let pdfOpenParams = opt.pdfOpenParams || {};
@@ -245,7 +268,6 @@
         let title = opt.title || "Embedded PDF";
         let forcePDFJS = (typeof opt.forcePDFJS === "boolean") ? opt.forcePDFJS : false;
         let omitInlineStyles = (typeof opt.omitInlineStyles === "boolean") ? opt.omitInlineStyles : false;
-        let suppressConsole = (typeof opt.suppressConsole === "boolean") ? opt.suppressConsole : false;
         let PDFJS_URL = opt.PDFJS_URL || false;
         let targetNode = getTargetElement(selector);
         let fallbackHTML = "";
@@ -254,10 +276,10 @@
         let fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href='[url]'>Download PDF</a></p>";
 
         //Ensure URL is available. If not, exit now.
-        if(typeof url !== "string"){ return embedError("URL is not valid", suppressConsole); }
+        if(typeof url !== "string"){ return embedError("URL is not valid"); }
 
         //If target element is specified but is not valid, exit without doing anything
-        if(!targetNode){ return embedError("Target element cannot be determined", suppressConsole); }
+        if(!targetNode){ return embedError("Target element cannot be determined"); }
 
         //page option overrides pdfOpenParams, if found
         if(page){ pdfOpenParams.page = page; }
@@ -295,7 +317,7 @@
             targetNode.innerHTML = fallbackHTML.replace(/\[url\]/g, url);
         }
 
-        return embedError("This browser does not support embedded PDFs", suppressConsole);
+        return embedError("This browser does not support embedded PDFs");
 
     };
 
