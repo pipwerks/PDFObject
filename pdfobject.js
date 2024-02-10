@@ -214,6 +214,18 @@
 
     };
 
+    let convertBase64ToDownloadableLink = function (b64, filename, targetNode, fallbackHTML) {
+
+        fetch(b64).then(response => response.blob()).then(blob => {
+            let link = document.createElement('a');
+            link.innerText = "Download PDF";
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            targetNode.innerHTML = fallbackHTML.replace(/\[pdflink\]/g, link.outerHTML);
+        });
+    
+    }    
+
     let generatePDFObjectMarkup = function (embedType, targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute, PDFJS_URL){
 
         //Ensure target element is empty first
@@ -288,10 +300,9 @@
         let omitInlineStyles = (typeof opt.omitInlineStyles === "boolean") ? opt.omitInlineStyles : false;
         let PDFJS_URL = opt.PDFJS_URL || false;
         let targetNode = getTargetElement(selector);
-        let fallbackHTML = "";
         let pdfOpenFragment = "";
         let customAttribute = opt.customAttribute || {};
-        let fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href='[url]'>Download PDF</a></p>";
+        let fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: [pdflink]</p>";
 
         //Ensure URL is available. If not, exit now.
         if(typeof url !== "string"){ return embedError("URL is not valid"); }
@@ -331,8 +342,31 @@
 
         //Display the fallback link if available
         if(fallbackLink){
-            fallbackHTML = (typeof fallbackLink === "string") ? fallbackLink : fallbackHTML_default;
-            targetNode.innerHTML = fallbackHTML.replace(/\[url\]/g, url);
+
+            //If a custom fallback has been provided, handle it now
+            if(typeof fallbackLink === "string"){
+
+                //Ensure [url] is set in custom fallback
+                targetNode.innerHTML = fallbackLink.replace(/\[url\]/g, url);
+
+            } else {
+
+                //If the PDF is a base64 string, convert it to a downloadable link
+                if(url.indexOf("data:application/pdf;base64") !== -1){
+
+                    //Asynchronously append the link to the targetNode
+                    convertBase64ToDownloadableLink(url, "file.pdf", targetNode, fallbackHTML_default);
+                
+                } else {
+
+                    //Use default fallback link
+                    let link = "<a href='" + url + "'>Download PDF</a>";
+                    targetNode.innerHTML = fallbackHTML_default.replace(/\[pdflink\]/g, link);
+
+                }
+
+            }
+
         }
 
         return embedError("This browser does not support embedded PDFs");
