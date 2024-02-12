@@ -11,10 +11,19 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 ## Changelog
 
-### 2.3, June 2023
-* Incorporated support for `navigator.pdfViewerEnabled`, which (as of Spring 2023) is now supported in all major browsers. This naturally led to redefining PDFObject's PDF support detection logic. If the browser is on a mobile device, PDFObject will automatically assume PDFs are not supported (as of June 2023, no mobile browsers properly support inline PDFs). If **not** a mobile device, PDFObject will check `navigator.pdfViewerEnabled`. If the feature is found, but _disabled_ (e.g. the user has intentionally disabled PDF support in the browser), PDFObject will respect this and behave as if inline PDFs are not supported. If `navigator.pdfViewerEnabled` is found and set to `true`, PDFObject will embed the PDF. If `navigator.pdfViewerEnabled` is not found, fallback logic will kick in and check what kind of browser is being used. If the browser is known to support inline PDFs natively (Chrome/Edge/Opera/etc, macOS Safari, Firefox), PDFObject will assume inline PDFs are supported and embed the file. If Internet Explorer, PDFObject will query against ActiveX for known PDF plugins (Acrobat, FoxIt) and act accordingly.
-* Removed `<embed>` in favor of `<iframe>`. PDFObject had previously defaulted to an `<embed>` element, but over time it has become apparent the superior solution is `<iframe>`. It's universally supported, and does not suffer from `<embed>`'s odd quirks and spotty support. This should make PDFObject more consistent and robust across platforms.
-* As a result of removing `<embed>` and redefining the detection logic, some PDFObject options have become obsolete. They are safe to keep in your code (will not throw errors), but are no longer used by PDFObject. The deprecated options are: `assumptionMode`, `forceIframe`, and `supportRedirect`.
+## 2.3 (February 2024)
+- Removed `<embed>` in favor of `<iframe>`. PDFObject had previously defaulted to an `<embed>` element, but over time it has become apparent the superior solution is `<iframe>`. It's universally supported, and does not suffer from `<embed>`'s odd quirks and spotty support. This should make PDFObject more consistent and robust across platforms.
+- As a result of removing `<embed>` and redefining the detection logic, some PDFObject options have become obsolete. They are safe to keep in your code (will not throw errors), but are no longer used by PDFObject. The deprecated options are: `assumptionMode`, `forceIframe`, and `supportRedirect`.
+- Incorporated support for `navigator.pdfViewerEnabled`, per #290. As of Spring 2023, `navigator.pdfViewerEnabled` is supported in all major browsers. This naturally led to redefining PDFObject's PDF support detection logic. 
+  - If the browser is on a mobile device, PDFObject will automatically assume PDFs are not supported (as of February 2024, no mobile browsers properly support inline PDFs). 
+  - If **not** a mobile device, PDFObject will check `navigator.pdfViewerEnabled`. 
+  - If the feature is found, but _disabled_ (e.g. the user has intentionally disabled PDF support in the browser), PDFObject will respect this and behave as if inline PDFs are not supported. 
+  - If `navigator.pdfViewerEnabled` is found and set to `true`, PDFObject will embed the PDF. 
+  - If `navigator.pdfViewerEnabled` is not found, fallback logic will kick in and check what kind of browser is being used. 
+  - If the browser is known to support inline PDFs natively (Chrome/Edge/Opera/etc, macOS Safari, Firefox), PDFObject will assume inline PDFs are supported and embed the file. 
+  - If Internet Explorer, PDFObject will query against ActiveX for known PDF plugins (Acrobat, FoxIt) and act accordingly.
+- Added support for converting base64 PDFs (string) to a downloadable file, per #243 and #270. This only impacts fallback content on browsers that don't support inline PDFs.
+- Improved handling of PDF Open Parameters. Ensures proper sequencing of parameters in URL string, per Adobe spec. Ensures `page` is always set if `comment`, `viewrect` or `highlight` are specified.
 
 ### 2.2.12, June 2023
 Refactored one line of code to restore IE11 compatibility, per #287.
