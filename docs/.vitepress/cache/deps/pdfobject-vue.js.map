@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../node_modules/pdfobject-vue/dist/pdfobject-vue.es.js"],
+  "sourcesContent": ["import { ref as r, onMounted as c, onUpdated as p, openBlock as i, createElementBlock as l } from \"vue\";\nimport u from \"pdfobject\";\nconst s = {\n  __name: \"PDFObject\",\n  props: {\n    url: { type: String, required: !0 },\n    options: { type: Object, required: !1 }\n  },\n  setup(e) {\n    const t = e, n = r(null), o = () => {\n      u.embed(t.url, n.value, t.options);\n    };\n    return c(o), p(o), (a, d) => (i(), l(\"div\", {\n      ref_key: \"pdfContainer\",\n      ref: n\n    }, null, 512));\n  }\n}, _ = {\n  install(e) {\n    e.component(\"PdfObject\", s);\n  }\n};\nexport {\n  _ as default\n};\n"],
+  "mappings": ";;;;;;;;;;;;;;;AACA,uBAAc;AACd,IAAM,IAAI;AAAA,EACR,QAAQ;AAAA,EACR,OAAO;AAAA,IACL,KAAK,EAAE,MAAM,QAAQ,UAAU,KAAG;AAAA,IAClC,SAAS,EAAE,MAAM,QAAQ,UAAU,MAAG;AAAA,EACxC;AAAA,EACA,MAAM,GAAG;AACP,UAAM,IAAI,GAAG,IAAI,IAAE,IAAI,GAAG,IAAI,MAAM;AAClC,uBAAAA,QAAE,MAAM,EAAE,KAAK,EAAE,OAAO,EAAE,OAAO;AAAA,IACnC;AACA,WAAO,UAAE,CAAC,GAAG,UAAE,CAAC,GAAG,CAAC,GAAG,OAAO,UAAE,GAAG,mBAAE,OAAO;AAAA,MAC1C,SAAS;AAAA,MACT,KAAK;AAAA,IACP,GAAG,MAAM,GAAG;AAAA,EACd;AACF;AAfA,IAeG,IAAI;AAAA,EACL,QAAQ,GAAG;AACT,MAAE,UAAU,aAAa,CAAC;AAAA,EAC5B;AACF;",
+  "names": ["u"]
+}
