@@ -1,8 +1,13 @@
-PDFObject is a lightweight JavaScript utility for dynamically embedding PDFs in HTML documents.
+# PDFObject
+
+A lightweight JavaScript utility for dynamically embedding PDFs in HTML documents.
 
 Examples and documentation can be found at https://pdfobject.com.
 
-Copyright (c) 2008-2023 Philip Hutchison
+A PDFObject component for Vue.js 3 can be found at https://github.com/pipwerks/pdfobject-vue/ 
+
+Copyright (c) 2008-2024 Philip Hutchison
+
 MIT-style license: http://pipwerks.mit-license.org/
 
 -----
@@ -11,7 +16,7 @@ MIT-style license: http://pipwerks.mit-license.org/
 
 ## Changelog
 
-## 2.3 (February 2024)
+### 2.3 (February 2024)
 - Removed `<embed>` in favor of `<iframe>`. PDFObject had previously defaulted to an `<embed>` element, but over time it has become apparent the superior solution is `<iframe>`. It's universally supported, and does not suffer from `<embed>`'s odd quirks and spotty support. This should make PDFObject more consistent and robust across platforms.
 - As a result of removing `<embed>` and redefining the detection logic, some PDFObject options have become obsolete. They are safe to keep in your code (will not throw errors), but are no longer used by PDFObject. The deprecated options are: `assumptionMode`, `forceIframe`, and `supportRedirect`.
 - Incorporated support for `navigator.pdfViewerEnabled`, per #290. As of Spring 2023, `navigator.pdfViewerEnabled` is supported in all major browsers. This naturally led to redefining PDFObject's PDF support detection logic. 
