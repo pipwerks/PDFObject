@@ -216,15 +216,33 @@
 
     let convertBase64ToDownloadableLink = function (b64, filename, targetNode, fallbackHTML) {
 
-        fetch(b64).then(response => response.blob()).then(blob => {
-            let link = document.createElement('a');
-            link.innerText = "Download PDF";
-            link.href = URL.createObjectURL(blob);
-            link.download = filename;
-            targetNode.innerHTML = fallbackHTML.replace(/\[pdflink\]/g, link.outerHTML);
-        });
-    
-    }    
+        //IE-11 safe version. More verbose than modern fetch()
+        if (window.Blob && window.URL && window.URL.createObjectURL) {
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', b64, true);
+            xhr.responseType = 'blob';
+            xhr.onload = function() {
+
+                if (xhr.status === 200) {
+ 
+                    var blob = xhr.response;
+                    var link = document.createElement('a');
+                    link.innerText = "Download PDF";
+                    link.href = URL.createObjectURL(blob);
+                    link.setAttribute('download', filename);
+                    targetNode.innerHTML = fallbackHTML.replace(/\[pdflink\]/g, link.outerHTML);
+
+                }
+
+            };
+
+            xhr.send();
+            
+        }
+
+    };
+
 
     let generatePDFObjectMarkup = function (embedType, targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute, PDFJS_URL){
 
