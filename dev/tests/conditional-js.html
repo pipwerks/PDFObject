@@ -55,7 +55,7 @@ let myPDF = PDFObject.embed("/pdf/sample-3pp.pdf", "#pdf", {
 
 let el = document.querySelector("#results");
 el.classList.add((myPDF) ? "success" : "fail");
-el.innerHTML = (myPDF) ? "PDFObject successfully added an &lt;embed> element to the page!" : "Uh-oh, the embed didn't work.";
+el.innerHTML = (myPDF) ? "PDFObject successfully added an &lt;iframe> element to the page!" : "Uh-oh, the embed didn't work.";
 </script>
 </body>
 </html>
