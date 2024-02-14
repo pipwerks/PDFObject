@@ -34,7 +34,7 @@ body { font: 15px/120% sans-serif; color: #555; background: #fff; padding: 2rem;
 <h1>PDFObject Example: Specifying custom fallback link</h1>
 <p>To see the fallback message, view this page on a mobile device or any other system that does not support inline PDFs.</p>
 <div id="my-pdf"></div>
-<script src="https://unpkg.com/pdfobject@2.3.0/pdfobject.js"></script>
+<script src="https://unpkg.com/pdfobject@2.3.0/pdfobject.min.js"></script>
 <script>
 let customFallback = "This is a custom fallback link that displays when the PDF can't be embedded. The PDF's URL can be embedded anywhere in this string using the shortcode &lsqb;url&rsqb;. <a href='[url]'>You can make a link</a> or display it as text like this: [url].";
 PDFObject.embed("/pdf/sample-3pp.pdf", "#my-pdf", { fallbackLink: customFallback });

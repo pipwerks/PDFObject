@@ -38,7 +38,7 @@ body { font: 15px/120% sans-serif; color: #555; background: #fff; padding: 2rem;
 <p>Trying to use reserved token for the attribute key. The embed should work, and the custom attribute should be ignored.</p>
 <div id="pdf-reservedtoken"></div>
 
-<script src="https://unpkg.com/pdfobject@2.3.0/pdfobject.js"></script>
+<script src="https://unpkg.com/pdfobject@2.3.0/pdfobject.min.js"></script>
 <script>
 PDFObject.embed("/pdf/sample-3pp.pdf", "#pdf", {
 	customAttribute: { key: "foo", value: "bar" }
