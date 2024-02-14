@@ -37,3 +37,7 @@ ehthumbs.db
 Thumbs.db
 
 node_modules
+
+# VitePress cache files #
+#########################
+docs/.vitepress/cache/deps/
