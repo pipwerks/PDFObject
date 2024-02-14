@@ -121,10 +121,12 @@ if(window.location.hostname === "pdfobject.com"){
 document.getElementById("quicklaunch").addEventListener("click", function(e){
     e.preventDefault();
     let links = document.querySelectorAll("#examples li a");
-    links.forEach(function(link){
-        window.open(link.href, "_blank");
-    });
+    //Can't use forEach because IE11 doesn't support it
+    for(let i=0; i<links.length; i++){
+        window.open(links[i].href, "_blank");
+    };
 });
+
 </script>
 
 </body>
