@@ -74,6 +74,8 @@ if(window.location.hostname === "pdfobject.com"){
         <h2>Tests</h2>
         <p>The following pages are test cases for PDF embeds. They are configured to use the beta version of PDFObject (currently 2.3).</p>
 
+        <p><a id="quicklaunch" href="#">Open all links in a new tab.</a></p>
+
         <ul>
             <li><a href="tests/apostrophe-in-filename.html">Embedding a file with spaces and an apostrophe in the filename</a></li>
             <li><a href="tests/base64.html">Embedding a PDF encoded as a base64 string</a></li>
@@ -114,6 +116,16 @@ if(window.location.hostname === "pdfobject.com"){
 </main>
 
 </div><!-- /flex-wrapper -->
+
+<script>
+document.getElementById("quicklaunch").addEventListener("click", function(e){
+    e.preventDefault();
+    let links = document.querySelectorAll("#examples li a");
+    links.forEach(function(link){
+        window.open(link.href, "_blank");
+    });
+});
+</script>
 
 </body>
 </html>
