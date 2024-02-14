@@ -4,48 +4,29 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>PDFObject Example: Specifying PDF URL containing querystring, with PDF Open Parameters</title>
-<!-- 
-	SITE ANALYTICS, DO NOT COPY THIS CODE! 
-	The following snippet is for analyizing pdfobject.com traffic. Please do not paste this code into your website.
--->
-<script>
-if(window.location.hostname === "pdfobject.com"){
-	let s = document.createElement("script");
-	s.setAttribute("src", "https://www.googletagmanager.com/gtag/js?id=G-DX6BNQ0S60");
-	s.async = true;
-	document.head.appendChild(s);
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag("js", new Date());
-	gtag('config', 'G-DX6BNQ0S60');
-}
-</script>
-<!-- END SITE ANALYTICS -->
 <!--
-	This example created for PDFObject.com by Philip Hutchison (www.pipwerks.com)
-	Copyright 2016-2023, MIT-style license http://pipwerks.mit-license.org/
-	Documentation available at http://pdfobject.com
-	Source code available at https://github.com/pipwerks/PDFObject
+This example created for PDFObject.com by Philip Hutchison (www.pipwerks.com)
+Copyright 2016-2024, MIT-style license http://pipwerks.mit-license.org/
+Documentation: http://pdfobject.com 
+Source code: https://github.com/pipwerks/PDFObject
 -->
 
-<!-- CSS for basic page styling, not related to example -->
-<link href="/css/examples.css" rel="stylesheet" />
+<!-- site analytics for pdfobject.com, do not copy into your code -->
+<script async src="/js/analytics.js"></script>
 
-
-<!--
-    CSS specific to this example
-    PDFObject appends the classname "pdfobject-container" to the target element.
-    This enables you to style the element differently depending on whether the embed was successful.-->
 <style>
+/* basic page styling */
+body { font: 15px/120% sans-serif; color: #555; background: #fff; padding: 2rem; margin: 0; }
+
+/* Give the PDF container some basic styling */
 .pdfobject-container {
-    max-width: 100%;
-	width: 600px;
+	width: 100%;
+	max-width: 1000px;
 	height: 600px;
-	border: 10px solid rgba(0,0,0,.2);
+	border: 1px solid rgba(0,0,0,.2);
 	margin: 0;
 }
 </style>
-
 
 </head>
 
@@ -54,20 +35,16 @@ if(window.location.hostname === "pdfobject.com"){
 
 <div id="my-pdf"></div>
 
-<div class="pdfobject-com"><a href="http://pdfobject.com/dev">PDFObject.com test cases</a></div>
-
 <script src="/dev/pdfobject.2.3b.js"></script>
 <script>
-var options = {
+PDFObject.embed("https://pwrk.us/sample-pdf/?file=pdf", "#my-pdf", {
 	page: 2,
 	pdfOpenParams: {
 		view: "FitV",
 		pagemode: "thumbs",
 		search: "lorem ipsum"
 	}
-}
-PDFObject.embed("https://pwrk.us/sample-pdf/?file=pdf", "#my-pdf", options);
+});
 </script>
-
 </body>
 </html>

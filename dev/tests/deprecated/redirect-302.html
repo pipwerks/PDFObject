@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PDFObject Example: Detection of PDF support</title>
+<title>PDFObject Example: Loading a PDF via a redirected URL (302)</title>
 <!--
 This example created for PDFObject.com by Philip Hutchison (www.pipwerks.com)
 Copyright 2016-2024, MIT-style license http://pipwerks.mit-license.org/
@@ -17,24 +17,28 @@ Source code: https://github.com/pipwerks/PDFObject
 <style>
 /* basic page styling */
 body { font: 15px/120% sans-serif; color: #555; background: #fff; padding: 2rem; margin: 0; }
-
-/* Styling for this specific example */
-.success { color: #4F8A10; background-color: #DFF2BF; }
-.fail { color: #D8000C; background-color: #FFBABA; }
+/* Give the PDF container some basic styling */
+.pdfobject-container {
+	width: 100%;
+	max-width: 1000px;
+	height: 600px;
+	border: 1px solid rgba(0,0,0,.2);
+	margin: 0;
+}
 </style>
+
 </head>
 
 <body>
-<h1>PDFObject Example: Detection of PDF support</h1>
+<h1>PDFObject Example: Loading a PDF via a redirected URL (302)</h1>
 
-<div id="results"></div>
+<p>The target URL (https://pwrk.us/pdf) will redirect via a 302 htaccess rewrite rule to https://pdfobject.com/pdf/sample-3pp.pdf.</p>
 
-<script src="/dev/pdfobject.2.3b.js"></script>
+<div id="my-pdf"></div>
+
+<script src="https://unpkg.com/pdfobject@2.2.12/pdfobject.min.js"></script>
 <script>
-let status = (PDFObject.supportsPDFs) ? "supports" : "does not support";
-let el = document.querySelector("#results");
-el.setAttribute("class", (PDFObject.supportsPDFs) ? "success" : "fail");
-el.innerHTML = "This browser " + status + " inline PDFs";
+PDFObject.embed("https://pwrk.us/pdf", "#my-pdf");
 </script>
 </body>
 </html>

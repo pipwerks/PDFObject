@@ -2,7 +2,7 @@
  *  PDFObject v2.3
  *  https://github.com/pipwerks/PDFObject
  *  @license
- *  Copyright (c) 2008-2023 Philip Hutchison
+ *  Copyright (c) 2008-2024 Philip Hutchison
  *  MIT-style license: http://pipwerks.mit-license.org/
  *  UMD module pattern from https://github.com/umdjs/umd/blob/master/templates/returnExports.js
  */
@@ -34,6 +34,7 @@
     let win = window;
     let nav = win.navigator;
     let ua = nav.userAgent;
+    let suppressConsole = false;
 
     //Fallback validation when navigator.pdfViewerEnabled is not supported
     let isModernBrowser = function (){
@@ -41,12 +42,14 @@
         /*
            userAgent sniffing is not the ideal path, but most browsers revoked the ability to check navigator.mimeTypes 
            for security purposes. As of 2023, browsers have begun implementing navigator.pdfViewerEnabled, but older versions
-            do not have navigator.pdfViewerEnabled or the ability to check navigator.mimeTypes. We're left with basic browser 
+           do not have navigator.pdfViewerEnabled or the ability to check navigator.mimeTypes. We're left with basic browser 
            sniffing and assumptions of PDF support based on browser vendor.
         */
 
         //Chromium has provided native PDF support since 2011.
         //Most modern browsers use Chromium under the hood: Google Chrome, Microsoft Edge, Opera, Brave, Vivaldi, Arc, and more.
+        //Chromium uses the PDFium rendering engine, which is based on Foxit's PDF rendering engine.
+        //Note that MS Edge opts to use a different PDF rendering engine. As of 2024, Edge uses a version of Adobe's Reader
         let isChromium = (win.chrome !== undefined);
 
         //Safari on macOS has provided native PDF support since 2009. 
@@ -63,7 +66,8 @@
     /*
        Special handling for Internet Explorer 11.
        Check for ActiveX support, then whether "AcroPDF.PDF" or "PDF.PdfCtrl" are valid.
-       IE11 uses ActiveX for Adobe Reader and other PDF plugins, but window.ActiveXObject will evaluate to false. ("ActiveXObject" in window) evaluates to true.
+       IE11 uses ActiveX for Adobe Reader and other PDF plugins, but window.ActiveXObject will evaluate to false. 
+       ("ActiveXObject" in window) evaluates to true.
        MS Edge does not support ActiveX so this test will evaluate false for MS Edge.
     */
     let validateAX = function (type){
@@ -107,23 +111,59 @@
 
         let string = "";
         let prop;
+        let paramArray = [];
+        let fdf = "";
+        
+        //The comment, viewrect, and highlight parameters require page to be set first. 
 
+        //Check to ensure page is used if comment, viewrect, or highlight are specified
+        if(pdfParams.comment || pdfParams.viewrect || pdfParams.highlight){
+
+            if(!pdfParams.page){
+                
+                //If page is not set, use the first page
+                pdfParams.page = 1;
+                
+                //Inform user that page needs to be set properly
+                embedError("The comment, viewrect, and highlight parameters require a page parameter, but none was specified. Defaulting to page 1.");
+            
+            }
+
+        }
+
+        //Let's go ahead and ensure page is always the first parameter.
+        if(pdfParams.page){
+            paramArray.push("page=" + encodeURIComponent(pdfParams.page));
+            delete pdfParams.page;
+        }
+
+        //FDF needs to be the last parameter in the string
+        if(pdfParams.fdf){
+            fdf = pdfParams.fdf;
+            delete pdfParams.fdf;
+        }
+        
+        //Add all other parameters, as needed
         if(pdfParams){
 
             for (prop in pdfParams) {
                 if (pdfParams.hasOwnProperty(prop)) {
-                    string += encodeURIComponent(prop) + "=" + encodeURIComponent(pdfParams[prop]) + "&";
+                    paramArray.push(encodeURIComponent(prop) + "=" + encodeURIComponent(pdfParams[prop]));
                 }
             }
 
-            //The string will be empty if no PDF Params found
+            //Add fdf as the last parameter, if needed
+            if(fdf){
+                paramArray.push("fdf=" + encodeURIComponent(fdf));
+            }
+
+            //Join all parameters in the array into a string
+            string = paramArray.join("&");
+
+            //The string will be empty if no PDF Parameters were provided
+            //Only prepend the hash if the string is not empty
             if(string){
-
                 string = "#" + string;
-
-                //Remove last ampersand
-                string = string.slice(0, string.length - 1);
-
             }
 
         }
@@ -132,9 +172,9 @@
 
     };
 
-    let embedError = function (msg, suppressConsole){
+    let embedError = function (msg){
         if(!suppressConsole){
-            console.log("[PDFObject] " + msg);
+            console.log("[PDFObject]", msg);
         }
         return false;
     };
@@ -173,6 +213,18 @@
         return targetNode;
 
     };
+
+    let convertBase64ToDownloadableLink = function (b64, filename, targetNode, fallbackHTML) {
+
+        fetch(b64).then(response => response.blob()).then(blob => {
+            let link = document.createElement('a');
+            link.innerText = "Download PDF";
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            targetNode.innerHTML = fallbackHTML.replace(/\[pdflink\]/g, link.outerHTML);
+        });
+    
+    }    
 
     let generatePDFObjectMarkup = function (embedType, targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute, PDFJS_URL){
 
@@ -236,6 +288,7 @@
         let opt = options || {};
 
         //Get passed options, or set reasonable defaults
+        suppressConsole = (typeof opt.suppressConsole === "boolean") ? opt.suppressConsole : false;
         let id = (typeof opt.id === "string") ? opt.id : "";
         let page = opt.page || false;
         let pdfOpenParams = opt.pdfOpenParams || {};
@@ -245,19 +298,17 @@
         let title = opt.title || "Embedded PDF";
         let forcePDFJS = (typeof opt.forcePDFJS === "boolean") ? opt.forcePDFJS : false;
         let omitInlineStyles = (typeof opt.omitInlineStyles === "boolean") ? opt.omitInlineStyles : false;
-        let suppressConsole = (typeof opt.suppressConsole === "boolean") ? opt.suppressConsole : false;
         let PDFJS_URL = opt.PDFJS_URL || false;
         let targetNode = getTargetElement(selector);
-        let fallbackHTML = "";
         let pdfOpenFragment = "";
         let customAttribute = opt.customAttribute || {};
-        let fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href='[url]'>Download PDF</a></p>";
+        let fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: [pdflink]</p>";
 
         //Ensure URL is available. If not, exit now.
-        if(typeof url !== "string"){ return embedError("URL is not valid", suppressConsole); }
+        if(typeof url !== "string"){ return embedError("URL is not valid"); }
 
         //If target element is specified but is not valid, exit without doing anything
-        if(!targetNode){ return embedError("Target element cannot be determined", suppressConsole); }
+        if(!targetNode){ return embedError("Target element cannot be determined"); }
 
         //page option overrides pdfOpenParams, if found
         if(page){ pdfOpenParams.page = page; }
@@ -291,11 +342,34 @@
 
         //Display the fallback link if available
         if(fallbackLink){
-            fallbackHTML = (typeof fallbackLink === "string") ? fallbackLink : fallbackHTML_default;
-            targetNode.innerHTML = fallbackHTML.replace(/\[url\]/g, url);
+
+            //If a custom fallback has been provided, handle it now
+            if(typeof fallbackLink === "string"){
+
+                //Ensure [url] is set in custom fallback
+                targetNode.innerHTML = fallbackLink.replace(/\[url\]/g, url);
+
+            } else {
+
+                //If the PDF is a base64 string, convert it to a downloadable link
+                if(url.indexOf("data:application/pdf;base64") !== -1){
+
+                    //Asynchronously append the link to the targetNode
+                    convertBase64ToDownloadableLink(url, "file.pdf", targetNode, fallbackHTML_default);
+                
+                } else {
+
+                    //Use default fallback link
+                    let link = "<a href='" + url + "'>Download PDF</a>";
+                    targetNode.innerHTML = fallbackHTML_default.replace(/\[pdflink\]/g, link);
+
+                }
+
+            }
+
         }
 
-        return embedError("This browser does not support embedded PDFs", suppressConsole);
+        return embedError("This browser does not support embedded PDFs");
 
     };
 

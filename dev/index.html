@@ -63,7 +63,7 @@ if(window.location.hostname === "pdfobject.com"){
         </ul>
     </nav>
 
-    <p class="small">The PDFObject utility is &copy; 2008-2023 <a href="http://pipwerks.com">Philip Hutchison</a>. <a href="http://pipwerks.mit-license.org/">Released with an MIT license</a>.</p>
+    <p class="small">The PDFObject utility is &copy; 2008-2024 <a href="http://pipwerks.com">Philip Hutchison</a>. <a href="http://pipwerks.mit-license.org/">Released with an MIT license</a>.</p>
 
 </header>
 
@@ -75,35 +75,38 @@ if(window.location.hostname === "pdfobject.com"){
         <p>The following pages are test cases for PDF embeds. They are configured to use the beta version of PDFObject (currently 2.3).</p>
 
         <ul>
+            <li><a href="tests/apostrophe-in-filename.html">Embedding a file with spaces and an apostrophe in the filename</a></li>
+            <li><a href="tests/base64.html">Embedding a PDF encoded as a base64 string</a></li>
+            <li><a href="tests/basic.html">Basic (barebones example)</a></li>
             <li><a href="tests/conditional-js-advanced.html">Invoking conditional JavaScript upon successful embed (onclick)</a></li>
             <li><a href="tests/conditional-js.html">Invoking conditional JavaScript upon successful embed</a></li>
-            <li><a href="tests/detection.html">Detection of PDF support</a></li>
+            <li><a href="tests/custom-attribute.html">Specifying custom attribute</a></li>
+            <li><a href="tests/declining-a-fallback.html">Declining to provide a fallback link</a></li>
             <li><a href="tests/detection-navigator-pdfViewerEnabled.html">Detection using navigator.pdfViewerEnabled</a></li>
+            <li><a href="tests/detection.html">Detection of PDF support</a></li>
             <li><a href="tests/embed-multiple-PDFs.html">Embed two PDFs on one HTML page</a></li>
             <li><a href="tests/full-browser-default.html">Full-browser embed (no selector specified)</a></li>
             <li><a href="tests/full-browser-explicit-pdfparams.html">Full-browser embed (explicit selector) with PDF Open Params specified</a></li>
             <li><a href="tests/full-browser-explicit.html">Full-browser embed (explicit selector)</a></li>
-            <li><a href="tests/full-browser-forced-iframe.html">Full-browser embed, forced iframe</a></li>
+            <li><a href="tests/google.html">Using Google Viewer as a fallback</a></li>
+            <li><a href="tests/omit-inline-styles.html">Embed the PDF without any inline styles (relies on external CSS for proper display)</a></li>
             <li><a href="tests/passing-element-jquery-styled.html">Passing jQuery element, CSS styles applied</a></li>
             <li><a href="tests/passing-element-jquery.html">Passing jQuery element</a></li>
             <li><a href="tests/passing-element-styled.html">Passing vanilla HTML element, CSS styles applied</a></li>
             <li><a href="tests/passing-element.html">Passing vanilla HTML element</a></li>
             <li><a href="tests/passing-selector-styled.html">Passing CSS selector, CSS styles applied</a></li>
             <li><a href="tests/passing-selector.html">Passing CSS selector</a></li>
+            <li><a href="tests/pdf-open-params.html">PDF Open Parameters Test Suite</a></li>
+            <li><a href="tests/pdfjs-forced-with-querystring.html">PDF.js (forced, with querystring)</a></li>
             <li><a href="tests/pdfjs-forced.html">PDF.js (forced)</a></li>
             <li><a href="tests/pdfjs.html">PDF.js fallback</a></li>
             <li><a href="tests/querystring-URL-with-params.html">Specifying PDF URL containing querystring, with PDF Open Parameters</a></li>
             <li><a href="tests/querystring-URL.html">Specifying PDF URL containing querystring</a></li>
             <li><a href="tests/replace-PDF-with-second-PDF.html">Replace one PDF with another</a></li>
+            <li><a href="tests/setting-title.html">Set the title attribute of the iframe element</a></li>
             <li><a href="tests/specifying-custom-fallback-link.html">Specifying custom fallback link</a></li>
-            <li><a href="tests/declining-a-fallback.html">Declining to provide a fallback link</a></li>
-            <li><a href="tests/base64.html">Embedding a PDF encoded as a base64 string</a></li>
-            <li><a href="tests/redirect-302.html">Specifying PDF URL that will redirect via 302 to a different URL</a></li>
-            <li><a href="tests/iframe-forced.html">Forcing PDFObject to use an iframe for embeds</a></li>
-            <li><a href="tests/omit-inline-styles.html">Embed the PDF without any inline styles (relies on external CSS for proper display)</a></li>
-            <li><a href="tests/omit-inline-styles-forced-iframe.html">Embed the PDF without any inline styles, and also require PDF to use an iframe to embed the PDF</a></li>
-            <li><a href="tests/apostrophe-in-filename.html">Embedding a file with spaces and an apostrophe in the filename</a></li>
-            <li><a href="tests/custom-attribute.html">Specifying custom attribute</a></li>
+            <li><a href="tests/specifying-page-number-thumbnails.html">Specifying the page number and displaying thumbnails</a></li>
+            <li><a href="tests/specifying-page-number.html">Specifying the page number</a></li>
         </ul>
 
     </section>

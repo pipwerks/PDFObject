@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PDFObject Example: Replace one PDF with another</title>
+<title>PDFObject Example: PDF.js (forced) with querystring</title>
 <!--
 This example created for PDFObject.com by Philip Hutchison (www.pipwerks.com)
 Copyright 2016-2024, MIT-style license http://pipwerks.mit-license.org/
@@ -34,41 +34,28 @@ body { font: 15px/120% sans-serif; color: #555; background: #fff; padding: 2rem;
 </head>
 
 <body>
-<h1>PDFObject Example: Replace one PDF with another</h1>
+<h1>PDFObject Example: PDF.js (forced) with querystring</h1>
 
-<p><a href="/pdf/sample-3pp.pdf" class="embed-link">Click this link to embed the first PDF ("sample-3pp.pdf").</a></p>
-<p><a href="/pdf/sample.pdf" class="embed-link">Click this link to embed the second PDF ("sample.pdf").</a></p>
+<p>Important: PDFObject does not verify that PDF.js is present and functional, it assumes you have correctly configured your PDF.js viewer and are not trying to load PDFs from a different domain.</p>
 
 <div id="results"></div>
+
 <div id="pdf"></div>
 
 <script src="/dev/pdfobject.2.3b.js"></script>
 <script>
-let clickHandler = function (e){
+let myPDF = PDFObject.embed("/pdf/file.php?item=sample-3pp", "#pdf", {
+	page: 2,
+	pdfOpenParams: {
+		pagemode: "thumbs"
+	},
+	forcePDFJS: true,
+	PDFJS_URL: "/pdfjs/web/viewer.html"
+});
 
-	e.preventDefault();
-
-	let pdfURL = this.getAttribute("href");
-
-	let myPDF = PDFObject.embed(pdfURL, "#pdf", {
-		pdfOpenParams: {
-			navpanes: 0,
-			toolbar: 0,
-			statusbar: 0,
-			view: "FitV"
-		}
-	});
-
-	let el = document.querySelector("#results");
-	el.classList.add((myPDF) ? "success" : "fail");
-	el.innerHTML = (myPDF) ? "PDFObject successfully embedded '" + pdfURL + "'!" : "Uh-oh, the embed didn't work.";
-
-};
-
-document.querySelectorAll(".embed-link").forEach(function(el){
-	el.addEventListener("click", clickHandler);
-})
+let el = document.querySelector("#results");
+el.classList.add((myPDF) ? "success" : "fail");
+el.innerHTML = (myPDF) ? "PDFObject was successful!" : "Uh-oh, the embed didn't work.";
 </script>
-
 </body>
 </html>
