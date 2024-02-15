@@ -1,5 +1,7 @@
 # PDFObject
 
+[![npm](https://img.shields.io/npm/v/pdfobject.svg?style=flat)](https://www.npmjs.org/package/pdfobject) [![CDNJS](https://img.shields.io/cdnjs/v/pdfobject.svg)](https://cdnjs.com/libraries/pdfobject/) [![](https://img.shields.io/npm/dm/pdfobject.svg)](https://www.npmjs.org/package/pdfobject) [![](https://img.shields.io/bundlephobia/minzip/pdfobject.svg)](https://bundlephobia.com/package/pdfobject) [![](https://packagephobia.com/badge?p=pdfobject)](https://packagephobia.com/result?p=pdfobject)
+
 A lightweight JavaScript utility for dynamically embedding PDFs in HTML documents.
 
 Examples and documentation can be found at https://pdfobject.com.
@@ -11,8 +13,6 @@ Copyright (c) 2008-2024 Philip Hutchison
 MIT-style license: http://pipwerks.mit-license.org/
 
 -----
-
-[![npm](https://img.shields.io/npm/v/pdfobject.svg?style=flat)](https://www.npmjs.org/package/pdfobject) [![CDNJS](https://img.shields.io/cdnjs/v/pdfobject.svg)](https://cdnjs.com/libraries/pdfobject/)
 
 ## Changelog
 
