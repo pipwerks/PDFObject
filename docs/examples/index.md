@@ -122,6 +122,20 @@ PDFObject.embed("/pdf/sample-3pp.pdf", "#my-pdf", { fallbackLink: customFallback
 **Demo:** [Custom fallback message](/examples/specifying-custom-fallback-link.html){target="_blank"}
 
 
+## Callback on `onload` event
+Browsers don't provide an API for detecting whether a PDF has loaded. One potential workaround is to detect whether the iframe that contains the PDF has finished loading. This can be checked with a standard `addEventListener`: 
+
+```js
+let pdf_iframe = PDFObject.embed("/pdf/sample-3pp.pdf", "#my-pdf");
+pdf_iframe.addEventListener("load", function () {
+    console.log("The iframe has loaded");
+});
+PDFObject.embed("/pdf/sample-3pp.pdf", "#my-pdf", { fallbackLink: customFallback });
+```
+
+**Demo:** [Callback on `onload` event](/examples/onload-callback.html){target="_blank"}
+
+
 ## Displaying Base64 PDFs
 
 Some PDFs are generated dynamically as Base64 strings. PDFObject can accept Base64 strings, just pass the string as the URL.

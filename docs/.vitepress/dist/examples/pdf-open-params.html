@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PDFObject Example: PDF Open Parameters</title>
+<!--
+This example created for PDFObject.com by Philip Hutchison (www.pipwerks.com)
+Copyright 2016-2024, MIT-style license http://pipwerks.mit-license.org/
+Documentation: http://pdfobject.com 
+Source code: https://github.com/pipwerks/PDFObject
+-->
+
+<!-- site analytics for pdfobject.com, do not copy into your code -->
+<!-- <script async src="/js/analytics.js"></script> -->
+
+<style>
+/* basic page styling */
+body { font: 15px/120% sans-serif; color: #555; background: #fff; padding: 2rem; margin: 0; }
+
+/* column layout */
+.container { display: flex; width: 100%; }
+.column-left { width: 33%; padding: 2rem; background-color: #f2f2f2;  }
+.column-right { width: 66%; padding: 2rem; }
+
+.column-left ul { margin: 0; padding: 0; list-style: none; }
+.column-left li { padding: .5rem 0; }
+.column-left li a { display: inline-block; margin-right: .5rem; }
+
+.support img { width: 1rem; height: auto; }
+.support span { font-size: .7rem; color: #666; }
+.notes { font-size: .8rem; color: #666; }
+
+/* Give the PDF container some basic styling */
+.pdfobject-container {
+	width: 100%;
+	max-width: 1000px;
+	height: 600px;
+	margin: 2em 0;
+	border: 1px solid #666;
+}
+
+/* Styling for this specific example */
+.success { color: #4F8A10; background-color: #DFF2BF; }
+.fail { color: #D8000C; background-color: #FFBABA; }
+</style>
+</head>
+
+<body>
+<h1>PDFObject Example: PDF Open Parameters</h1>
+
+<p>Click each link to test/demonstrate the corresponding parameter.</p>
+<p>Icons indicate our test results (as of February 2024). A Chrome icon indicates the feature is supported in PDFium/Chromium-based browsers. An Edge icon indicates Microsoft Edge support, Safari icon indicates Safari support, and Firefox icon indicates PDF.js support.</p>
+<p>Although MS Edge is a fork of Chromium, it uses a different PDF rendering engine and provides less support for PDF Open Parameters.</p>
+
+<p>Parameter descriptions are largely copied from Adobe's <a href="https://opensource.adobe.com/dc-acrobat-sdk-docs/library/pdfmark/pdfmark_Actions.html">Acrobat-PDFL SDK Documentation</a> and the <a href="/pdf/pdf_open_parameters_acro8.pdf">Adobe® Acrobat® SDK v8.1 PDF</a></p>
+
+<p>See <a href="/guide/browser-support">Browser Support</a> for more information about PDF Open Parameters.</p>
+
+<div class="container">
+<div class="column-left">
+<ul>
+	<li>
+		<a href="#" data-key="page" data-val="2">page (2)</a>
+		<div class="notes">Specifies a numbered page in the document, using an integer value. The document's first page has a pagenum value of 1.</div>
+		<div class="support">
+			<img src="/img/chrome.svg" alt="Chrome" />
+			<img src="/img/edge.svg" alt="Edge" />
+			<img src="/img/firefox.svg" alt="Firefox" />
+			<img src="/img/safari.svg" alt="Safari (desktop)" />
+		</div>
+	</li>
+	<li>
+		<a href="#" data-key="nameddest" data-val="chart">nameddest ('chart')</a>
+		<div class="notes">Specifies a named destination in the PDF document.</div>
+		<div class="support">
+			<img src="/img/chrome.svg" alt="Chrome" />
+			<img src="/img/edge.svg" alt="Edge" />
+			<img src="/img/firefox.svg" alt="Firefox" />
+		</div>
+	</li>
+	<li>
+		<a href="#" data-key="zoom" data-val="200">zoom (200)</a> 
+		<a href="#" data-key="zoom" data-val="200,50,50">zoom (200,50,50)</a>
+		<div class="notes">zoom=scale,left,top. Sets the zoom and scroll factors, using float or integer values. For example, a scale value of 100 indicates a zoom value of 100%. Scroll values left and top are in a coordinate system where 0,0 represents the top left corner of the visible page, regardless of document rotation.In this example, the dimensions are 200% zoom, scroll left 50px, scroll top 50px. PDF.js also supports the following tokens in lieu of scale: page-width, page-height, page-fit, auto.</div>
+		<div class="support">
+			<img src="/img/chrome.svg" alt="Chrome" />
+			<img src="/img/edge.svg" alt="Edge" />*
+			<img src="/img/firefox.svg" alt="Firefox" />
+			<span>MS Edge does not support coordinates.</span>
+		</div>
+	</li>
+	<li>
+		<a href="#" data-key="view" data-val="Fit">view (Fit)</a>
+		<div class="notes">Fit the page to the window.</div>
+		<div class="support">
+			<img src="/img/chrome.svg" alt="Chrome" />
+		</div>
+	</li>
+	<li>
+		<a href="#" data-key="view" data-val="FitH">view (FitH)</a> 
+		<a href="#" data-key="view" data-val="FitH,50">view (FitH,50)</a>
+		<div class="notes"><b>Fit horizontal</b>. Fit the width of the page to the window. The optional parameter (in this case, 50) specifies the distance from the page origin to the top of the window (scroll top 50px).</div>
+		<div class="support">
+			<img src="/img/chrome.svg" alt="Chrome" />
+			<img src="/img/edge.svg" alt="Edge" />*
+			<span>MS Edge does not support coordinates.</span>
+		</div>
+	</li>
+	<li>
+		<a href="#" data-key="view" data-val="FitV">view (FitV)</a> 
+		<a href="#" data-key="view" data-val="FitV,50">view (FitV,50)</a>
+		<div class="notes"><b>Fit vertical</b>. Fit the height of the page to the window. The optional parameter (in this example 50) specifies the distance in from the page origin to the left edge of the window (scroll left 50px).</div>
+		<div class="support">
+			<img src="/img/chrome.svg" alt="Chrome" />
+			<img src="/img/edge.svg" alt="Edge" />*
+			<span>MS Edge does not support coordinates.</span>
+		</div>
+	</li>
+	<li>
+		<a href="#" data-key="view" data-val="FitB">view (FitB)</a>
+		<div class="notes"><b>Fit bounding</b>. Fit the bounding box of the page contents to the window.</div>
+		<div class="support">
+			<img src="/img/chrome.svg" alt="Chrome" />
+		</div>
+	</li>
+	<li>
+		<a href="#" data-key="view" data-val="FitBH">view (FitBH)</a> 
+		<a href="#" data-key="view" data-val="FitBH,50">view (FitBH,50)</a>
+		<div class="notes"><b>Fit bounding horizontal</b>. Fit the width of the bounding box of the page contents to the window. top (in this example, 50) specifies the distance from the page origin to the top of the window (scroll top 50px).</div>
+		<div class="support">
+			<img src="/img/chrome.svg" alt="Chrome" />
+		</div>
+	</li>
+	<li>
+		<a href="#" data-key="view" data-val="FitBV">view (FitBV)</a> 
+		<a href="#" data-key="view" data-val="FitBV,50">view (FitBV,50)</a>
+		<div class="notes"><b>Fit bounding vertical</b>. Fit the height of the bounding box of the page contents to the window. The optional parameter (in this example 50) specifies the distance from the page origin to the left edge of the window (scroll left 50px).</div>
+		<div class="support">
+			<img src="/img/chrome.svg" alt="Chrome" />
+		</div>
+	</li>
+	<li>
+		<a href="#" data-key="viewrect" data-val="200,200,100,100">viewrect (200,200,100,100)</a>
+		<div class="notes">Sets the view rectangle using float or integer values in a coordinate system where 0,0 represents the top left corner of the visible page, regardless of document rotation. <b>Use the page command before this command.</b> In this example, dimensions are 200px from left, 200px from top, 100px wide, 100px tall.</div>
+	</li>
+	<li>
+		<a href="#" data-key="pagemode" data-val="bookmarks">pagemode (bookmarks)</a> 
+		<a href="#" data-key="pagemode" data-val="thumbs">pagemode (thumbs)</a> 
+		<a href="#" data-key="pagemode" data-val="layers">pagemode (layers)</a>
+		<a href="#" data-key="pagemode" data-val="layers">pagemode (attachments)</a>
+		<a href="#" data-key="pagemode" data-val="none">pagemode (none)</a>
+		<div class="notes">Displays bookmarks or thumbnails. The "layers" option is specific to FoxIt PDF Reader. The "attachments" option is specific to PDF.js.</div>
+		<div class="support">
+			<img src="/img/firefox.svg" alt="Firefox" />
+		</div>
+	</li>
+	<li>
+		<a href="#" data-key="scrollbar" data-val="0">scrollbar (0)</a> 
+		<a href="#" data-key="scrollbar" data-val="1">scrollbar (1)</a>
+		<div class="notes">Turns scrollbars on or off.</div>
+	</li>
+	<li>
+		<a href="#" data-key="toolbar" data-val="0">toolbar (0)</a> 
+		<a href="#" data-key="toolbar" data-val="1">toolbar (1)</a>
+		<div class="notes">Turns the toolbar on or off.</div>
+		<div class="support">
+			<img src="/img/chrome.svg" alt="Chrome" />
+			<img src="/img/edge.svg" alt="Edge" />
+		</div>
+	</li>
+	<li>
+		<a href="#" data-key="reverse" data-val="0">reverse (0)</a> 
+		<a href="#" data-key="reverse" data-val="1">reverse (1)</a>
+		<div class="notes">View pages in reverse or forward order (specific to FoxIt PDF Reader).</div>
+	</li>
+	<li>
+		<a href="#" data-key="statusbar" data-val="0">statusbar (0)</a> 
+		<a href="#" data-key="statusbar" data-val="1">statusbar (1)</a>
+		<div class="notes">Turns the status bar on or off.</div>
+	</li>
+	<li>
+		<a href="#" data-key="messages" data-val="0">messages (0)</a> 
+		<a href="#" data-key="messages" data-val="1">messages (1)</a>
+		<div class="notes">Turns the document message bar on or off.</div>
+	</li>
+	<li>
+		<a href="#" data-key="navpanes" data-val="0">navpanes (0)</a> 
+		<a href="#" data-key="navpanes" data-val="1">navpanes (1)</a>
+		<div class="notes">Turns the navigation panes and tabs on or off.</div>
+		<div class="support">
+			<img src="/img/chrome.svg" alt="Chrome" />
+		</div>
+	</li>
+	<li>
+		<a href="#" data-key="search" data-val="Lorem">search (Lorem)</a>
+		<a href="#" data-key="search" data-val='"Lorem"'>search ("Lorem")</a>
+		<a href="#" data-key="search" data-val="'Lorem'">search ('Lorem')</a>
+		<div class="notes">Opens the Search panel and performs a search for any of the words in the specified word list. The first matching word is highlighted in the document. The words must be enclosed in quotation marks and separated by spaces. For example: #search="word1 word2" You can search only for single words. You cannot search for a string of words.</div>
+		<div class="support">
+			<img src="/img/firefox.svg" alt="Firefox" />
+		</div>
+	</li>
+	<li>
+		<a href="#" data-key="highlight" data-val="200,200,200,200">highlight (200px from left, 200px from right, 200px from top, 200px from bottom)</a>
+		<div class="notes">highlight=lt,rt,top,btm. Highlights a specified rectangle on the displayed page. <b>Use the page command before this command.</b> The rectangle values are integers in a coordinate system where 0,0 represents the top left corner of the visible page, regardless of document rotation.</div>
+	</li>
+	<li>
+		<a href="#" data-key="comment" data-val="e5c7bdc2-893f-4d44-9483-bc00dc9950cd">comment (e5c7bdc2-893f-4d44-9483-bc00dc9950cd)</a>
+		<div class="notes">Specifies a comment on a given page in the PDF document. <b>Use the page command before this command.</b> For example: #page=1&comment=e5c7bdc2-893f-4d44-9483-bc00dc9950cd</div>
+	</li>
+</ul>
+<p>We are currently unable to test the following parameters:</p>
+<ul>
+	<li>
+		<b>fdf</b> 
+		<div class="notes">Specifies an FDF file to populate form fields in the PDF file being opened. For example: #fdf=http://example.org/doc.fdf <b>Note: The fdf parameter should be specified last in a URL.</b></div>
+	</li>
+	<li>
+		<b>collab</b> 
+		<div class="notes">Sets the comment repository to be used to supply and store comments for the document. This overrides the default comment server for the review or the default preference. The setting is of the form store_type@location, where valid values for store_type are DAVFDF (WebDAV), FSFDF (Network folder), and DB (ADBC). For example:<br/>#collab=DAVFDF@http://review_server/Collab! /user1</div>
+	</li>
+</ul>
+</div>
+<div class="column-right">
+	<div id="pdf"></div>
+</div>
+</div>
+
+<script src="https://unpkg.com/pdfobject@2.3.0/pdfobject.min.js"></script>
+<script>
+
+let last_embedded = "";
+
+let clickHandler = function (e){
+
+	e.preventDefault();
+
+	let el = document.querySelector("#pdf");
+	el.innerHTML = "";
+
+	let key = this.getAttribute("data-key");
+	let val = this.getAttribute("data-val");
+	let pdfOpenParams = {};
+	pdfOpenParams[key] = val;
+
+	//Alternate between PDF files to give visual indication it's a fresh embed
+	let file = (last_embedded === "/pdf/sample-3pp.pdf") ? "/pdf/Multipage-PDF-with-Headings.pdf" : "/pdf/sample-3pp.pdf";
+
+	if(key === "comment" || key === "nameddest"){
+		file = "/pdf/Sample-Report.pdf";
+	}
+
+	last_embedded = file;
+
+	let pdf = PDFObject.embed(file, el, { pdfOpenParams: pdfOpenParams });
+	console.log('pdf',pdf);
+
+};
+
+//Can't use forEach because IE11 doesn't support it
+let links = document.querySelectorAll("li a");
+for(let i=0; i<links.length; i++){
+	links[i].addEventListener("click", clickHandler);
+}
+</script>
+
+</body>
+</html>

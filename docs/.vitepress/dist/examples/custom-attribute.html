@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PDFObject Example: Specifying custom attribute</title>
+<!--
+This example created for PDFObject.com by Philip Hutchison (www.pipwerks.com)
+Copyright 2016-2024, MIT-style license http://pipwerks.mit-license.org/
+Documentation: http://pdfobject.com 
+Source code: https://github.com/pipwerks/PDFObject
+-->
+
+<!-- site analytics for pdfobject.com, do not copy into your code -->
+<script async src="/js/analytics.js"></script>
+
+<style>
+/* basic page styling */
+body { font: 15px/120% sans-serif; color: #555; background: #fff; padding: 2rem; margin: 0; }
+
+/* Give the PDF container some basic styling */
+.pdfobject-container {
+	width: 100%;
+	max-width: 1000px;
+	height: 600px;
+	margin: 2em 0;
+	border: 1px solid #666;
+}
+</style>
+
+</head>
+<body>
+<h1>PDFObject Example: Specifying custom attribute</h1>
+
+<div id="pdf"></div>
+
+<h2>Reserved token</h2>
+<p>Trying to use reserved token for the attribute key. The embed should work, and the custom attribute should be ignored.</p>
+<div id="pdf-reservedtoken"></div>
+
+<script src="https://unpkg.com/pdfobject@2.3.0/pdfobject.min.js"></script>
+<script>
+PDFObject.embed("/pdf/sample-3pp.pdf", "#pdf", {
+	customAttribute: { key: "foo", value: "bar" }
+});
+
+PDFObject.embed("/pdf/sample-3pp.pdf", "#pdf-reservedtoken", {
+	customAttribute: { key: "title", value: "This shouldn't work" }
+});
+</script>
+</body>
+</html>
