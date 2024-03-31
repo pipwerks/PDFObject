@@ -130,7 +130,6 @@ let pdf_iframe = PDFObject.embed("/pdf/sample-3pp.pdf", "#my-pdf");
 pdf_iframe.addEventListener("load", function () {
     console.log("The iframe has loaded");
 });
-PDFObject.embed("/pdf/sample-3pp.pdf", "#my-pdf", { fallbackLink: customFallback });
 ```
 
 **Demo:** [Callback on `onload` event](/examples/onload-callback.html){target="_blank"}
