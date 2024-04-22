@@ -1,18 +1,5 @@
 import DefaultTheme from "vitepress/theme";
 import CustomLayout from "./CustomLayout.vue";
-import { createPlausible } from "v-plausible/vue";
-
-const plausible = createPlausible({
-  init: {
-    domain: "pdfobject.com",
-    trackLocalhost: true,
-  },
-  settings: {
-    enableAutoOutboundTracking: true,
-    enableAutoPageviews: true,
-  },
-  partytown: false,
-});
 
 export default {
   extends: DefaultTheme,
@@ -20,6 +7,6 @@ export default {
   // injects the slots
   Layout: CustomLayout,
   enhanceApp({ app }) {
-    app.use(plausible);
+    //app.use(plausible);
   },
 };
