@@ -1,7 +1,28 @@
 <script setup>
-import DefaultTheme from 'vitepress/theme'
+import DefaultTheme from "vitepress/theme";
+const { Layout } = DefaultTheme;
 
-const { Layout } = DefaultTheme
+import { onMounted } from "vue";
+import Plausible from "plausible-tracker";
+
+// Set up Plausible options
+const options = {
+  domain: "pdfobject.com",
+  trackLocalhost: true,
+};
+
+// Initialize Plausible
+let plausibleInstance;
+
+onMounted(() => {
+  plausibleInstance = Plausible(options);
+
+  // Enable automatic page view tracking
+  plausibleInstance.enableAutoPageviews();
+
+  // Optionally enable other features like outbound link tracking
+  plausibleInstance.enableAutoOutboundTracking();
+});
 </script>
 
 <template>
@@ -26,8 +47,8 @@ const { Layout } = DefaultTheme
     </template> -->
 
     <template #home-hero-image>
-        <!-- Not quite ready for prime time... -->
-        <!-- <PdfObject url="/pdf/sample.pdf" :options="{ height: '500px' }" style="border: 1px solid rgba(0,0,0,.2)" /> -->
+      <!-- Not quite ready for prime time... -->
+      <!-- <PdfObject url="/pdf/sample.pdf" :options="{ height: '500px' }" style="border: 1px solid rgba(0,0,0,.2)" /> -->
     </template>
 
     <!-- <template #home-hero-after>
@@ -41,6 +62,5 @@ const { Layout } = DefaultTheme
     <!-- <template #home-features-after>
         <p>home-features-after</p>
     </template> -->
-
   </Layout>
 </template>
