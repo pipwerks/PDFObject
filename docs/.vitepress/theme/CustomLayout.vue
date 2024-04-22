@@ -16,11 +16,7 @@ let plausibleInstance;
 
 onMounted(() => {
   plausibleInstance = Plausible(options);
-
-  // Enable automatic page view tracking
   plausibleInstance.enableAutoPageviews();
-
-  // Optionally enable other features like outbound link tracking
   plausibleInstance.enableAutoOutboundTracking();
 });
 </script>
