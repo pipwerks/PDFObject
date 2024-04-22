@@ -7,6 +7,7 @@
   "dependencies": {
     "pdfobject": "^2.2.12",
     "pdfobject-vue": "^0.0.4",
+    "plausible-tracker": "^0.3.8",
     "v-plausible": "^1.2.0",
     "vitepress": "latest"
   }
