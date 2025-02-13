@@ -128,7 +128,7 @@ If you're trying to embed a base64 PDF but the browser doesn't support inline PD
 
 ```js
 var options = {
-    fallbackFileNameForBase64: "My custom fielname.pdf"
+    fallbackFileNameForBase64: "My custom filename.pdf"
 };
 PDFObject.embed("myfile.pdf", "#my-container", options);
 //If browser doesn't support inline PDFs, outputs:
