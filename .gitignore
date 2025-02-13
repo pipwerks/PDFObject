@@ -40,4 +40,6 @@ node_modules
 
 # VitePress cache files #
 #########################
-docs/.vitepress/cache/deps/
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+dist/
