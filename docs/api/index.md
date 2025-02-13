@@ -124,15 +124,15 @@ Any string entered here will be inserted into the target element when the browse
 ### fallbackFileNameForBase64
 [string]. Default: `"file.pdf"`
 
-If you're trying to embed a base64 PDF but the browser doesn't support inline PDFs, the user will see a download link for the PDF. This option enable syou to set a custom filename for that downloaded base64 PDF.
+If you're trying to embed a base64 PDF but the browser doesn't support inline PDFs, the user will see a download link for the PDF. This option enables you to set a custom filename for that downloaded base64 PDF.
 
 ```js
-var options = {
-    fallbackFileNameForBase64: "My custom filename.pdf"
-};
-PDFObject.embed("myfile.pdf", "#my-container", options);
-//If browser doesn't support inline PDFs, outputs:
-//<p>This is a <a href='myfile.pdf'>fallback link</a></p>
+let b64 = "data:application/pdf;filename=OriginalNameHere.pdf;base64,JVBERi0xLjMKMyAwIG9iago8PC9UeXBlIC9QYWdlCi9QYXJlbnQgMSAwIFIKL1Jlc291cmNlcyAyIDAgUgovQ29udGVudHMgNCAwIFI+PgplbmRvYmoKNCAwIG9iago8PC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTAxPj4Kc3RyZWFtCnicFcytDoAgGEbhzlW8UQsCU5mVqcFk+G6AKf4F2YDJ7TvS2Z5wFBYmeKeRmSE0s4RUXAjQgYkKyaHlWkMPXQntqOi6I9ZxRrYRm38/F5LbkTwsjI2ubxFTuN+T16CnbH7L/xqsCmVuZHN0cmVhbQplbmRvYmoKMSAwIG9iago8PC9UeXBlIC9QYWdlcwovS2lkcyBbMyAwIFIgXQovQ291bnQgMQovTWVkaWFCb3ggWzAgMCA1OTUuMjggODQxLjg5XQo+PgplbmRvYmoKNSAwIG9iago8PC9UeXBlIC9Gb250Ci9CYXNlRm9udCAvSGVsdmV0aWNhCi9TdWJ0eXBlIC9UeXBlMQovRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZwo+PgplbmRvYmoKMiAwIG9iago8PAovUHJvY1NldCBbL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSV0KL0ZvbnQgPDwKL0YxIDUgMCBSCj4+Ci9YT2JqZWN0IDw8Cj4+Cj4+CmVuZG9iago2IDAgb2JqCjw8Ci9Qcm9kdWNlciAoUHlGUERGIDEuNy4yIGh0dHA6Ly9weWZwZGYuZ29vZ2xlY29kZS5jb20vKQovQ3JlYXRpb25EYXRlIChEOjIwMjQwMjA4MDIyMTIzKQo+PgplbmRvYmoKNyAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMSAwIFIKL09wZW5BY3Rpb24gWzMgMCBSIC9GaXRIIG51bGxdCi9QYWdlTGF5b3V0IC9PbmVDb2x1bW4KPj4KZW5kb2JqCnhyZWYKMCA4CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDI1OCAwMDAwMCBuIAowMDAwMDAwNDQxIDAwMDAwIG4gCjAwMDAwMDAwMDkgMDAwMDAgbiAKMDAwMDAwMDA4NyAwMDAwMCBuIAowMDAwMDAwMzQ1IDAwMDAwIG4gCjAwMDAwMDA1NDUgMDAwMDAgbiAKMDAwMDAwMDY1NCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDgKL1Jvb3QgNyAwIFIKL0luZm8gNiAwIFIKPj4Kc3RhcnR4cmVmCjc1NwolJUVPRgo=";
+
+PDFObject.embed(b64, "#my-pdf", {
+  fallbackFileNameForBase64: "Custom File Name.pdf"
+});
+//If browser cannot display inline PDFs, and user clicks "Download PDF" link, the downloaded file will be named "Custom File Name.pdf"
 ```
 
 **Demo:**  [Embedding a PDF encoded as a Base64 string, with custom filename](/examples/base64-filename.html){target=_blank}
