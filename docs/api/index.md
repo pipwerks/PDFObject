@@ -117,7 +117,7 @@ Any string entered here will be inserted into the target element when the browse
 
 **Demo:**  [Specifying a custom fallback](/examples/specifying-custom-fallback-link.html){target=_blank}
 
-**Demo:**  [Declining a fallback](/examples/declining-a-fallback.html.html){target=_blank}
+**Demo:**  [Declining a fallback](/examples/declining-a-fallback.html){target=_blank}
 
 <br/>
 
