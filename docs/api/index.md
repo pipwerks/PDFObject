@@ -121,6 +121,25 @@ Any string entered here will be inserted into the target element when the browse
 
 <br/>
 
+### fallbackFileNameForBase64
+[string]. Default: `"file.pdf"`
+
+If you're trying to embed a base64 PDF but the browser doesn't support inline PDFs, the user will see a download link for the PDF. This option enable syou to set a custom filename for that downloaded base64 PDF.
+
+    ```js
+    var options = {
+       fallbackFileNameForBase64: "My custom fielname.pdf"
+    };
+    PDFObject.embed("myfile.pdf", "#my-container", options);
+    //If browser doesn't support inline PDFs, outputs:
+    //<p>This is a <a href='myfile.pdf'>fallback link</a></p>
+    ```
+
+**Demo:**  [Embedding a PDF encoded as a Base64 string, with custom filename](/examples/base64-filename.html){target=_blank}
+
+<br/>
+
+
 ### pdfOpenParams 
 [object]. Default: `null`
 
