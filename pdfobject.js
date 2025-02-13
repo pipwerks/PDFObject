@@ -40,9 +40,9 @@
     let isModernBrowser = function (){
 
         /*
-           userAgent sniffing is not the ideal path, but most browsers revoked the ability to check navigator.mimeTypes 
+           userAgent sniffing is not the ideal path, but most browsers revoked the ability to check navigator.mimeTypes
            for security purposes. As of 2023, browsers have begun implementing navigator.pdfViewerEnabled, but older versions
-           do not have navigator.pdfViewerEnabled or the ability to check navigator.mimeTypes. We're left with basic browser 
+           do not have navigator.pdfViewerEnabled or the ability to check navigator.mimeTypes. We're left with basic browser
            sniffing and assumptions of PDF support based on browser vendor.
         */
 
@@ -52,21 +52,21 @@
         //Note that MS Edge opts to use a different PDF rendering engine. As of 2024, Edge uses a version of Adobe's Reader
         let isChromium = (win.chrome !== undefined);
 
-        //Safari on macOS has provided native PDF support since 2009. 
+        //Safari on macOS has provided native PDF support since 2009.
         //This code snippet also detects the DuckDuckGo browser, which uses Safari/Webkit under the hood.
         let isSafari = (win.safari !== undefined || (nav.vendor !== undefined && /Apple/.test(nav.vendor) && /Safari/.test(ua)));
 
         //Firefox has provided PDF support via PDFJS since 2013.
         let isFirefox = (win.Mozilla !== undefined || /irefox/.test(ua));
 
-        return isChromium || isSafari || isFirefox;  
+        return isChromium || isSafari || isFirefox;
 
     };
 
     /*
        Special handling for Internet Explorer 11.
        Check for ActiveX support, then whether "AcroPDF.PDF" or "PDF.PdfCtrl" are valid.
-       IE11 uses ActiveX for Adobe Reader and other PDF plugins, but window.ActiveXObject will evaluate to false. 
+       IE11 uses ActiveX for Adobe Reader and other PDF plugins, but window.ActiveXObject will evaluate to false.
        ("ActiveXObject" in window) evaluates to true.
        MS Edge does not support ActiveX so this test will evaluate false for MS Edge.
     */
@@ -92,7 +92,7 @@
 
         //As of June 2023, no mobile browsers properly support inline PDFs. If mobile, just say no.
         if(isMobileDevice){ return false; }
-        
+
         //Modern browsers began supporting navigator.pdfViewerEnabled in late 2022 and early 2023.
         let supportsPDFVE = (typeof nav.pdfViewerEnabled === "boolean");
 
@@ -113,20 +113,20 @@
         let prop;
         let paramArray = [];
         let fdf = "";
-        
-        //The comment, viewrect, and highlight parameters require page to be set first. 
+
+        //The comment, viewrect, and highlight parameters require page to be set first.
 
         //Check to ensure page is used if comment, viewrect, or highlight are specified
         if(pdfParams.comment || pdfParams.viewrect || pdfParams.highlight){
 
             if(!pdfParams.page){
-                
+
                 //If page is not set, use the first page
                 pdfParams.page = 1;
-                
+
                 //Inform user that page needs to be set properly
                 embedError("The comment, viewrect, and highlight parameters require a page parameter, but none was specified. Defaulting to page 1.");
-            
+
             }
 
         }
@@ -142,7 +142,7 @@
             fdf = pdfParams.fdf;
             delete pdfParams.fdf;
         }
-        
+
         //Add all other parameters, as needed
         if(pdfParams){
 
@@ -225,7 +225,7 @@
             xhr.onload = function() {
 
                 if (xhr.status === 200) {
- 
+
                     var blob = xhr.response;
                     var link = document.createElement('a');
                     link.innerText = "Download PDF";
@@ -238,7 +238,7 @@
             };
 
             xhr.send();
-            
+
         }
 
     };
@@ -251,9 +251,9 @@
 
         let source = url;
 
-        if(embedType === "pdfjs"){ 
+        if(embedType === "pdfjs"){
             //If PDFJS_URL already contains a ?, assume querystring is in place, and use an ampersand to append PDFJS's file parameter
-            let connector = (PDFJS_URL.indexOf("?") !== -1) ? "&" : "?"; 
+            let connector = (PDFJS_URL.indexOf("?") !== -1) ? "&" : "?";
             source = PDFJS_URL + connector + "file=" + encodeURIComponent(url) + pdfOpenFragment;
         } else {
             source += pdfOpenFragment;
@@ -280,7 +280,7 @@
                 style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
             }
 
-            el.style.cssText = style; 
+            el.style.cssText = style;
 
         }
 
@@ -320,6 +320,7 @@
         let targetNode = getTargetElement(selector);
         let pdfOpenFragment = "";
         let customAttribute = opt.customAttribute || {};
+        let fallbackFileNameForBase64 = opt.fallbackFileNameForBase64;
         let fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: [pdflink]</p>";
 
         //Ensure URL is available. If not, exit now.
@@ -341,22 +342,22 @@
         if(forcePDFJS && PDFJS_URL){
             return generatePDFObjectMarkup("pdfjs", targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute, PDFJS_URL);
         }
- 
+
         // --== Embed attempt #2 ==--
 
-        //Embed PDF if support is detected, or if this is a relatively modern browser 
+        //Embed PDF if support is detected, or if this is a relatively modern browser
         if(supportsPDFs){
             return generatePDFObjectMarkup("iframe", targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute);
         }
-        
+
         // --== Embed attempt #3 ==--
-        
+
         //If everything else has failed and a PDFJS fallback is provided, try to use it
         if(PDFJS_URL){
             return generatePDFObjectMarkup("pdfjs", targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute, PDFJS_URL);
         }
-        
-        // --== PDF embed not supported! Use fallback ==-- 
+
+        // --== PDF embed not supported! Use fallback ==--
 
         //Display the fallback link if available
         if(fallbackLink){
@@ -370,11 +371,17 @@
             } else {
 
                 //If the PDF is a base64 string, convert it to a downloadable link
-                if(url.indexOf("data:application/pdf;base64") !== -1){
+                const match = url.match(/data:application\/pdf;(?:.*filename=([^;]+);)?.*base64,/i);
+                if(match){
+
+                    fallbackFileNameForBase64 =
+                        fallbackFileNameForBase64 // from options
+                        || match[1] // from data URI metadata
+                        || "file.pdf"; // default
 
                     //Asynchronously append the link to the targetNode
-                    convertBase64ToDownloadableLink(url, "file.pdf", targetNode, fallbackHTML_default);
-                
+                    convertBase64ToDownloadableLink(url, fallbackFileNameForBase64, targetNode, fallbackHTML_default);
+
                 } else {
 
                     //Use default fallback link
