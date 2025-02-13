@@ -1,7 +1,7 @@
 {
   "name": "pdfobject",
   "description": "A lightweight JavaScript utility for dynamically embedding PDFs in HTML documents",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "main": "pdfobject.js",
   "moduleType": [
 	  "globals",

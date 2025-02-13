@@ -1,8 +1,8 @@
 /**
- *  PDFObject v2.3.0
+ *  PDFObject v2.3.1
  *  https://github.com/pipwerks/PDFObject
  *  @license
- *  Copyright (c) 2008-2024 Philip Hutchison
+ *  Copyright (c) 2008-2025 Philip Hutchison
  *  MIT-style license: http://pipwerks.mit-license.org/
  *  UMD module pattern from https://github.com/umdjs/umd/blob/master/templates/returnExports.js
  */
@@ -30,7 +30,7 @@
 
     if(typeof window === "undefined" || window.navigator === undefined || window.navigator.userAgent === undefined){ return false; }
 
-    let pdfobjectversion = "2.3.0";
+    let pdfobjectversion = "2.3.1";
     let win = window;
     let nav = win.navigator;
     let ua = nav.userAgent;

@@ -8,13 +8,16 @@ Examples and documentation can be found at https://pdfobject.com.
 
 A PDFObject component for Vue.js 3 can be found at https://github.com/pipwerks/pdfobject-vue/ 
 
-Copyright (c) 2008-2024 Philip Hutchison
+Copyright (c) 2008-2025 Philip Hutchison
 
 MIT-style license: http://pipwerks.mit-license.org/
 
 -----
 
 ## Changelog
+
+### 2.3.1 (February 2025)
+- Added `fallbackFileNameForBase64` option. If the browser doesn't support PDF embeds, and the PDF is a base64 file, this option will enable the developer to specify the filename for the downloaded PDF. Previously, the filename was hardcoded to 'file.pdf'. Thanks to Joshua Newall (@imjosh) for the contribution.
 
 ### 2.3 (February 2024)
 - Removed `<embed>` in favor of `<iframe>`. PDFObject had previously defaulted to an `<embed>` element, but over time it has become apparent the superior solution is `<iframe>`. It's universally supported, and does not suffer from `<embed>`'s odd quirks and spotty support. This should make PDFObject more consistent and robust across platforms.
