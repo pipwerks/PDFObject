@@ -9,6 +9,7 @@ import Plausible from "plausible-tracker";
 const options = {
   domain: "pdfobject.com",
   trackLocalhost: true,
+  apiHost: 'https://analytics.pwk.io'
 };
 
 // Initialize Plausible
